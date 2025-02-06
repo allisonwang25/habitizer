@@ -12,7 +12,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
-        android:text="TextView"
+        android:text="Default Task"
         app:layout_constraintBottom_toTopOf="@+id/elapsed_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.451"
