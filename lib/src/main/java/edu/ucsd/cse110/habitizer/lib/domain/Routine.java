@@ -1,16 +1,15 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import edu.ucsd.cse110.habitizer.lib.util.RoutineType;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 
 public class Routine {
     private List<Task> tasks;
-    private final RoutineType routineType;
+    // 0 for morning routine, 1 for evening routine
+    private final int id;
     private String name;
     private boolean completed;
     // The routine's goal time in minutes (a negative value indicates none is set).
@@ -25,9 +24,9 @@ public class Routine {
      * @param name the name of the routine
      * @param routineType type of routine (morning/evening)
      */
-    public Routine(String name, RoutineType routineType, Timer timer) {
+    public Routine(String name, int routineType, Timer timer) {
         this.name = name;
-        this.routineType = routineType;
+        this.id = routineType;
         this.tasks = new ArrayList<>();
         this.completed = false;
         this.goalTimeMinutes = 0;
@@ -96,5 +95,18 @@ public class Routine {
         if (tasks.contains(task) && !task.isCheckedOff()) {
             task.checkOff();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Routine routine = (Routine) o;
+        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalTimeElapsed == routine.totalTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
