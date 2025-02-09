@@ -92,9 +92,13 @@ public class Routine {
      * @param task the task to check off
      */
     public void checkOffTask(Task task) {
-        if (tasks.contains(task) && !task.isCheckedOff()) {
+        if (tasks.contains(task)) {
             task.checkOff();
         }
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     @Override
