@@ -31,6 +31,8 @@ public class Task {
      * Calculate the time taken for the task to be completed.
      */
     public void checkOff() {
+        if (this.checkedOff) return;
+
         this.checkedOff = true;
         this.timeElapsed = this.timer.getTaskTimeElapsed();
     }
