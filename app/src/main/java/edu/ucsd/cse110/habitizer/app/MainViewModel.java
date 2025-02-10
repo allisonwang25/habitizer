@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.secards.app;
+package edu.ucsd.cse110.habitizer.app;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
@@ -17,6 +17,8 @@ import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class MainViewModel extends ViewModel {
     // Domain state (true "Model" state)
+
+
     private final RoutineRepository routineRepository;
     private final TaskRepository mTaskRepository;
     private final TaskRepository eTaskRepository;
@@ -66,4 +68,6 @@ public class MainViewModel extends ViewModel {
             eTaskOrdering.setValue(ordering);
         });
     }
+
+    public PlainMutableSubject<List<Integer>> getTaskOrdering() {return eTaskOrdering; }
 }
