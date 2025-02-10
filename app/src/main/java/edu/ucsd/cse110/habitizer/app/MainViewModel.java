@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.app.HabitizerApplication;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
@@ -24,14 +25,14 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
     private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
-//    public static final ViewModelInitializer<MainViewModel> initializer =
-//            new ViewModelInitializer<>(
-//                    MainViewModel.class,
-//                    creationExtras -> {
-//                        var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
-//                        assert app != null;
-//                        return new MainViewModel(app.getFlashcardRepository());
-//                    });
+    public static final ViewModelInitializer<MainViewModel> initializer =
+            new ViewModelInitializer<>(
+                    MainViewModel.class,
+                    creationExtras -> {
+                        var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
+                        assert app != null;
+                        return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(),app.getETaskRepository());
+                    });
 
     public MainViewModel(RoutineRepository r, TaskRepository m, TaskRepository e) {
         this.routineRepository = r;
