@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.lib.data;
 
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
@@ -19,6 +21,8 @@ public class InMemoryDataSource {
     private final Map<Integer, Routine> routines; // ID is 0: "Morning" or 1: "Evening"
     private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects;
     private final PlainMutableSubject<List<Routine>> allRoutinesSubjects;
+
+    private static ElapsedTime timer = new ElapsedTime();
 
     public InMemoryDataSource() {
         tasks = new HashMap<>();
@@ -87,8 +91,14 @@ public class InMemoryDataSource {
         allRoutinesSubjects.setValue(getRoutines());
     }
 
-    public final static List<Task> DEFAULT_TASKS = List.of();
-    public final static List<Routine> DEFAULT_ROUTINES = List.of();
+    public final static List<Routine> DEFAULT_ROUTINES = List.of(
+            new Routine("Morning",0, timer)
+    );
+    public final static List<Task> DEFAULT_TASKS = List.of(
+            new Task("task 1", timer),
+            new Task("task 2", timer)
+    );
+
 
     public static InMemoryDataSource fromDefault() {
         var data = new InMemoryDataSource();
