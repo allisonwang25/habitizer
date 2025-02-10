@@ -7,19 +7,21 @@ public class ElapsedTime implements Timer{
     LocalDateTime startTime; // the time when we start the routine
     LocalDateTime prevTaskFinishTime; // the time the most recent task was completed
     public ElapsedTime(){
-        this.startTime = LocalDateTime.now();
-        this.prevTaskFinishTime = this.startTime;
+        this.startTime = this.prevTaskFinishTime = LocalDateTime.now();
     }
 
     @Override
     public int getTaskTimeElapsed(){
-        int timeElapsed = (int) ChronoUnit.MINUTES.between(this.prevTaskFinishTime, LocalDateTime.now());
+        int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
+        int timeElapsedRounded = (int) Math.ceil(timeElapsed / 60.0);
+
         this.prevTaskFinishTime = LocalDateTime.now(); // update time the most recent task was completed
-        return timeElapsed;
+        return timeElapsedRounded;
     }
 
     @Override
     public int getTotalTimeElapsed(){
-        return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now());
+        int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now());
+        return (int) Math.ceil(timeElapsed / 60.0);
     }
 }
