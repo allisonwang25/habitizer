@@ -56,7 +56,7 @@ public class RoutineFragment extends Fragment {
         activityModel.getTaskOrdering().observe(task -> {
             if (task == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(task));
+            adapter.addAll(new ArrayList<>());
             adapter.notifyDataSetChanged();
         });
 

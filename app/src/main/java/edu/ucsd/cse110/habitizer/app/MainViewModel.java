@@ -28,13 +28,13 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
-            new ViewModelInitializer<>(
-                    MainViewModel.class,
-                    creationExtras -> {
-                        var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
-                        assert app != null;
-                        return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(),app.getETaskRepository());
-                    });
+        new ViewModelInitializer<>(
+            MainViewModel.class,
+            creationExtras -> {
+                var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
+                assert app != null;
+                return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(),app.getETaskRepository());
+            });
 
     public MainViewModel(RoutineRepository r, TaskRepository m, TaskRepository e) {
         this.routineRepository = r;
