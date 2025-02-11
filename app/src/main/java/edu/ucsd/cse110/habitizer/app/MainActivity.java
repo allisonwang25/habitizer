@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
 
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
