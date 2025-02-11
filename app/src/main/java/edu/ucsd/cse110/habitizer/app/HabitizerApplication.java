@@ -7,7 +7,6 @@ import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
 
 public class HabitizerApplication extends Application {
-    //TODO: Declare memory source here
     InMemoryDataSource dataSource;
     private RoutineRepository routineRepository;
     private TaskRepository mTaskRepository;
@@ -23,7 +22,6 @@ public class HabitizerApplication extends Application {
         this.mTaskRepository = new TaskRepository(dataSource);
         this.eTaskRepository = new TaskRepository(dataSource);
     }
-    //TODO: Write getter for tasks
     public RoutineRepository getRoutineRepository(){
         return routineRepository;
     }
