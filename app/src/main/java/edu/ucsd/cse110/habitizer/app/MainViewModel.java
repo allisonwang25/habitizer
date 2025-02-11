@@ -74,6 +74,7 @@ public class MainViewModel extends ViewModel {
             this.orderedMTasks.setValue(tasks);
         });
 
+        // This observe might be irrelavant because we dont need to get the top 'task' like the reference
         orderedMTasks.observe(tasks -> {
             if (tasks == null) return;
 
@@ -93,8 +94,7 @@ public class MainViewModel extends ViewModel {
 //            eTaskOrdering.setValue(ordering);
 //        });
 
-
     }
 
-    public PlainMutableSubject<List<Task>> getOrderedTasks() {return orderedMTasks; }
+    public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
 }

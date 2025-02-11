@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
-
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
 public class RoutineAdapter extends ArrayAdapter<Task> {
     public RoutineAdapter(Context context, List<Task> Routine) {
@@ -27,7 +26,6 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         assert task != null;
 
         TaskCardBinding binding;
-
         if(convertView != null) {
             binding = TaskCardBinding.bind(convertView);
         } else {
@@ -45,8 +43,9 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         assert task != null;
 
         var id = task.getId();
-//        assert id != null;
 
+//        assert id != null;
+//        idk why this don't work bruh
         return id;
     }
 }
