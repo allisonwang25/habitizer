@@ -15,9 +15,6 @@ import java.util.List;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
-
-
-//TODO: Adapter needs to extend ArrayAdapter<T>, but task class not in this branch yet
 public class RoutineAdapter extends ArrayAdapter<Task> {
     public RoutineAdapter(Context context, List<Task> Routine) {
         super(context, 0, new ArrayList<>(Routine));

@@ -53,10 +53,10 @@ public class RoutineFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
         this.adapter = new RoutineAdapter(requireActivity(), List.of());
-        activityModel.getTaskOrdering().observe(task -> {
+        activityModel.getOrderedTasks().observe(task -> {
             if (task == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>());
+            adapter.addAll(new ArrayList<>(task));
             adapter.notifyDataSetChanged();
         });
 

@@ -25,7 +25,9 @@ public class MainViewModel extends ViewModel {
 
     // UI state
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
-    private final PlainMutableSubject<List<Integer>> eTaskOrdering;
+//    private final PlainMutableSubject<List<Integer>> eTaskOrdering;
+
+    private final PlainMutableSubject<List<Task>> orderedMTasks;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
         new ViewModelInitializer<>(
@@ -43,7 +45,8 @@ public class MainViewModel extends ViewModel {
 
         // Create the observable subjects.
         mTaskOrdering = new PlainMutableSubject<>();
-        eTaskOrdering = new PlainMutableSubject<>();
+//        eTaskOrdering = new PlainMutableSubject<>();
+        orderedMTasks = new PlainMutableSubject<>();
 
         // Initialize...
 
@@ -58,16 +61,40 @@ public class MainViewModel extends ViewModel {
             mTaskOrdering.setValue(ordering);
         });
 
-        eTaskRepository.findAll().observe(tasks -> {
-            if (tasks == null) return; // not ready yet, ignore
+        mTaskOrdering.observe(ordering -> {
+            if (ordering == null) return;
 
-            var ordering = new ArrayList<Integer>();
-            for (int i = 0; i < tasks.size(); i++) {
-                ordering.add(i);
+            var tasks = new ArrayList<Task>();
+            for (var id : ordering) {
+                var task = mTaskRepository.find(id).getValue();
+                if (task == null) return;
+                tasks.add(task);
             }
-            eTaskOrdering.setValue(ordering);
+
+            this.orderedMTasks.setValue(tasks);
         });
+
+        orderedMTasks.observe(tasks -> {
+            if (tasks == null) return;
+
+            var ordering = mTaskOrdering.getValue();
+
+            var task = mTaskRepository.find(ordering.get(0)).getValue();
+            if(task == null) return;
+        });
+
+//        eTaskRepository.findAll().observe(tasks -> {
+//            if (tasks == null) return; // not ready yet, ignore
+//
+//            var ordering = new ArrayList<Integer>();
+//            for (int i = 0; i < tasks.size(); i++) {
+//                ordering.add(i);
+//            }
+//            eTaskOrdering.setValue(ordering);
+//        });
+
+
     }
 
-    public PlainMutableSubject<List<Integer>> getTaskOrdering() {return eTaskOrdering; }
+    public PlainMutableSubject<List<Task>> getOrderedTasks() {return orderedMTasks; }
 }
