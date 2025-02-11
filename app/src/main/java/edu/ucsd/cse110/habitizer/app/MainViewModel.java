@@ -17,16 +17,15 @@ import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class MainViewModel extends ViewModel {
     // Domain state (true "Model" state)
-
-
     private final RoutineRepository routineRepository;
     private final TaskRepository mTaskRepository;
     private final TaskRepository eTaskRepository;
 
     // UI state
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
-//    private final PlainMutableSubject<List<Integer>> eTaskOrdering;
+    private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
+    // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedMTasks;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
@@ -45,10 +44,9 @@ public class MainViewModel extends ViewModel {
 
         // Create the observable subjects.
         mTaskOrdering = new PlainMutableSubject<>();
-//        eTaskOrdering = new PlainMutableSubject<>();
+        eTaskOrdering = new PlainMutableSubject<>();
         orderedMTasks = new PlainMutableSubject<>();
 
-        // Initialize...
 
         // When the list of tasks changes (or is first loaded), reset the ordering.
         mTaskRepository.findAll().observe(tasks -> {
@@ -84,6 +82,7 @@ public class MainViewModel extends ViewModel {
             if(task == null) return;
         });
 
+        // Commented out the evening routine as we don't need 2 routines for this US
 //        eTaskRepository.findAll().observe(tasks -> {
 //            if (tasks == null) return; // not ready yet, ignore
 //

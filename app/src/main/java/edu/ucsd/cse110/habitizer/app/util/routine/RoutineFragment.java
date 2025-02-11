@@ -20,15 +20,10 @@ import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineBinding;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RoutineFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class RoutineFragment extends Fragment {
 
     private MainViewModel activityModel;
-
     private FragmentRoutineBinding view;
 
     private RoutineAdapter adapter;
@@ -59,8 +54,6 @@ public class RoutineFragment extends Fragment {
             adapter.addAll(new ArrayList<>(task));
             adapter.notifyDataSetChanged();
         });
-
-        // TODO: Initialize Model
     }
 
     @Nullable
