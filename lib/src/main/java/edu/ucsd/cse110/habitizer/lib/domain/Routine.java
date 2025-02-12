@@ -82,6 +82,10 @@ public class Routine {
         this.totalTimeElapsed = this.timer.getTotalTimeElapsed();
     }
 
+    public int getTotalTimeElapsed(){
+        return this.totalTimeElapsed;
+    }
+
     public boolean isEnded() {
         return this.completed;
     }
