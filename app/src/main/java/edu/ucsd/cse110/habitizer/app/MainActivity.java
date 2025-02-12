@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import edu.ucsd.cse110.habitizer.app.databinding.ActivityMainBinding;
 
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding view;
 
