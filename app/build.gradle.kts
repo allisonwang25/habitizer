@@ -25,6 +25,11 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -32,11 +37,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":lib"))
 
     implementation(libs.android.material)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(project(":observables"))
 
     testImplementation(libs.junit4)
 

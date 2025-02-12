@@ -2,9 +2,9 @@ name: CI Testing
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, 'story/**' ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'story/**' ]
 
 jobs:
   build:
@@ -21,6 +21,7 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
 
       - name: Grant Gradle execution permissions
         run: chmod +x gradlew
