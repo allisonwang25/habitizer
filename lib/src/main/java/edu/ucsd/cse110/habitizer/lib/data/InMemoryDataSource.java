@@ -95,8 +95,13 @@ public class InMemoryDataSource {
             new Routine("Morning",0, timer)
     );
     public final static List<Task> DEFAULT_TASKS = List.of(
-            new Task("task 1", timer),
-            new Task("task 2", timer)
+            new Task("Shower", timer),
+            new Task("Brush Teeth", timer),
+            new Task("Dress", timer),
+            new Task("Make Coffee", timer),
+            new Task("Make Lunch", timer),
+            new Task("Dinner Prep", timer),
+            new Task("Pack Bag", timer)
     );
 
 
