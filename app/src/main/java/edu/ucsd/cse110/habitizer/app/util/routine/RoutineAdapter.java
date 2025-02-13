@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
