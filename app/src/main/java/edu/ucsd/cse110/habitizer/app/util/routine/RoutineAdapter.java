@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,13 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskTitle.setText(task.getName());
+
+        if (task.isCheckedOff()) {
+            binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+
         return binding.getRoot();
     }
 
