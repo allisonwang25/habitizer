@@ -55,7 +55,7 @@
         </ListView>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/add_task_button"
             android:layout_width="match_parent"
             android:layout_height="76dp"
             android:text="@string/add_task" />
