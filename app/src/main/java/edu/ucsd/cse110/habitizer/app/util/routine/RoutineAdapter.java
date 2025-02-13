@@ -36,6 +36,8 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
 
         binding.taskTitle.setText(task.getName());
 
+        // formatted from
+        // https://stackoverflow.com/questions/3881553/is-there-an-easy-way-to-strike-through-text-in-an-app-widget/6739637#6739637
         if (task.isCheckedOff()) {
             binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
