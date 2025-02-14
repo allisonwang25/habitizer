@@ -55,6 +55,9 @@ public class RoutineListFragment extends Fragment {
 //
 //        activityModel.getOrderedRoutines().observe(routines -> {
 //            Routine routine = routines.get(0);
+        // TODO: Add MainViewModel reference
+        this.adapter = new RoutineListAdapter(requireActivity(), List.of());
+//        activityModel.getOrderedTasks().observe(routine -> {
 //            if (routine == null) return;
 //            adapter.clear();
 //            adapter.addAll(new ArrayList<>(routine));
