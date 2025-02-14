@@ -48,6 +48,12 @@ public class NewTaskDialogFragment extends DialogFragment {
     }
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         var taskName = view.taskNameInput.getText().toString();
+
+        if (taskName.trim().isEmpty()) {
+            view.taskNameInput.setError("Task name cannot be empty");
+            return; // TODO: BUG: dialog should not be dismissed if task name is empty
+        }
+
         Task task = new Task(taskName, new ElapsedTime());
         activityModel.addTask(task, 0); // TODO: refactor to pass in current routine ID
         dialog.dismiss();
