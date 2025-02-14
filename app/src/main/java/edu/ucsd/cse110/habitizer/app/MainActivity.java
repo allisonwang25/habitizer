@@ -15,7 +15,7 @@ import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
 import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
 
 
-public class MainActivity extends AppCompatActivity {
+    public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding view;
 
     enum fragments {
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu., menu);
         return true;
     }
 
@@ -44,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var itemId = item.getItemId();
 
-//        if (itemId == R.id.action_bar_menu_swap_views) {
+
+//        if () {
 //            swapFragments();
 //        }
 
