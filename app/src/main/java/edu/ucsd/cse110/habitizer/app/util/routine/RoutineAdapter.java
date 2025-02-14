@@ -34,6 +34,10 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskTitle.setText(task.getName());
+        binding.taskCardLayout.setOnClickListener(v -> {
+            task.checkOff();
+            binding.elapsedTime.setText(String.format(String.valueOf(task.getTimeElapsed()) + " Minutes Elapsed"));
+        });
         return binding.getRoot();
     }
 
