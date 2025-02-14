@@ -66,6 +66,10 @@ public class RoutineFragment extends Fragment {
         this.view = FragmentRoutineBinding.inflate(inflater, container, false);
 
         view.routine.setAdapter(adapter);
+        view.addTaskButton.setOnClickListener(v -> {
+            var dialogFragment = NewTaskDialogFragment.newInstance();
+            dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
+        });
         return view.getRoot();
     }
 }
