@@ -100,6 +100,13 @@ public class MainViewModel extends ViewModel {
 
     }
 
+    public void addTask(Task task, int RoutineId) {
+        if (RoutineId == 0)
+            mTaskRepository.append(task);
+        else
+            eTaskRepository.append(task);
+    }
+
     public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
