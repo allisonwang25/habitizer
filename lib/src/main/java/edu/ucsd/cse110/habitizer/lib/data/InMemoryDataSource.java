@@ -1,9 +1,7 @@
 package edu.ucsd.cse110.habitizer.lib.data;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
@@ -22,7 +20,9 @@ public class InMemoryDataSource {
     private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects;
     private final PlainMutableSubject<List<Routine>> allRoutinesSubjects;
 
-    private static ElapsedTime timer = new ElapsedTime();
+    // Should the timers be initalized here?
+    private static ElapsedTime mTimer = new ElapsedTime();
+    private static ElapsedTime eTimer = new ElapsedTime();
 
     public InMemoryDataSource() {
         tasks = new HashMap<>();
@@ -102,16 +102,17 @@ public class InMemoryDataSource {
     }
 
     public final static List<Routine> DEFAULT_ROUTINES = List.of(
-            new Routine("Morning",0, timer)
+            new Routine("Morning",0, mTimer),
+            new Routine("Evening",1, eTimer)
     );
     public final static List<Task> DEFAULT_TASKS = List.of(
-            new Task("Shower", timer),
-            new Task("Brush Teeth", timer),
-            new Task("Dress", timer),
-            new Task("Make Coffee", timer),
-            new Task("Make Lunch", timer),
-            new Task("Dinner Prep", timer),
-            new Task("Pack Bag", timer)
+            new Task("Shower", mTimer),
+            new Task("Brush Teeth", mTimer),
+            new Task("Dress", mTimer),
+            new Task("Make Coffee", mTimer),
+            new Task("Make Lunch", mTimer),
+            new Task("Dinner Prep", mTimer),
+            new Task("Pack Bag", mTimer)
     );
 
 
