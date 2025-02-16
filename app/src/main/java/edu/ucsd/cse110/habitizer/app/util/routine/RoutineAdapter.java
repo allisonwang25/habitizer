@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -34,6 +36,11 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskTitle.setText(task.getName());
+        binding.taskEditButton.setOnClickListener(v -> {
+            var dialog = new RenameTaskDialogFragment(task.getId());
+//            dialog.show(((Fragment Activity) getContext()).getSupportFragmentManager(), "RenameTaskDialogFragment");
+        });
+
         return binding.getRoot();
     }
 

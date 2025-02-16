@@ -96,4 +96,9 @@ public class MainViewModel extends ViewModel {
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
+
+    public Task getTask(int taskId) {
+        return mTaskRepository.find(taskId).getValue();
+    }
+
 }
