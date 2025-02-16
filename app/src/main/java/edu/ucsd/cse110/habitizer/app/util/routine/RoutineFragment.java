@@ -53,7 +53,6 @@ public class RoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
-        this.adapter = new RoutineAdapter(requireActivity(), List.of());
         activityModel.getOrderedTasks().observe(task -> {
             if (task == null) return;
             adapter.clear();
