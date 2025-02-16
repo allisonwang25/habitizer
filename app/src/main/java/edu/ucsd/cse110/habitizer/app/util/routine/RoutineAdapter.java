@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.Layout;
@@ -46,6 +48,11 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
 
             binding.elapsedTime.setText(String.format(String.valueOf(task.getTimeElapsed()) + " Minutes Elapsed"));
             binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        });
+
+        binding.taskEditButton.setOnClickListener(v -> {
+            var dialog = new RenameTaskDialogFragment(task.getId());
+//            dialog.show(((Fragment Activity) getContext()).getSupportFragmentManager(), "RenameTaskDialogFragment");
         });
 
         return binding.getRoot();
