@@ -52,7 +52,7 @@ public class RoutineTest {
         // WHEN setting a goal time.
         routine.setGoalTime(30);
         // THEN the goal time should be retrievable.
-        assertThat("Goal time should be 30", routine.getGoalTime(), is(30));
+        assertThat("Goal time should be 30", routine.getGoalTime(), is("30"));
     }
 
     @Test

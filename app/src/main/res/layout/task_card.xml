@@ -27,5 +27,5 @@
         android:text="@string/_0_minutes_elapsed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/task_title" />
+        app:layout_constraintTop_toBottomOf="@+id/routine_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
