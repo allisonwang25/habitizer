@@ -16,6 +16,10 @@ public class TaskRepository {
         return dataSource.getTasks().size();
     }
 
+    public void append(Task task) {
+        dataSource.putTask(task);
+    }
+
     public PlainMutableSubject<Task> find(int id) {
         return (PlainMutableSubject<Task>) dataSource.getTaskSubject(id);
     }
