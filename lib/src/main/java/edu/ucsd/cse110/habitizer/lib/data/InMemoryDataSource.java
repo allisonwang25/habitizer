@@ -83,6 +83,10 @@ public class InMemoryDataSource {
         return allRoutinesSubjects;
     }
 
+    public String getRoutineGoalTime(int id){
+        return getRoutine(id).getGoalTime();
+    }
+
     public void putRoutine(Routine routine) {
         routines.put(routine.getId(), routine);
         if (routineSubjects.containsKey(routine.getId())) {

@@ -46,7 +46,6 @@ public class RoutineFragment extends Fragment {
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
-
         this.adapter = new RoutineAdapter(requireActivity(), List.of());
         activityModel.getOrderedTasks().observe(task -> {
             if (task == null) return;
@@ -64,8 +63,28 @@ public class RoutineFragment extends Fragment {
         @Nullable Bundle savedInstanceState
     ) {
         this.view = FragmentRoutineBinding.inflate(inflater, container, false);
-
         view.routine.setAdapter(adapter);
+
+        activityModel.getRoutineGoalTime().observe(goalTime -> {
+            if (goalTime == null) return;
+            String elapsedText = "0 out of " + goalTime + " minutes elapsed";
+            // Using view binding to update the TextView:
+            this.view.routineElapsedTime.setText(elapsedText);
+            if (goalTime.equals("-")) view.goalTimeEditText.setText("");
+            else view.goalTimeEditText.setText(goalTime);
+        });
+
+        // Handle when user enters a new goal time
+        view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
+            String input = view.goalTimeEditText.getText().toString();
+            if (!input.isEmpty()) {
+                int newGoalTime = Integer.parseInt(input);
+                activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
+            }
+            return false;
+        });
+
+
         return view.getRoot();
     }
 }

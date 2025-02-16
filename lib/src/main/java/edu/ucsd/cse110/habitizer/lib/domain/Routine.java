@@ -13,7 +13,7 @@ public class Routine {
     private String name;
     private boolean completed;
     // The routine's goal time in minutes (a negative value indicates none is set).
-    private int goalTimeMinutes;
+    private String goalTimeMinutes;
     private Timer timer;
     private int totalTimeElapsed;
 
@@ -29,7 +29,7 @@ public class Routine {
         this.id = routineType;
         this.tasks = new ArrayList<>();
         this.completed = false;
-        this.goalTimeMinutes = 0;
+        this.goalTimeMinutes = "-";
         this.totalTimeElapsed = 0;
         this.timer = timer;
     }
@@ -66,10 +66,10 @@ public class Routine {
      * @param minutes the goal time in minutes
      */
     public void setGoalTime(int minutes) {
-        this.goalTimeMinutes = minutes;
+        this.goalTimeMinutes = Integer.toString(minutes);
     }
 
-    public int getGoalTime() {
+    public String getGoalTime() {
         return this.goalTimeMinutes;
     }
 
