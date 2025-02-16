@@ -1,5 +1,8 @@
 package edu.ucsd.cse110.habitizer.app.util.routine_list;
 
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_ACTIVE;
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_EDIT;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,10 +50,7 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         binding.routineStartBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                mainActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, RoutineFragment.newInstance())
-                    .commit();
+                mainActivity.setActiveFragment(ROUTINE_ACTIVE);
             }
         });
 
@@ -58,10 +58,7 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         binding.routineEditBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                mainActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, RoutineListFragment.newInstance())
-                    .commit();
+                mainActivity.setActiveFragment(ROUTINE_EDIT);
             }
         });
 
