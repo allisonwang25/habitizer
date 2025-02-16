@@ -20,8 +20,8 @@ import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
 public class RoutineAdapter extends ArrayAdapter<Task> {
    Consumer<Integer>  onEditClick;
-    public RoutineAdapter(Context context, List<Task> Routine, Consumer<Integer> onEditClick) {
-        super(context, 0, new ArrayList<>(Routine));
+    public RoutineAdapter(Context context, List<Task> tasks, Consumer<Integer> onEditClick) {
+        super(context, 0, new ArrayList<>(tasks));
         this.onEditClick = onEditClick;
     }
 
