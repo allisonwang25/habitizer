@@ -35,6 +35,7 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskTitle.setText(task.getName());
+
         binding.taskCardLayout.setOnClickListener(v -> {
             task.checkOff();
 
@@ -42,9 +43,11 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
             // https://stackoverflow.com/questions/3881553/is-there-an-easy-way-to-strike-through-text-in-an-app-widget/6739637#6739637
             // 2025 02 12
             // Took the method of setting flags to set strikethrough
+
             binding.elapsedTime.setText(String.format(String.valueOf(task.getTimeElapsed()) + " Minutes Elapsed"));
             binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         });
+
         return binding.getRoot();
     }
 
