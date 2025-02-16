@@ -13,7 +13,7 @@ import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogRenameTaskBinding
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class RenameTaskDialogFragment extends DialogFragment {
-    private static final String ARG_TASK_ID = "flashcard_id";
+    private static final String ARG_TASK_ID = "task_id";
     private FragmentDialogRenameTaskBinding view;
     private MainViewModel activityModel;
     private int taskId;
@@ -59,8 +59,7 @@ public class RenameTaskDialogFragment extends DialogFragment {
             return; // TODO: BUG: dialog should not be dismissed if task name is empty
         }
 
-        Task task = activityModel.getTask(taskId);
-        task.setName(taskName);
+        activityModel.renameTask(taskId, taskName);
         // task is a pointer so should update automatically, but need to push notify the observers?
         dialog.dismiss();
     }
