@@ -62,6 +62,12 @@ public class InMemoryDataSource {
         allTasksSubjects.setValue(getTasks());
     }
 
+    public void renameTask(int taskId, String taskName) {
+        Task task = tasks.get(taskId);
+        task.setName(taskName);
+        allTasksSubjects.setValue(getTasks());
+    }
+
     public List<Routine> getRoutines() {
         return List.copyOf(routines.values());
     }

@@ -117,4 +117,13 @@ public class MainViewModel extends ViewModel {
         routineGoalTime.setValue(Integer.toString(minutes));
     }
 
+
+    public Task getTask(int taskId) {
+        return mTaskRepository.find(taskId).getValue();
+    }
+
+    public void renameTask(int taskId, String taskName) {
+        mTaskRepository.renameTask(taskId, taskName);
+    }
+
 }
