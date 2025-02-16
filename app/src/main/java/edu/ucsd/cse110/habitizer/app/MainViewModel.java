@@ -122,4 +122,8 @@ public class MainViewModel extends ViewModel {
         return mTaskRepository.find(taskId).getValue();
     }
 
+    public void renameTask(int taskId, String taskName) {
+        mTaskRepository.renameTask(taskId, taskName);
+    }
+
 }

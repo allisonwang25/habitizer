@@ -61,8 +61,6 @@ public class RoutineFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
 
-
-
     }
 
     @Nullable
