@@ -80,6 +80,7 @@ public class RoutineFragment extends Fragment {
             if (!input.isEmpty()) {
                 int newGoalTime = Integer.parseInt(input);
                 activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
+                view.goalTimeEditText.setText(""); // Clear the text field
             }
             return false;
         });
