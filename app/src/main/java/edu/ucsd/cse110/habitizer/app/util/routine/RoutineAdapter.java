@@ -13,12 +13,15 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
 public class RoutineAdapter extends ArrayAdapter<Task> {
-    public RoutineAdapter(Context context, List<Task> Routine) {
+   Consumer<Integer>  onEditClick;
+    public RoutineAdapter(Context context, List<Task> Routine, Consumer<Integer> onEditClick) {
         super(context, 0, new ArrayList<>(Routine));
+        this.onEditClick = onEditClick;
     }
 
     @NonNull
@@ -36,10 +39,12 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskTitle.setText(task.getName());
+
         binding.taskEditButton.setOnClickListener(v -> {
-            var dialog = new RenameTaskDialogFragment(task.getId());
-//            dialog.show(((Fragment Activity) getContext()).getSupportFragmentManager(), "RenameTaskDialogFragment");
+            var id  = task.getId();
+            onEditClick.accept(id);
         });
+
 
         return binding.getRoot();
     }
