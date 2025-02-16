@@ -10,4 +10,5 @@
     <string name="edit">Edit</string>
     <string name="total_time_0_minutes">Total Time: 0 Minutes</string>
     <string name="your_routines">Your Routines:</string>
+    <string name="total_time">Total time: </string>
 </resources>
