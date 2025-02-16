@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.HabitizerApplication;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
@@ -25,8 +26,12 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
     private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
+    private final PlainMutableSubject<List<Integer>> RoutineOrdering;
+
     // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedMTasks;
+
+    private final PlainMutableSubject<List<Routine>> orderedRoutines;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
         new ViewModelInitializer<>(
@@ -45,7 +50,10 @@ public class MainViewModel extends ViewModel {
         // Create the observable subjects.
         mTaskOrdering = new PlainMutableSubject<>();
         eTaskOrdering = new PlainMutableSubject<>();
+        RoutineOrdering = new PlainMutableSubject<>();
+
         orderedMTasks = new PlainMutableSubject<>();
+        orderedRoutines = new PlainMutableSubject<>();
 
 
         // When the list of tasks changes (or is first loaded), reset the ordering.
@@ -72,15 +80,29 @@ public class MainViewModel extends ViewModel {
             this.orderedMTasks.setValue(tasks);
         });
 
-        // This observe might be irrelavant because we dont need to get the top 'task' like the reference
-        orderedMTasks.observe(tasks -> {
-            if (tasks == null) return;
+        routineRepository.findAll().observe(routines -> {
+           if (routines == null) return;
 
-            var ordering = mTaskOrdering.getValue();
+           var ordering = new ArrayList<Integer>();
+            for (int i = 0; i < routines.size(); i++) {
+                ordering.add(i);
+            }
 
-            var task = mTaskRepository.find(ordering.get(0)).getValue();
-            if(task == null) return;
+            RoutineOrdering.setValue(ordering);
         });
+
+        RoutineOrdering.observe(ordering -> {
+            if (ordering == null) return;
+
+            var routines = new ArrayList<Routine>();
+            for (var id : ordering) {
+                var routine = routineRepository.find(id).getValue();
+                if (routine == null) return;
+                routines.add(routine);
+            }
+            this.orderedRoutines.setValue(routines);
+        });
+
 
         // Commented out the evening routine as we don't need 2 routines for this US
 //        eTaskRepository.findAll().observe(tasks -> {
@@ -96,4 +118,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
+    public PlainMutableSubject<List<Routine>> getOrderedRoutines() { return orderedRoutines; }
+
 }

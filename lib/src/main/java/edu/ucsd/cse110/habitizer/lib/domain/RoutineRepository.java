@@ -20,7 +20,7 @@ public class RoutineRepository {
         return (PlainMutableSubject<Routine>) dataSource.getRoutineSubject(id);
     }
 
-    public PlainMutableSubject<List<Routine>> findAll() {
+    public  PlainMutableSubject<List<Routine>> findAll() {
         return (PlainMutableSubject<List<Routine>>) dataSource.getAllRoutinesSubject();
     }
 

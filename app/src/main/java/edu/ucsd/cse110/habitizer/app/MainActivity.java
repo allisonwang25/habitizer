@@ -34,23 +34,6 @@ import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
         setContentView(view.getRoot());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        var itemId = item.getItemId();
-
-
-//        if () {
-//            swapFragments();
-//        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void swapFragments() {
         switch(currentFragment) {
             case ROUTINE_LIST:
