@@ -36,7 +36,7 @@ public class RenameTaskDialogFragment extends DialogFragment {
                 .setTitle("Edit Your Task")
                 .setMessage("Please edit your task name.")
                 .setView(view.getRoot())
-                .setPositiveButton("Create", this::onPositiveButtonClick)
+                .setPositiveButton("Rename", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
                 .create();
     }
