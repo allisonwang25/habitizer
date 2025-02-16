@@ -14,6 +14,7 @@ import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class RenameTaskDialogFragment extends DialogFragment {
     private static final String ARG_TASK_ID = "flashcard_id";
+    private FragmentDialogRenameTaskBinding view;
     private MainViewModel activityModel;
     private int taskId;
     public RenameTaskDialogFragment() {
@@ -29,9 +30,12 @@ public class RenameTaskDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        this.view = FragmentDialogRenameTaskBinding.inflate(getLayoutInflater());
+        this.view.editTaskNameInput.setText(activityModel.getTask(taskId).getName());
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Edit Your Task")
                 .setMessage("Please edit your task name.")
+                .setView(view.getRoot())
                 .setPositiveButton("Create", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
                 .create();
@@ -48,8 +52,15 @@ public class RenameTaskDialogFragment extends DialogFragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
     }
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
+        var taskName = view.editTaskNameInput.getText().toString();
+
+        if (taskName.trim().isEmpty()) {
+            view.editTaskNameInput.setError("Task name cannot be empty");
+            return; // TODO: BUG: dialog should not be dismissed if task name is empty
+        }
+
         Task task = activityModel.getTask(taskId);
-        task.setName("TODO - USER SELECT NAME");
+        task.setName(taskName);
         // task is a pointer so should update automatically, but need to push notify the observers?
         dialog.dismiss();
     }
