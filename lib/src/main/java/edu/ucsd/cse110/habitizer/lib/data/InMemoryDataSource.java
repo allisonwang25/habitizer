@@ -133,12 +133,12 @@ public class InMemoryDataSource {
             data.putRoutine(routine);
             if(i == 0){
                 for(int j = 0; j < DEFAULT_MORNING_TASKS.size(); ++j){
-                    Task task = DEFAULT_MORNING_TASKS.get(i);
+                    Task task = DEFAULT_MORNING_TASKS.get(j);
                     routine.addTask(task);
                 }
             } else if (i == 1){
                 for(int j = 0; j < DEFAULT_EVENING_TASKS.size(); ++j){
-                    Task task = DEFAULT_EVENING_TASKS.get(i);
+                    Task task = DEFAULT_EVENING_TASKS.get(j);
                     routine.addTask(task);
                 }
             }

@@ -12,6 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import edu.ucsd.cse110.habitizer.app.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.habitizer.app.util.fragments;
+import edu.ucsd.cse110.habitizer.app.util.routine.EveningRoutineFragment;
+import edu.ucsd.cse110.habitizer.app.util.routine.MorningRoutineFragment;
 import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
 import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
 
@@ -42,18 +44,29 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container, RoutineListFragment.newInstance())
                     .commit();
                 break;
-            case ROUTINE_ACTIVE:
+            case ROUTINE1_ACTIVE:
                 getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, RoutineFragment.newInstance())
+                    .replace(R.id.fragment_container, MorningRoutineFragment.newInstance())
                     .commit();
-                // TODO: Switch to 'active' routine
                 break;
-            case ROUTINE_EDIT:
+            case ROUTINE1_EDIT:
                 getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, RoutineFragment.newInstance())
+                    .replace(R.id.fragment_container, MorningRoutineFragment.newInstance())
                     .commit();
+                break;
+            case ROUTINE2_ACTIVE:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, EveningRoutineFragment.newInstance())
+                        .commit();
+                break;
+            case ROUTINE2_EDIT:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, EveningRoutineFragment.newInstance())
+                        .commit();
                 break;
         }
     }
