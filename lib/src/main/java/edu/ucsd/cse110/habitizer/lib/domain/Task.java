@@ -76,7 +76,7 @@ public class Task {
         return Objects.hash(id);
     }
 
-    public void setName(String taskName) {
+    public void setName(String taskName){
         this.name = taskName;
     }
 }

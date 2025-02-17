@@ -1,7 +1,11 @@
 package edu.ucsd.cse110.habitizer.app.util.routine_list;
 
-import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_ACTIVE;
-import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_EDIT;
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE1_ACTIVE;
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE1_EDIT;
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE2_ACTIVE;
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE2_EDIT;
+//import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_ACTIVE;
+//import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_EDIT;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,8 +24,9 @@ import java.util.function.Consumer;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.R;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineListBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.RoutineCardBinding;
-import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
+//import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutineListAdapter extends ArrayAdapter<Routine> {
@@ -36,29 +41,45 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         var routine = getItem(i);
         assert routine != null;
 
-        RoutineCardBinding binding;
+        FragmentRoutineListBinding binding;
         if (convertView != null) {
-            binding = RoutineCardBinding.bind(convertView);
+            binding = FragmentRoutineListBinding.bind(convertView);
         } else {
             var layoutInflater = LayoutInflater.from(getContext());
-            binding = RoutineCardBinding.inflate(layoutInflater, viewGroup, false);
+            binding = FragmentRoutineListBinding.inflate(layoutInflater, viewGroup, false);
         }
 
-        binding.routineTitle.setText(routine.getName());
-        binding.routineTime.setText(routine.getGoalTime());
+        binding.routine1Title.setText(routine.getName());
+        binding.routine1Time.setText(routine.getGoalTime());
 
-        binding.routineStartBtn.setOnClickListener(v -> {
+        binding.routine1StartBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                mainActivity.setActiveFragment(ROUTINE_ACTIVE);
+                mainActivity.setActiveFragment(ROUTINE1_ACTIVE);
             }
         });
 
-        // TODO: Change Edit Button to initialize correct RoutineEditFragment
-        binding.routineEditBtn.setOnClickListener(v -> {
+        binding.routine1EditBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                mainActivity.setActiveFragment(ROUTINE_EDIT);
+                mainActivity.setActiveFragment(ROUTINE1_EDIT);
+            }
+        });
+
+        binding.routine2Title.setText(routine.getName());
+        binding.routine2Time.setText(routine.getGoalTime());
+
+        binding.routine2StartBtn.setOnClickListener(v -> {
+            if (getContext() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                mainActivity.setActiveFragment(ROUTINE2_ACTIVE);
+            }
+        });
+
+        binding.routine2EditBtn.setOnClickListener(v -> {
+            if (getContext() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                mainActivity.setActiveFragment(ROUTINE2_EDIT);
             }
         });
 
