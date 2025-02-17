@@ -80,6 +80,13 @@ public class MorningRoutineFragment extends Fragment {
             }
         });
 
+        activityModel.getRoutineGoalTime().observe(goalTime -> {
+            if (goalTime == null) return;
+            String elapsedText = "0 out of " + goalTime + " minutes elapsed";
+            // Using view binding to update the TextView:
+            this.view.routineElapsedTime.setText(elapsedText);
+        });
+
         view.stopTimerButton.setOnClickListener(v -> {
             activityModel.getOrderedRoutines().getValue().get(0).getTimer().stopTimer();
         });
