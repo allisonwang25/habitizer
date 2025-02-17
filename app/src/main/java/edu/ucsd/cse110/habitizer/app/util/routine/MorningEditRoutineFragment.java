@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_LIST;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineMorningBinding;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
@@ -102,6 +105,13 @@ public class MorningEditRoutineFragment extends Fragment {
                 view.goalTimeEditText.setText(""); // Clear the text field
             }
             return false;
+        });
+
+        view.backButton.setOnClickListener(v -> {
+            if (getContext() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                mainActivity.setActiveFragment(ROUTINE_LIST);
+            }
         });
 
         return view.getRoot();

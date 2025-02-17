@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_LIST;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineMorningBinding;
@@ -69,6 +72,13 @@ public class MorningRoutineFragment extends Fragment {
         @Nullable Bundle savedInstanceState
     ) {
         this.view = FragmentRoutineMorningBinding.inflate(inflater, container, false);
+
+        view.backButton.setOnClickListener(v -> {
+            if (getContext() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                mainActivity.setActiveFragment(ROUTINE_LIST);
+            }
+        });
 
         view.routine.setAdapter(adapter);
         return view.getRoot();
