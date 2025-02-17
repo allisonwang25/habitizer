@@ -84,6 +84,14 @@ public class MorningEditRoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 
+        view.stopTimerButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(0).getTimer().stopTimer();
+        });
+
+        view.stopTimerButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(0).getTimer().advanceTime();
+        });
+
         activityModel.getRoutineGoalTime().observe(goalTime -> {
             if (goalTime == null) return;
             String elapsedText = "0 out of " + goalTime + " minutes elapsed";

@@ -102,6 +102,14 @@ public class EveningEditRoutineFragment extends Fragment {
             return false;
         });
 
+        view.stopTimerButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(0).getTimer().stopTimer();
+        });
+
+        view.stopTimerButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(0).getTimer().advanceTime();
+        });
+
         // Handle when user enters a new goal time
         view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
             String input = view.goalTimeEditText.getText().toString();
