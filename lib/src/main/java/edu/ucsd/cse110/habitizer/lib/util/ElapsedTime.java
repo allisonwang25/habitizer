@@ -43,7 +43,8 @@ public class ElapsedTime implements Timer{
 
     public int calcStoppedTime(){
         if (stopped){
-            int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, endTime);
+            int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, endTime);
+            this.prevTaskFinishTime = endTime;
             return (int) Math.ceil(timeElapsed / 60.0);
         }
         return -1;

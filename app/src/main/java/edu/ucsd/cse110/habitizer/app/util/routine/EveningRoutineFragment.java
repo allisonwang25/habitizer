@@ -80,6 +80,14 @@ public class EveningRoutineFragment extends Fragment {
                     }
         });
 
+        view.stopTimerButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(1).getTimer().stopTimer();
+        });
+
+        view.advanceTimeButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(1).getTimer().advanceTime();
+        });
+
         view.routine.setAdapter(adapter);
         return view.getRoot();
     }

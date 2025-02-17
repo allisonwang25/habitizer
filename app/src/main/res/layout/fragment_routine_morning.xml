@@ -34,4 +34,36 @@
             tools:listitem="@layout/task_card" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/stop_timer_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Stop timer" />
+
+        <Button
+            android:id="@+id/advance_time_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Advance time" />
+
+        <Button
+            android:id="@+id/end_routine_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="End routine" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
