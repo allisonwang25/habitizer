@@ -45,15 +45,15 @@ public class RoutineTest {
                 routine.getTasks(), contains(task2));
     }
 
-//    @Test
-//    public void testSetAndGetGoalTime() {
-//        Routine routine = new Routine("Billy's Evening Routine", 0, mockTimer);
-//
-//        // WHEN setting a goal time.
-//        routine.setGoalTime(30);
-//        // THEN the goal time should be retrievable.
-//        assertThat("Goal time should be 30", routine.getGoalTime(), is(30));
-//    }
+    @Test
+    public void testSetAndGetGoalTime() {
+        Routine routine = new Routine("Billy's Evening Routine", 0, mockTimer);
+
+        // WHEN setting a goal time.
+        routine.setGoalTime(30);
+        // THEN the goal time should be retrievable.
+        assertThat("Goal time should be 30", routine.getGoalTime(), is("30"));
+    }
 
     @Test
     public void testCompleteRoutine() {
