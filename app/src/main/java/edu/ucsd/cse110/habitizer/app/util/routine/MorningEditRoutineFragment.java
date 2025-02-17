@@ -1,36 +1,38 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineBinding;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineMorningBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 
-public class RoutineFragment extends Fragment {
+public class MorningEditRoutineFragment extends Fragment {
 
     private MainViewModel activityModel;
-    private FragmentRoutineBinding view;
+    private FragmentEditRoutineMorningBinding view;
 
-    private RoutineAdapter adapter;
+    private EditRoutineAdapter adapter;
 
-    public RoutineFragment() {
+    public MorningEditRoutineFragment() {
         // Required empty public constructor
     }
 
-    public static RoutineFragment newInstance() {
-        RoutineFragment fragment = new RoutineFragment();
+    public static MorningEditRoutineFragment newInstance() {
+        MorningEditRoutineFragment fragment = new MorningEditRoutineFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -44,16 +46,25 @@ public class RoutineFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-    // Initialize the Adapter (with an empty list for now)
-        this.adapter = new RoutineAdapter(requireActivity(), List.of(), id -> {
-            var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
-            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+        this.adapter = new EditRoutineAdapter(requireActivity(), List.of(), id -> {
+            var dialogFrament = new RenameTaskDialogFragment().newInstance(id);
+            dialogFrament.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
-        activityModel.getOrderedTasks().observe(task -> {
-            if (task == null) return;
+        activityModel.getOrderedRoutines().observe(routines -> {
+            Routine routine = routines.get(0);
+            List<Task> tasks = routine.getTasks();
+            if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(task));
+            adapter.addAll(new ArrayList<>(tasks));
+            adapter.notifyDataSetChanged();
+        });
+
+        activityModel.getOrderedTasks().observe(tasks -> {
+            Log.d("test", "hi");
+            if (tasks == null) return;
+            adapter.clear();
+            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(0).getTasks());
             adapter.notifyDataSetChanged();
         });
     }
@@ -65,10 +76,11 @@ public class RoutineFragment extends Fragment {
         @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState
     ) {
-        this.view = FragmentRoutineBinding.inflate(inflater, container, false);
+        this.view = FragmentEditRoutineMorningBinding.inflate(inflater, container, false);
         view.routine.setAdapter(adapter);
+
         view.addTaskButton.setOnClickListener(v -> {
-            var dialogFragment = NewTaskDialogFragment.newInstance(6969);
+            var dialogFragment = NewTaskDialogFragment.newInstance(0);
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 
@@ -91,7 +103,6 @@ public class RoutineFragment extends Fragment {
             }
             return false;
         });
-
 
         return view.getRoot();
     }

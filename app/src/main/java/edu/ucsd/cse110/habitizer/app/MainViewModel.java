@@ -5,9 +5,14 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.app.HabitizerApplication;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
@@ -24,8 +29,12 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
     private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
+    private final PlainMutableSubject<List<Integer>> RoutineOrdering;
+
     // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedMTasks;
+
+    private final PlainMutableSubject<List<Routine>> orderedRoutines;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
         new ViewModelInitializer<>(
@@ -45,11 +54,13 @@ public class MainViewModel extends ViewModel {
         routineGoalTime = new PlainMutableSubject<>();
         mTaskOrdering = new PlainMutableSubject<>();
         eTaskOrdering = new PlainMutableSubject<>();
+        RoutineOrdering = new PlainMutableSubject<>();
+
         orderedMTasks = new PlainMutableSubject<>();
+        orderedRoutines = new PlainMutableSubject<>();
 
         routineRepository.find(0).observe(routine -> {
             if (routine == null) return;
-
             routineGoalTime.setValue(routine.getGoalTime());
         });
 
@@ -72,20 +83,35 @@ public class MainViewModel extends ViewModel {
                 var task = mTaskRepository.find(id).getValue();
                 if (task == null) return;
                 tasks.add(task);
+
+            }
+            this.orderedMTasks.setValue(tasks);
+            Log.d("asdfg", "added!");
+        });
+
+        routineRepository.findAll().observe(routines -> {
+           if (routines == null) return;
+
+           var ordering = new ArrayList<Integer>();
+            for (int i = 0; i < routines.size(); i++) {
+                ordering.add(i);
             }
 
-            this.orderedMTasks.setValue(tasks);
+            RoutineOrdering.setValue(ordering);
         });
 
-        // This observe might be irrelavant because we dont need to get the top 'task' like the reference
-        orderedMTasks.observe(tasks -> {
-            if (tasks == null) return;
+        RoutineOrdering.observe(ordering -> {
+            if (ordering == null) return;
 
-            var ordering = mTaskOrdering.getValue();
-
-            var task = mTaskRepository.find(ordering.get(0)).getValue();
-            if(task == null) return;
+            var routines = new ArrayList<Routine>();
+            for (var id : ordering) {
+                var routine = routineRepository.find(id).getValue();
+                if (routine == null) return;
+                routines.add(routine);
+            }
+            this.orderedRoutines.setValue(routines);
         });
+
 
         // Commented out the evening routine as we don't need 2 routines for this US
 //        eTaskRepository.findAll().observe(tasks -> {
@@ -100,14 +126,27 @@ public class MainViewModel extends ViewModel {
 
     }
 
-    public void addTask(Task task, int RoutineId) {
-        if (RoutineId == 0)
-            mTaskRepository.append(task);
-        else
-            eTaskRepository.append(task);
+    public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
+    public PlainMutableSubject<List<Routine>> getOrderedRoutines() { return orderedRoutines; }
+
+    public void addTask(Task task, int routineId){
+        if (routineId == 0){
+            orderedRoutines.getValue().get(0).addTask(task);
+            mTaskRepository.save(task);
+        }
+        else {
+            orderedRoutines.getValue().get(1).addTask(task);
+            mTaskRepository.save(task);
+        }
     }
 
-    public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
+    public Task getTask(int taskId) {
+        return mTaskRepository.find(taskId).getValue();
+    }
+
+    public void renameTask(int taskId, String taskName){
+        mTaskRepository.renameTask(taskId, taskName);
+    }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
         return routineGoalTime;
@@ -116,14 +155,4 @@ public class MainViewModel extends ViewModel {
     public void setRoutineGoalTime(int minutes) {
         routineGoalTime.setValue(Integer.toString(minutes));
     }
-
-
-    public Task getTask(int taskId) {
-        return mTaskRepository.find(taskId).getValue();
-    }
-
-    public void renameTask(int taskId, String taskName) {
-        mTaskRepository.renameTask(taskId, taskName);
-    }
-
 }

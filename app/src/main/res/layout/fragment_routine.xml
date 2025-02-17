@@ -32,7 +32,7 @@
                 android:id="@+id/routine_elapsed_time"
                 android:layout_width="197dp"
                 android:layout_height="wrap_content"
-                android:text="@string/_0_out_of_0_minutes_elapsed"
+                android:text="0_out_of_0_minutes_elapsed"
                 android:textAlignment="center" />
 
             <EditText
@@ -60,7 +60,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/add_task"
+        android:text="New Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

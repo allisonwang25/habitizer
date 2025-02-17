@@ -1,9 +1,7 @@
 package edu.ucsd.cse110.habitizer.lib.data;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
@@ -22,7 +20,9 @@ public class InMemoryDataSource {
     private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects;
     private final PlainMutableSubject<List<Routine>> allRoutinesSubjects;
 
-    private static ElapsedTime timer = new ElapsedTime();
+    // Should the timers be initalized here?
+    private static ElapsedTime mTimer = new ElapsedTime();
+    private static ElapsedTime eTimer = new ElapsedTime();
 
     public InMemoryDataSource() {
         tasks = new HashMap<>();
@@ -62,12 +62,11 @@ public class InMemoryDataSource {
         allTasksSubjects.setValue(getTasks());
     }
 
-    public void renameTask(int taskId, String taskName) {
+    public void renameTask(int taskId, String taskName){
         Task task = tasks.get(taskId);
         task.setName(taskName);
         allTasksSubjects.setValue(getTasks());
     }
-
     public List<Routine> getRoutines() {
         return List.copyOf(routines.values());
     }
@@ -89,10 +88,6 @@ public class InMemoryDataSource {
         return allRoutinesSubjects;
     }
 
-    public String getRoutineGoalTime(int id){
-        return getRoutine(id).getGoalTime();
-    }
-
     public void putRoutine(Routine routine) {
         routines.put(routine.getId(), routine);
         if (routineSubjects.containsKey(routine.getId())) {
@@ -102,27 +97,56 @@ public class InMemoryDataSource {
     }
 
     public final static List<Routine> DEFAULT_ROUTINES = List.of(
-            new Routine("Morning",0, timer)
+            new Routine("Morning",0, mTimer),
+            new Routine("Evening",1, eTimer)
     );
-    public final static List<Task> DEFAULT_TASKS = List.of(
-            new Task("Shower", timer),
-            new Task("Brush Teeth", timer),
-            new Task("Dress", timer),
-            new Task("Make Coffee", timer),
-            new Task("Make Lunch", timer),
-            new Task("Dinner Prep", timer),
-            new Task("Pack Bag", timer)
+    public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
+            new Task("Shower", mTimer),
+            new Task("Brush Teeth", mTimer),
+            new Task("Dress", mTimer),
+            new Task("Make Coffee", mTimer),
+            new Task("Make Lunch", mTimer),
+            new Task("Dinner Prep", mTimer),
+            new Task("Pack Bag", mTimer)
     );
+    public final static List<Task> DEFAULT_EVENING_TASKS = List.of(
+            new Task("Charge Devices", eTimer),
+            new Task("Prepare Dinner", eTimer),
+            new Task("Eat Dinner", eTimer),
+            new Task("Wash Dishes", eTimer),
+            new Task("Pack Bag for Morning", eTimer),
+            new Task("Homework", eTimer)
+    );
+
 
 
     public static InMemoryDataSource fromDefault() {
         var data = new InMemoryDataSource();
-        for (Task task : DEFAULT_TASKS) {
+
+        for (int i = 0; i < DEFAULT_ROUTINES.size(); ++i) {
+            Routine routine = DEFAULT_ROUTINES.get(i);
+            data.putRoutine(routine);
+            if(i == 0){
+                for(int j = 0; j < DEFAULT_MORNING_TASKS.size(); ++j){
+                    Task task = DEFAULT_MORNING_TASKS.get(j);
+                    routine.addTask(task);
+                }
+            } else if (i == 1){
+                for(int j = 0; j < DEFAULT_EVENING_TASKS.size(); ++j){
+                    Task task = DEFAULT_EVENING_TASKS.get(j);
+                    routine.addTask(task);
+                }
+            }
+        }
+        for (Task task : DEFAULT_MORNING_TASKS) {
             data.putTask(task);
         }
-        for (Routine routine : DEFAULT_ROUTINES) {
-            data.putRoutine(routine);
+        for (Task task : DEFAULT_EVENING_TASKS) {
+            data.putTask(task);
         }
         return data;
+    }
+    public String getRoutineGoalTime(int id){
+        return getRoutine(id).getGoalTime();
     }
 }
