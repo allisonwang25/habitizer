@@ -35,8 +35,4 @@ public class TaskRepository {
     public void save(Task task) {
         dataSource.putTask(task);
     }
-
-    public void renameTask(int taskId, String taskName){
-        dataSource.renameTask(taskId, taskName);
-    }
 }

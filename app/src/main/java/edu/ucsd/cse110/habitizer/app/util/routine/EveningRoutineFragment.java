@@ -46,7 +46,10 @@ public class EveningRoutineFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        this.adapter = new RoutineAdapter(requireActivity(), List.of());
+        this.adapter = new RoutineAdapter(requireActivity(), List.of(), id -> {
+            var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
+            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+        });
 
         activityModel.getOrderedRoutines().observe(routines -> {
             Routine routine = routines.get(1);

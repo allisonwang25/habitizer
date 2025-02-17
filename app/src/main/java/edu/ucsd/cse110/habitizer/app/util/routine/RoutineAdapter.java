@@ -54,12 +54,6 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         });
 
 
-        binding.taskEditButton.setOnClickListener(v -> {
-            var id  = task.getId();
-            onEditClick.accept(id);
-        });
-
-
         return binding.getRoot();
     }
 
