@@ -105,7 +105,7 @@ public class InMemoryDataSource {
             new Routine("Morning",0, mTimer),
             new Routine("Evening",1, eTimer)
     );
-    public final static List<Task> DEFAULT_TASKS = List.of(
+    public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
             new Task("Shower", mTimer),
             new Task("Brush Teeth", mTimer),
             new Task("Dress", mTimer),
@@ -114,16 +114,42 @@ public class InMemoryDataSource {
             new Task("Dinner Prep", mTimer),
             new Task("Pack Bag", mTimer)
     );
+    public final static List<Task> DEFAULT_EVENING_TASKS = List.of(
+            new Task("Charge Devices", eTimer),
+            new Task("Prepare Dinner", eTimer),
+            new Task("Eat Dinner", eTimer),
+            new Task("Wash Dishes", eTimer),
+            new Task("Pack Bag for Morning", eTimer),
+            new Task("Homework", eTimer)
+    );
+
 
 
     public static InMemoryDataSource fromDefault() {
         var data = new InMemoryDataSource();
-        for (Task task : DEFAULT_TASKS) {
+
+        for (int i = 0; i < DEFAULT_ROUTINES.size(); ++i) {
+            Routine routine = DEFAULT_ROUTINES.get(i);
+            data.putRoutine(routine);
+            if(i == 0){
+                for(int j = 0; j < DEFAULT_MORNING_TASKS.size(); ++j){
+                    Task task = DEFAULT_MORNING_TASKS.get(i);
+                    routine.addTask(task);
+                }
+            } else if (i == 1){
+                for(int j = 0; j < DEFAULT_EVENING_TASKS.size(); ++j){
+                    Task task = DEFAULT_EVENING_TASKS.get(i);
+                    routine.addTask(task);
+                }
+            }
+        }
+        for (Task task : DEFAULT_MORNING_TASKS) {
             data.putTask(task);
         }
-        for (Routine routine : DEFAULT_ROUTINES) {
-            data.putRoutine(routine);
+        for (Task task : DEFAULT_EVENING_TASKS) {
+            data.putTask(task);
         }
         return data;
     }
+
 }

@@ -55,7 +55,7 @@ public class InMemoryDataSourceTest {
     @Test
     public void fromDefault_initializesWithDefaultTasksAndRoutines() {
         InMemoryDataSource dataSource = InMemoryDataSource.fromDefault();
-        assertThat(dataSource.getTasks().size(), is(InMemoryDataSource.DEFAULT_TASKS.size()));
+        assertThat(dataSource.getTasks().size(), is(InMemoryDataSource.DEFAULT_MORNING_TASKS.size() + InMemoryDataSource.DEFAULT_EVENING_TASKS.size()));
         assertThat(dataSource.getRoutines().size(), is(InMemoryDataSource.DEFAULT_ROUTINES.size()));
     }
 }
