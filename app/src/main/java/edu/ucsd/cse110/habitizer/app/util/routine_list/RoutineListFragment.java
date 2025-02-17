@@ -44,14 +44,14 @@ public class RoutineListFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        // TODO: Add MainViewModel reference
         this.adapter = new RoutineListAdapter(requireActivity(), List.of());
-//        activityModel.getOrderedTasks().observe(routine -> {
-//            if (routine == null) return;
-//            adapter.clear();
-//            adapter.addAll(new ArrayList<>(routine));
-//            adapter.notifyDataSetChanged();
-//        });
+
+        activityModel.getOrderedRoutines().observe(routine -> {
+            if (routine == null) return;
+            adapter.clear();
+            adapter.addAll(new ArrayList<>(routine));
+            adapter.notifyDataSetChanged();
+        });
     }
 
     @Nullable
@@ -64,8 +64,6 @@ public class RoutineListFragment extends Fragment {
         this.view = FragmentRoutineListBinding.inflate(inflater, container, false);
 
         view.routine.setAdapter(adapter);
-
-        // TODO: Add onClickListener for specific button press (IDK how that works)
         return view.getRoot();
     }
 }

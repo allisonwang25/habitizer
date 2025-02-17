@@ -15,10 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.R;
-
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineBinding;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 
 public class RoutineFragment extends Fragment {
@@ -48,6 +45,7 @@ public class RoutineFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
         this.adapter = new RoutineAdapter(requireActivity(), List.of());
+
         activityModel.getOrderedTasks().observe(task -> {
             if (task == null) return;
             adapter.clear();

@@ -11,19 +11,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import edu.ucsd.cse110.habitizer.app.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.habitizer.app.util.fragments;
 import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
 import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
 
 
-    public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding view;
-
-    enum fragments {
-        ROUTINE_LIST,
-        ROUTINE_ACTIVE,
-        ROUTINE_EDIT
-    }
-
     fragments currentFragment = fragments.ROUTINE_LIST;
 
     @Override
@@ -34,21 +29,9 @@ import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
         setContentView(view.getRoot());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        var itemId = item.getItemId();
-
-
-//        if () {
-//            swapFragments();
-//        }
-
-        return super.onOptionsItemSelected(item);
+    public void setActiveFragment(fragments fragment) {
+        currentFragment = fragment;
+        swapFragments();
     }
 
     private void swapFragments() {
@@ -60,6 +43,10 @@ import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
                     .commit();
                 break;
             case ROUTINE_ACTIVE:
+                getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, RoutineFragment.newInstance())
+                    .commit();
                 // TODO: Switch to 'active' routine
                 break;
             case ROUTINE_EDIT:
