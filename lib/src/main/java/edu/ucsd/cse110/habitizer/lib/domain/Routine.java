@@ -60,6 +60,10 @@ public class Routine {
         return this.name;
     }
 
+    public Timer getTimer() {
+        return this.timer;
+    }
+
     /**
      * Sets the goal time for the routine in minutes.
      *
