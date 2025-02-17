@@ -73,5 +73,4 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         return id;
     }
 
-
 }

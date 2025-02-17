@@ -17,7 +17,7 @@ import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
 
 
 
-    public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding view;
     fragments currentFragment = fragments.ROUTINE_LIST;
 
