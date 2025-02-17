@@ -15,10 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.R;
-
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineBinding;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 
 public class RoutineFragment extends Fragment {
