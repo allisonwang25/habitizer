@@ -5,6 +5,8 @@ import androidx.fragment.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.util.Log;
+
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogNewTaskBinding;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,12 +17,14 @@ import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 
 public class NewTaskDialogFragment extends DialogFragment {
     private FragmentDialogNewTaskBinding view;
+    private static int routineId;
     private MainViewModel activityModel;
     public NewTaskDialogFragment() {}
-    public static NewTaskDialogFragment newInstance() {
+    public static NewTaskDialogFragment newInstance(int r) {
         var fragment = new NewTaskDialogFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        routineId = r;
         return fragment;
     }
 
@@ -53,9 +57,9 @@ public class NewTaskDialogFragment extends DialogFragment {
             view.taskNameInput.setError("Task name cannot be empty");
             return; // TODO: BUG: dialog should not be dismissed if task name is empty
         }
-
         Task task = new Task(taskName, new ElapsedTime());
-        activityModel.addTask(task, 0); // TODO: refactor to pass in current routine ID
+//        activityModel.getOrderedRoutines().getValue().get(0).addTask(task); // TODO: refactor to pass in current routine ID
+        activityModel.addTask(task, routineId);
         dialog.dismiss();
     }
 

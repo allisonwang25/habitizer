@@ -62,12 +62,11 @@ public class InMemoryDataSource {
         allTasksSubjects.setValue(getTasks());
     }
 
-    public void renameTask(int taskId, String taskName) {
+    public void renameTask(int taskId, String taskName){
         Task task = tasks.get(taskId);
         task.setName(taskName);
         allTasksSubjects.setValue(getTasks());
     }
-
     public List<Routine> getRoutines() {
         return List.copyOf(routines.values());
     }
@@ -87,10 +86,6 @@ public class InMemoryDataSource {
 
     public Subject<List<Routine>> getAllRoutinesSubject() {
         return allRoutinesSubjects;
-    }
-
-    public String getRoutineGoalTime(int id){
-        return getRoutine(id).getGoalTime();
     }
 
     public void putRoutine(Routine routine) {
@@ -151,5 +146,7 @@ public class InMemoryDataSource {
         }
         return data;
     }
-
+    public String getRoutineGoalTime(int id){
+        return getRoutine(id).getGoalTime();
+    }
 }

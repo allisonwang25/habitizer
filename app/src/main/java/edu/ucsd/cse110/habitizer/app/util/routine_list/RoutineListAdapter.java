@@ -26,7 +26,7 @@ import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineListBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.RoutineCardBinding;
-import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
+//import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutineListAdapter extends ArrayAdapter<Routine> {
@@ -59,7 +59,6 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
             }
         });
 
-        // TODO: Change Edit Button to initialize correct RoutineEditFragment
         binding.routine1EditBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
@@ -77,7 +76,6 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
             }
         });
 
-        // TODO: Change Edit Button to initialize correct RoutineEditFragment
         binding.routine2EditBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();

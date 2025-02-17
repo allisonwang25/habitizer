@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,6 @@ public class MorningRoutineFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
     }
-
     @Nullable
     @Override
     public View onCreateView(
