@@ -52,6 +52,7 @@ public class MainViewModel extends ViewModel {
 
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
+        routineGoalTime.setValue("-");
         mTaskOrdering = new PlainMutableSubject<>();
         eTaskOrdering = new PlainMutableSubject<>();
         RoutineOrdering = new PlainMutableSubject<>();

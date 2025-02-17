@@ -27,6 +27,13 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
+        <TextView
+            android:id="@+id/routine_elapsed_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 out of 0 minutes elapsed"
+            android:textAlignment="center" />
+
         <ListView
             android:id="@+id/routine"
             android:layout_width="match_parent"
