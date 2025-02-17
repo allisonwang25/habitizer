@@ -109,6 +109,19 @@ public class MainViewModel extends ViewModel {
             this.orderedRoutines.setValue(routines);
         });
 
+        RoutineOrdering.observe(ordering -> {
+            if (ordering == null) return;
+
+            var routines = new ArrayList<Routine>();
+            for (var id : ordering) {
+                var routine = routineRepository.find(id).getValue();
+                if (routine == null) return;
+                routines.add(routine);
+            }
+            this.orderedRoutines.setValue(routines);
+        });
+
+
         // Commented out the evening routine as we don't need 2 routines for this US
 //        eTaskRepository.findAll().observe(tasks -> {
 //            if (tasks == null) return; // not ready yet, ignore
@@ -130,7 +143,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
-
+  
     public PlainMutableSubject<String> getRoutineGoalTime() {
         return routineGoalTime;
     }
@@ -147,7 +160,7 @@ public class MainViewModel extends ViewModel {
     public void renameTask(int taskId, String taskName) {
         mTaskRepository.renameTask(taskId, taskName);
     }
-
+  
     public PlainMutableSubject<List<Routine>> getOrderedRoutines() { return orderedRoutines; }
 
 }

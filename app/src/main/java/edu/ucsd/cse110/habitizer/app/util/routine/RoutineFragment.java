@@ -44,7 +44,7 @@ public class RoutineFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        // Initialize the Adapter (with an empty list for now)
+    // Initialize the Adapter (with an empty list for now)
         this.adapter = new RoutineAdapter(requireActivity(), List.of(), id -> {
             var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
