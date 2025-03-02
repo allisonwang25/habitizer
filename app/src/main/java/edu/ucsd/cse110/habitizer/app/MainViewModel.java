@@ -8,10 +8,8 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import edu.ucsd.cse110.habitizer.app.HabitizerApplication;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
@@ -146,6 +144,10 @@ public class MainViewModel extends ViewModel {
 
     public void renameTask(int taskId, String taskName){
         mTaskRepository.renameTask(taskId, taskName);
+    }
+
+    public void removeTask(int taskId) {
+        mTaskRepository.removeTask(taskId);
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
