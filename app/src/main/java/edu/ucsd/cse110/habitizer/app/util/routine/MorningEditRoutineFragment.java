@@ -50,8 +50,11 @@ public class MorningEditRoutineFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
         this.adapter = new EditRoutineAdapter(requireActivity(), List.of(), id -> {
-            var dialogFrament = new RenameTaskDialogFragment().newInstance(id);
-            dialogFrament.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+            var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
+            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+        }, id -> {
+            var dialogFragment = new DeleteTaskDialogFragment().newInstance(id);
+            dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {

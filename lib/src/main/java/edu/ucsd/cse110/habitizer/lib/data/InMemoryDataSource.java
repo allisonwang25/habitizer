@@ -67,6 +67,20 @@ public class InMemoryDataSource {
         task.setName(taskName);
         allTasksSubjects.setValue(getTasks());
     }
+
+    public void removeTask(int taskId) {
+        if (!tasks.containsKey(taskId)) {
+            return;
+        }
+
+        tasks.remove(taskId);
+
+        if (taskSubjects.containsKey(taskId)) {
+            taskSubjects.remove(taskId);
+        }
+        allTasksSubjects.setValue(getTasks());
+    }
+
     public List<Routine> getRoutines() {
         return List.copyOf(routines.values());
     }
