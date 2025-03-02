@@ -45,6 +45,10 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(project(":observables"))
 
+    implementation("androidx.room:room-common:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
     testImplementation(libs.junit4)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
