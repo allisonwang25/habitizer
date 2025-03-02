@@ -12,22 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardEditBinding;
+import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
-import edu.ucsd.cse110.habitizer.app.MainViewModel;
 
 public class EditRoutineAdapter extends ArrayAdapter<Task> {
 
     Consumer<Integer> onEditClick;
     Consumer<Integer> onDeleteClick;
-    Consumer<Integer> onUpClick;
-    Consumer<Integer> onDownClick;
 
-    public EditRoutineAdapter(Context context, List<Task> routine, Consumer<Integer> onEditClick, Consumer<Integer> onDeleteClick, Consumer<Integer> onUpClick, Consumer<Integer> onDownClick) {
+    public EditRoutineAdapter(Context context, List<Task> routine, Consumer<Integer> onEditClick, Consumer<Integer> onDeleteClick) {
         super(context, 0, new ArrayList<>(routine));
         this.onEditClick = onEditClick;
-        this.onUpClick = onUpClick;
-        this.onDownClick = onDownClick;
         this.onDeleteClick = onDeleteClick;
     }
 
@@ -48,23 +45,13 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         binding.taskTitle.setText(task.getName());
 
         binding.taskEditButton.setOnClickListener(v -> {
-            var id = task.getTid();
+            var id = task.getId();
             onEditClick.accept(id);
         });
 
         binding.taskDeleteButton.setOnClickListener(v -> {
-            var id = task.getTid();
+            var id = task.getId();
             onDeleteClick.accept(id);
-        });
-
-        binding.upButton.setOnClickListener(v -> {
-            var id = task.getTid();
-            onUpClick.accept(id);
-        });
-
-        binding.downButton.setOnClickListener(v -> {
-            var id = task.getTid();
-            onDownClick.accept(id);
         });
 
         return binding.getRoot();
@@ -75,7 +62,7 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         var task = getItem(pos);
         assert task != null;
 
-        var id = task.getTid();
+        var id = task.getId();
 
 //        assert id != null;
 //        idk why this don't work bruh

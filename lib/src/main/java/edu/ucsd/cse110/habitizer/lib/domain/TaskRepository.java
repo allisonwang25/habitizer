@@ -2,18 +2,41 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 
-public interface TaskRepository {
-    Integer count();
+public class TaskRepository {
+    private final InMemoryDataSource dataSource;
 
-    void append(Task task);
+    public TaskRepository(InMemoryDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-    PlainMutableSubject<Task> find(int id);
+    public Integer count() {
+        return dataSource.getTasks().size();
+    }
 
-    PlainMutableSubject<List<Task>> findAll();
+    public void append(Task task) {
+        dataSource.putTask(task);
+    }
 
-    void renameTask(int taskId, String taskName);
+    public PlainMutableSubject<Task> find(int id) {
+        return (PlainMutableSubject<Task>) dataSource.getTaskSubject(id);
+    }
 
-    void save(Task task);
+    public PlainMutableSubject<List<Task>> findAll() {
+        return (PlainMutableSubject<List<Task>>) dataSource.getAllTasksSubject();
+    }
+
+    public void renameTask(int taskId, String taskName) {
+        dataSource.renameTask(taskId, taskName);
+    }
+
+    public void removeTask(int taskId) {
+        dataSource.removeTask(taskId);
+    }
+
+    public void save(Task task) {
+        dataSource.putTask(task);
+    }
 }
