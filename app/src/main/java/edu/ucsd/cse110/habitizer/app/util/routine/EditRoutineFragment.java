@@ -61,7 +61,7 @@ public class EditRoutineFragment extends Fragment {
             var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         }, id -> {
-            var dialogFragment = new DeleteTaskDialogFragment().newInstance(id);
+            var dialogFragment = new DeleteTaskDialogFragment().newInstance(id, routineId);
             dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
         });
 

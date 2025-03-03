@@ -144,7 +144,7 @@ public class MainViewModel extends ViewModel {
             mTaskRepository.save(task);
         } else {
             orderedRoutines.getValue().get(1).addTask(task);
-            mTaskRepository.save(task);
+            eTaskRepository.save(task);
         }
     }
 
@@ -156,9 +156,14 @@ public class MainViewModel extends ViewModel {
         mTaskRepository.renameTask(taskId, taskName);
     }
 
-    public void removeTask(int taskId) {
-        orderedRoutines.getValue().get(0).removeTask(taskId);
-        mTaskRepository.removeTask(taskId);
+    public void removeTask(int taskId, int routineId) {
+        if (routineId == 0) {
+            orderedRoutines.getValue().get(0).removeTask(taskId);
+            mTaskRepository.removeTask(taskId);
+        } else {
+            orderedRoutines.getValue().get(1).removeTask(taskId);
+            mTaskRepository.removeTask(taskId);
+        }
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
