@@ -1,22 +1,13 @@
 package edu.ucsd.cse110.habitizer.app;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import edu.ucsd.cse110.habitizer.app.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.habitizer.app.util.fragments;
-import edu.ucsd.cse110.habitizer.app.util.routine.EveningEditRoutineFragment;
-import edu.ucsd.cse110.habitizer.app.util.routine.EveningRoutineFragment;
-import edu.ucsd.cse110.habitizer.app.util.routine.MorningEditRoutineFragment;
-import edu.ucsd.cse110.habitizer.app.util.routine.MorningRoutineFragment;
-//import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
+import edu.ucsd.cse110.habitizer.app.util.routine.EditRoutineFragment;
+import edu.ucsd.cse110.habitizer.app.util.routine.RoutineFragment;
 import edu.ucsd.cse110.habitizer.app.util.routine_list.RoutineListFragment;
 
 
@@ -33,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view.getRoot());
     }
 
-    public void setActiveFragment(fragments fragment) {
+    public void setActiveFragment(fragments fragment, int routineId) {
         currentFragment = fragment;
-        swapFragments();
+        swapFragments(routineId);
     }
 
-    private void swapFragments() {
+    private void swapFragments(int routineId) {
         switch(currentFragment) {
             case ROUTINE_LIST:
                 getSupportFragmentManager()
@@ -46,29 +37,17 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container, RoutineListFragment.newInstance())
                     .commit();
                 break;
-            case ROUTINE1_ACTIVE:
+            case ROUTINE_ACTIVE:
                 getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, MorningRoutineFragment.newInstance())
+                    .replace(R.id.fragment_container, RoutineFragment.newInstance(routineId))
                     .commit();
                 break;
-            case ROUTINE1_EDIT:
+            case ROUTINE_EDIT:
                 getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, MorningEditRoutineFragment.newInstance())
+                    .replace(R.id.fragment_container, EditRoutineFragment.newInstance(routineId))
                     .commit();
-                break;
-            case ROUTINE2_ACTIVE:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, EveningRoutineFragment.newInstance())
-                        .commit();
-                break;
-            case ROUTINE2_EDIT:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, EveningEditRoutineFragment.newInstance())
-                        .commit();
                 break;
         }
     }
