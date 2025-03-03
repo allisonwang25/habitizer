@@ -85,7 +85,6 @@ public class MainViewModel extends ViewModel {
 
             var tasks = new ArrayList<Task>();
             for (var id : ordering) {
-                Log.d("wee woo wee woo", "" + id);
                 var task = mTaskRepository.find(id).getValue();
                 if (task == null) return;
                 tasks.add(task);
@@ -158,6 +157,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void removeTask(int taskId) {
+        orderedRoutines.getValue().get(0).removeTask(taskId);
         mTaskRepository.removeTask(taskId);
     }
 

@@ -52,6 +52,16 @@ public class Routine {
         this.tasks.remove(task);
     }
 
+    public void removeTask(int taskId) {
+        for (int i = 0; i < this.getTasks().size(); i++) {
+            Task cur = this.getTasks().get(i);
+            if (cur.getId() == taskId) {
+                this.removeTask(cur);
+                return;
+            }
+        }
+    }
+
     public List<Task> getTasks() {
         return this.tasks;
     }
