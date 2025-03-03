@@ -1,6 +1,5 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
-import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE1_EDIT;
 import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_LIST;
 
 import android.os.Bundle;
@@ -19,25 +18,28 @@ import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineEveningBinding;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineBinding;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 
-public class EveningEditRoutineFragment extends Fragment {
+public class EditRoutineFragment extends Fragment {
 
     private MainViewModel activityModel;
-    private FragmentEditRoutineEveningBinding view;
+    private @NonNull FragmentEditRoutineBinding view;
 
     private EditRoutineAdapter adapter;
+    private int routineId;
+    private static final String ROUTINE_ARGS = "ROUTINE_ID";
 
-    public EveningEditRoutineFragment() {
+    public EditRoutineFragment() {
         // Required empty public constructor
     }
 
-    public static EveningEditRoutineFragment newInstance() {
-        EveningEditRoutineFragment fragment = new EveningEditRoutineFragment();
+    public static EditRoutineFragment newInstance(int routineId) {
+        EditRoutineFragment fragment = new EditRoutineFragment();
         Bundle args = new Bundle();
+        args.putInt(ROUTINE_ARGS, routineId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,6 +47,11 @@ public class EveningEditRoutineFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            routineId = getArguments().getInt(ROUTINE_ARGS);
+        }
+
         var modelOwner = requireActivity();
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
@@ -59,7 +66,7 @@ public class EveningEditRoutineFragment extends Fragment {
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(1);
+            Routine routine = routines.get(routineId);
             List<Task> tasks = routine.getTasks();
             if (tasks == null) return;
             adapter.clear();
@@ -70,7 +77,7 @@ public class EveningEditRoutineFragment extends Fragment {
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(1).getTasks());
+            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
             adapter.notifyDataSetChanged();
         });
     }
@@ -78,14 +85,17 @@ public class EveningEditRoutineFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(
-        @NonNull LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
     ) {
-        this.view = FragmentEditRoutineEveningBinding.inflate(inflater, container, false);
+        this.view = FragmentEditRoutineBinding.inflate(inflater, container, false);
+        view.routine.setAdapter(adapter);
+
+        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
 
         view.addTaskButton.setOnClickListener(v -> {
-            var dialogFragment = NewTaskDialogFragment.newInstance(1);
+            var dialogFragment = NewTaskDialogFragment.newInstance(routineId);
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 
@@ -109,24 +119,13 @@ public class EveningEditRoutineFragment extends Fragment {
             return false;
         });
 
-        // Handle when user enters a new goal time
-        view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
-            String input = view.goalTimeEditText.getText().toString();
-            if (!input.isEmpty()) {
-                int newGoalTime = Integer.parseInt(input);
-                activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
-            }
-            return false;
-        });
-
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                mainActivity.setActiveFragment(ROUTINE_LIST);
+                mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
             }
         });
 
-        view.routine.setAdapter(adapter);
         return view.getRoot();
     }
 }

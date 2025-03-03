@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
+import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class Routine {
     private List<Task> tasks;
@@ -16,6 +17,8 @@ public class Routine {
     private String goalTimeMinutes;
     private Timer timer;
     private int totalTimeElapsed;
+
+    private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
 
     /**
      * Constructs a new Routine with the given name.
@@ -32,6 +35,7 @@ public class Routine {
         this.goalTimeMinutes = "-";
         this.totalTimeElapsed = 0;
         this.timer = timer;
+        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -41,6 +45,7 @@ public class Routine {
      */
     public void addTask(Task task) {
         this.tasks.add(task);
+        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -50,6 +55,7 @@ public class Routine {
      */
     public void removeTask(Task task) {
         this.tasks.remove(task);
+        tasksSubject.setValue(tasks);
     }
 
     public void removeTask(int taskId) {
@@ -68,6 +74,10 @@ public class Routine {
 
     public String getName() {
         return this.name;
+    }
+
+    public PlainMutableSubject<List<Task>> getTasksSubject() {
+        return tasksSubject;
     }
 
     public Timer getTimer() {
