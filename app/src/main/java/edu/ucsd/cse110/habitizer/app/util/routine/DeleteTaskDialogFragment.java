@@ -14,11 +14,13 @@ import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogDeleteTaskBinding
 public class DeleteTaskDialogFragment extends DialogFragment {
     private static final String ARG_TASK_ID = "task_id";
     private @NonNull FragmentDialogDeleteTaskBinding view;
+    private static int routineId;
     private MainViewModel activityModel;
     private int taskId;
     public DeleteTaskDialogFragment() {
     }
-    public static DeleteTaskDialogFragment newInstance(int taskId) {
+    public static DeleteTaskDialogFragment newInstance(int taskId, int r) {
+        routineId = r;
         var fragment = new DeleteTaskDialogFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TASK_ID, taskId);
@@ -50,7 +52,7 @@ public class DeleteTaskDialogFragment extends DialogFragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
     }
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        activityModel.removeTask(taskId);
+        activityModel.removeTask(taskId, routineId);
         dialog.dismiss();
     }
 
