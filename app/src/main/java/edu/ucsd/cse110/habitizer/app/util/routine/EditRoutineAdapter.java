@@ -20,19 +20,22 @@ import edu.ucsd.cse110.habitizer.lib.domain.Task;
 public class EditRoutineAdapter extends ArrayAdapter<Task> {
 
     Consumer<Integer> onEditClick;
-    public EditRoutineAdapter(Context context, List<Task> routine, Consumer<Integer> onEditClick) {
+    Consumer<Integer> onDeleteClick;
+
+    public EditRoutineAdapter(Context context, List<Task> routine, Consumer<Integer> onEditClick, Consumer<Integer> onDeleteClick) {
         super(context, 0, new ArrayList<>(routine));
         this.onEditClick = onEditClick;
+        this.onDeleteClick = onDeleteClick;
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         var task = getItem(position);
         assert task != null;
 
         TaskCardEditBinding binding;
-        if(convertView != null) {
+        if (convertView != null) {
             binding = TaskCardEditBinding.bind(convertView);
         } else {
             var layoutInflater = LayoutInflater.from(getContext());
@@ -44,6 +47,11 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         binding.taskEditButton.setOnClickListener(v -> {
             var id = task.getId();
             onEditClick.accept(id);
+        });
+
+        binding.taskDeleteButton.setOnClickListener(v -> {
+            var id = task.getId();
+            onDeleteClick.accept(id);
         });
 
         return binding.getRoot();
