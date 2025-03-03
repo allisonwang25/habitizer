@@ -28,5 +28,4 @@ public interface TaskDao {
 
     @Query("SELECT count(*) FROM Task")
     int count();
-
 }
