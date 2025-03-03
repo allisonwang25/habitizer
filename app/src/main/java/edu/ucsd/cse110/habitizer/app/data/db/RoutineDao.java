@@ -13,7 +13,7 @@ public interface RoutineDao {
     Long insert(RoutineEntity routine);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insert(List<RoutineEntity> routines);
+    List<Long> insert(List<RoutineEntity> routines);
 
     @Query("DELETE FROM Routine WHERE rid = :rid")
     void delete(int rid);
