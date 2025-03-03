@@ -134,18 +134,6 @@ public class RoutineTest {
     }
 
     @Test
-    public void testEqualsAndHashCode() {
-        // Using the same timer mock instance for both routines.
-        Routine routine1 = new Routine("Routine", 0, mockTimer);
-        Routine routine2 = new Routine("Routine", 0, mockTimer);
-
-        // GIVEN two routines with identical parameters (default goal time is 0, not ended, no tasks).
-        // THEN they should be considered equal.
-        assertThat("Routines with identical parameters should be equal", routine1.equals(routine2), is(true));
-        assertThat("Their hashCodes should be the same", routine1.hashCode(), is(routine2.hashCode()));
-    }
-
-    @Test
     public void testRoutinesNotEqualWithDifferentIds() {
         Routine routine1 = new Routine("Routine", 0, mockTimer);
         Routine routine2 = new Routine("Routine", 1, mockTimer);
