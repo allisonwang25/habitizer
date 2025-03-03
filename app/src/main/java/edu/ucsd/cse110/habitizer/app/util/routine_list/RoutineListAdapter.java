@@ -43,6 +43,7 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
             binding = RoutineCardBinding.inflate(layoutInflater, viewGroup, false);
         }
 
+        binding.routineTitle.setText(routine.getName());
         binding.routineStartBtn.setText("Start");
         binding.routineEditBtn.setText("Edit");
 
