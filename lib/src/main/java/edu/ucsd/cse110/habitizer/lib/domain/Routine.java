@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
-import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class Routine {
     private List<Task> tasks;
@@ -19,8 +18,6 @@ public class Routine {
     private String goalTimeMinutes;
     private Timer timer;
     private int totalRoutineTimeElapsed;
-
-    private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
 
     /**
      * Constructs a new Routine with the given name.
@@ -36,7 +33,6 @@ public class Routine {
         this.goalTimeMinutes = "-";
         this.totalRoutineTimeElapsed = 0;
         this.timer = timer;
-        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -46,7 +42,6 @@ public class Routine {
      */
     public void addTask(Task task) {
         this.tasks.add(task);
-        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -56,7 +51,6 @@ public class Routine {
      */
     public void removeTask(Task task) {
         this.tasks.remove(task);
-        tasksSubject.setValue(tasks);
     }
 
     public void removeTask(int taskId) {
@@ -70,7 +64,6 @@ public class Routine {
     }
 
     public List<Task> getTasks() {
-        //Collections.sort(tasks);
         return this.tasks;
     }
     public void swapSortOrder(Task task1, Task task2) {
@@ -79,38 +72,10 @@ public class Routine {
         task2.setSortOrder(temp);
     }
 
-//    public void moveTaskUp(Task task) {
-//        for (int i = 0; i < tasks.size(); i++) {
-//            if (tasks.get(i) == task) {
-//                if (i > 0) {
-//                    swapSortOrder(tasks.get(i), tasks.get(i - 1));
-//                }
-//                Collections.sort(tasks);
-//                return;
-//            }
-//        }
-//    }
-//
-//    public void moveTaskDown(Task task) {
-//        for (int i = 0; i < tasks.size(); i++) {
-//            if (tasks.get(i) == task) {
-//                if (i < tasks.size() - 1) {
-//                    swapSortOrder(tasks.get(i), tasks.get(i + 1));
-//                }
-//                Collections.sort(tasks);
-//                return;
-//            }
-//        }
-//    }
-
 
 
     public String getName() {
         return this.name;
-    }
-
-    public PlainMutableSubject<List<Task>> getTasksSubject() {
-        return tasksSubject;
     }
 
     public Timer getTimer() {

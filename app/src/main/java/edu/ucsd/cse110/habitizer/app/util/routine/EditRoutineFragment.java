@@ -65,22 +65,12 @@ public class EditRoutineFragment extends Fragment {
         }, id -> {
             var dialogFragment = new DeleteTaskDialogFragment().newInstance(id, routineId);
             dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
-            var dialogFrament = new RenameTaskDialogFragment().newInstance(id);
-            dialogFrament.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         }, id -> {
             activityModel.moveTaskUp(routineId, id);
         }, id -> {
             activityModel.moveTaskDown(routineId, id);
         });
 
-//        activityModel.getOrderedRoutines().observe(routines -> {
-//            Routine routine = routines.get(routineId);
-//            List<Task> tasks = routine.getTasks();
-//            if (tasks == null) return;
-//            adapter.clear();
-//            adapter.addAll(new ArrayList<>(tasks));
-//            adapter.notifyDataSetChanged();
-//        });
 
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
@@ -129,7 +119,6 @@ public class EditRoutineFragment extends Fragment {
                 mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
             }
         });
-
 
         return view.getRoot();
     }

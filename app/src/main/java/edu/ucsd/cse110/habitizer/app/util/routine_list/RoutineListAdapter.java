@@ -44,8 +44,6 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         }
 
         binding.routineTitle.setText(routine.getName());
-        binding.routineStartBtn.setText("Start");
-        binding.routineEditBtn.setText("Edit");
 
         binding.routineStartBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
