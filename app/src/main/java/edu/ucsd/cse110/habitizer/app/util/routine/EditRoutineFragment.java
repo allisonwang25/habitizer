@@ -88,8 +88,10 @@ public class EditRoutineFragment extends Fragment {
         this.view = FragmentEditRoutineBinding.inflate(inflater, container, false);
         view.routine.setAdapter(adapter);
 
+        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
+
         view.addTaskButton.setOnClickListener(v -> {
-            var dialogFragment = NewTaskDialogFragment.newInstance(0);
+            var dialogFragment = NewTaskDialogFragment.newInstance(routineId);
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 

@@ -82,6 +82,8 @@ public class RoutineFragment extends Fragment {
     ) {
         this.view = FragmentRoutineBinding.inflate(inflater, container, false);
 
+        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
+
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();

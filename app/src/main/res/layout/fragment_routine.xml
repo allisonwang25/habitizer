@@ -10,8 +10,8 @@
         android:id="@+id/back_button"
         android:layout_width="71dp"
         android:layout_height="44dp"
-        android:text="B"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="⬅"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/routine_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
