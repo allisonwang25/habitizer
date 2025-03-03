@@ -144,7 +144,7 @@ public class MainViewModel extends ViewModel {
             mTaskRepository.save(task);
         } else {
             orderedRoutines.getValue().get(1).addTask(task);
-            eTaskRepository.save(task);
+            mTaskRepository.save(task);
         }
     }
 
