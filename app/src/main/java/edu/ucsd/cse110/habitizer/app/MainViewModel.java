@@ -16,6 +16,7 @@ import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class MainViewModel extends ViewModel {
@@ -130,14 +131,8 @@ public class MainViewModel extends ViewModel {
     public PlainMutableSubject<List<Routine>> getOrderedRoutines() { return orderedRoutines; }
 
     public void addTask(Task task, int routineId){
-        if (routineId == 0){
-            orderedRoutines.getValue().get(0).addTask(task);
-            mTaskRepository.save(task);
-        }
-        else {
-            orderedRoutines.getValue().get(1).addTask(task);
-            mTaskRepository.save(task);
-        }
+        orderedRoutines.getValue().get(routineId).addTask(task);
+        mTaskRepository.save(task);
     }
 
     public Task getTask(int taskId) {
@@ -146,6 +141,12 @@ public class MainViewModel extends ViewModel {
 
     public void renameTask(int taskId, String taskName){
         mTaskRepository.renameTask(taskId, taskName);
+    }
+
+    public void addRoutine(String name){
+        List<Routine> routines = getOrderedRoutines().getValue();
+        routines.add(new Routine(name, 6969, new ElapsedTime()));
+        orderedRoutines.setValue(routines);
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
