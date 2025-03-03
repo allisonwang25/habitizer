@@ -66,6 +66,8 @@ public class Routine {
         return this.name;
     }
 
+    public Boolean getCompleted() {return this.completed;};
+
     public PlainMutableSubject<List<Task>> getTasksSubject() {
         return tasksSubject;
     }
