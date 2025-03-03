@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
+import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_LIST;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,8 +16,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 
 public class RoutineFragment extends Fragment {
@@ -24,14 +29,17 @@ public class RoutineFragment extends Fragment {
     private FragmentRoutineBinding view;
 
     private RoutineAdapter adapter;
+    private int routineId;
+
 
     public RoutineFragment() {
         // Required empty public constructor
     }
 
-    public static RoutineFragment newInstance() {
+    public static RoutineFragment newInstance(int routineId) {
         RoutineFragment fragment = new RoutineFragment();
         Bundle args = new Bundle();
+        args.putInt("ROUTINE_ID", routineId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,6 +47,11 @@ public class RoutineFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            routineId = getArguments().getInt("ROUTINE_ID");
+        }
+
         var modelOwner = requireActivity();
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
@@ -50,10 +63,12 @@ public class RoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
-        activityModel.getOrderedTasks().observe(task -> {
-            if (task == null) return;
+        activityModel.getOrderedRoutines().observe(routines -> {
+            Routine routine = routines.get(routineId);
+            List<Task> tasks = routine.getTasks();
+            if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(task));
+            adapter.addAll(new ArrayList<>(tasks));
             adapter.notifyDataSetChanged();
         });
     }
@@ -66,32 +81,24 @@ public class RoutineFragment extends Fragment {
         @Nullable Bundle savedInstanceState
     ) {
         this.view = FragmentRoutineBinding.inflate(inflater, container, false);
-        view.routine.setAdapter(adapter);
-        view.addTaskButton.setOnClickListener(v -> {
-            var dialogFragment = NewTaskDialogFragment.newInstance(6969);
-            dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
-        });
 
-        activityModel.getRoutineGoalTime().observe(goalTime -> {
-            if (goalTime == null) return;
-            String elapsedText = "0 out of " + goalTime + " minutes elapsed";
-            // Using view binding to update the TextView:
-            this.view.routineElapsedTime.setText(elapsedText);
-            if (goalTime.equals("-")) view.goalTimeEditText.setText("");
-            else view.goalTimeEditText.setText(goalTime);
-        });
-
-        // Handle when user enters a new goal time
-        view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
-            String input = view.goalTimeEditText.getText().toString();
-            if (!input.isEmpty()) {
-                int newGoalTime = Integer.parseInt(input);
-                activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
-                view.goalTimeEditText.setText(""); // Clear the text field
+        view.backButton.setOnClickListener(v -> {
+            if (getContext() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getContext();
+                mainActivity.setActiveFragment(ROUTINE_LIST, 69420);
             }
-            return false;
         });
 
+        view.stopTimerButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().stopTimer();
+        });
+
+        view.advanceTimeButton.setOnClickListener(v -> {
+            activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().advanceTime();
+        });
+
+
+        view.routine.setAdapter(adapter);
 
         return view.getRoot();
     }

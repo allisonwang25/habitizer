@@ -18,25 +18,27 @@ import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineMorningBinding;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineBinding;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 
-public class MorningEditRoutineFragment extends Fragment {
+public class EditRoutineFragment extends Fragment {
 
     private MainViewModel activityModel;
-    private FragmentEditRoutineMorningBinding view;
+    private @NonNull FragmentEditRoutineBinding view;
 
     private EditRoutineAdapter adapter;
+    private int routineId;
 
-    public MorningEditRoutineFragment() {
+    public EditRoutineFragment() {
         // Required empty public constructor
     }
 
-    public static MorningEditRoutineFragment newInstance() {
-        MorningEditRoutineFragment fragment = new MorningEditRoutineFragment();
+    public static EditRoutineFragment newInstance(int routineId) {
+        EditRoutineFragment fragment = new EditRoutineFragment();
         Bundle args = new Bundle();
+        args.putInt("ROUTINE_ID", routineId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,6 +46,11 @@ public class MorningEditRoutineFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            routineId = getArguments().getInt("ROUTINE_ID");
+        }
+
         var modelOwner = requireActivity();
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
@@ -55,7 +62,7 @@ public class MorningEditRoutineFragment extends Fragment {
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(0);
+            Routine routine = routines.get(routineId);
             List<Task> tasks = routine.getTasks();
             if (tasks == null) return;
             adapter.clear();
@@ -64,10 +71,9 @@ public class MorningEditRoutineFragment extends Fragment {
         });
 
         activityModel.getOrderedTasks().observe(tasks -> {
-            Log.d("test", "hi");
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(0).getTasks());
+            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
             adapter.notifyDataSetChanged();
         });
     }
@@ -75,11 +81,11 @@ public class MorningEditRoutineFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(
-        @NonNull LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
     ) {
-        this.view = FragmentEditRoutineMorningBinding.inflate(inflater, container, false);
+        this.view = FragmentEditRoutineBinding.inflate(inflater, container, false);
         view.routine.setAdapter(adapter);
 
         view.addTaskButton.setOnClickListener(v -> {
@@ -110,7 +116,7 @@ public class MorningEditRoutineFragment extends Fragment {
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                mainActivity.setActiveFragment(ROUTINE_LIST);
+                mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
             }
         });
 
