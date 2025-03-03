@@ -1,38 +1,41 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
+import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class Routine {
     private List<Task> tasks;
     // 0 for morning routine, 1 for evening routine
-    private int id;
-    private static int idCnt = 0;
+    private final int id;
     private String name;
     private boolean completed;
     // The routine's goal time in minutes (a negative value indicates none is set).
     private String goalTimeMinutes;
     private Timer timer;
-    private int totalRoutineTimeElapsed;
+    private int totalTimeElapsed;
+
+    private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
 
     /**
      * Constructs a new Routine with the given name.
      * Initializes an empty task list, starts the timer, and sets default values.
      *
      * @param name the name of the routine
+     * @param routineType type of routine (morning/evening)
      */
-    public Routine(String name, Timer timer) {
+    public Routine(String name, int routineType, Timer timer) {
         this.name = name;
-        this.id = idCnt++;
+        this.id = routineType;
         this.tasks = new ArrayList<>();
         this.completed = false;
         this.goalTimeMinutes = "-";
-        this.totalRoutineTimeElapsed = 0;
+        this.totalTimeElapsed = 0;
         this.timer = timer;
+        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -42,6 +45,7 @@ public class Routine {
      */
     public void addTask(Task task) {
         this.tasks.add(task);
+        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -51,29 +55,21 @@ public class Routine {
      */
     public void removeTask(Task task) {
         this.tasks.remove(task);
-    }
-
-    public void removeTask(int taskId) {
-        for (int i = 0; i < this.getTasks().size(); i++) {
-            Task cur = this.getTasks().get(i);
-            if (cur.getTid() == taskId) {
-                this.removeTask(cur);
-                return;
-            }
-        }
+        tasksSubject.setValue(tasks);
     }
 
     public List<Task> getTasks() {
         return this.tasks;
     }
-    public void swapSortOrder(Task task1, Task task2) {
-        int temp = task1.getSortOrder();
-        task1.setSortOrder(task2.getSortOrder());
-        task2.setSortOrder(temp);
-    }
 
     public String getName() {
         return this.name;
+    }
+
+    public Boolean getCompleted() {return this.completed;};
+
+    public PlainMutableSubject<List<Task>> getTasksSubject() {
+        return tasksSubject;
     }
 
     public Timer getTimer() {
@@ -99,22 +95,11 @@ public class Routine {
      */
     public void completeRoutine() {
         this.completed = true;
-        System.out.println("ending time");
-        this.timer.endTime();
-        this.totalRoutineTimeElapsed = this.timer.getTotalTimeElapsed();
-    }
-
-    public boolean isCompleted() {
-        for(Task task : tasks) {
-            if(!task.isCheckedOff()) {
-                return false;
-            }
-        }
-        return true;
+        this.totalTimeElapsed = this.timer.getTotalTimeElapsed();
     }
 
     public int getTotalTimeElapsed(){
-        return this.timer.getCurrentlyElapsedTime();
+        return this.totalTimeElapsed;
     }
 
     public boolean isEnded() {
@@ -135,14 +120,13 @@ public class Routine {
     public int getId() {
         return this.id;
     }
-    public Routine setID(int id) {this.id = id; return this;}
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Routine routine = (Routine) o;
-        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalRoutineTimeElapsed == routine.totalRoutineTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
+        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalTimeElapsed == routine.totalTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
     }
 
     @Override
