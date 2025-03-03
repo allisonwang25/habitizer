@@ -9,8 +9,8 @@
         android:id="@+id/back_button"
         android:layout_width="71dp"
         android:layout_height="44dp"
-        android:text="B"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="⬅"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
