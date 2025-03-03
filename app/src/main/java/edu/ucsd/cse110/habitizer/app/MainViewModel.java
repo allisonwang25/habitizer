@@ -157,13 +157,8 @@ public class MainViewModel extends ViewModel {
     }
 
     public void removeTask(int taskId, int routineId) {
-        if (routineId == 0) {
-            orderedRoutines.getValue().get(0).removeTask(taskId);
-            mTaskRepository.removeTask(taskId);
-        } else {
-            orderedRoutines.getValue().get(1).removeTask(taskId);
-            mTaskRepository.removeTask(taskId);
-        }
+        orderedRoutines.getValue().get(routineId).removeTask(taskId);
+        mTaskRepository.removeTask(taskId);
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
