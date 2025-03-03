@@ -69,15 +69,12 @@ public class InMemoryDataSource {
     }
 
     public void removeTask(int taskId) {
-        if (!tasks.containsKey(taskId)) {
+        if (!tasks.containsKey(taskId) || !taskSubjects.containsKey(taskId)) {
             return;
         }
 
         tasks.remove(taskId);
-
-        if (taskSubjects.containsKey(taskId)) {
-            taskSubjects.remove(taskId);
-        }
+        taskSubjects.remove(taskId);
         allTasksSubjects.setValue(getTasks());
     }
 
