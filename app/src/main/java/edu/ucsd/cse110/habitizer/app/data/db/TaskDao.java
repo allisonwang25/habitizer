@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.app.data.db;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -20,6 +21,10 @@ public interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE tid = :tid")
     TaskEntity find(int tid);
+
+    @Query("SELECT * FROM Task WHERE tid = :tid")
+    LiveData<TaskEntity> findAsLiveData(int tid);
+
 
     @Query("SELECT count(*) FROM Task")
     int count();
