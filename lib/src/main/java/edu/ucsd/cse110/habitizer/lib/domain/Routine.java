@@ -72,8 +72,6 @@ public class Routine {
         task2.setSortOrder(temp);
     }
 
-
-
     public String getName() {
         return this.name;
     }
