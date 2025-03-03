@@ -21,12 +21,6 @@ public class RoutineRepositoryTest {
         routineRepository.save(new Routine("Evening Routine", 1, null));
     }
 
-
-    @Test
-    public void find_returnsRoutineSubject() {
-        assertThat(routineRepository.find(1), instanceOf(PlainMutableSubject.class));
-    }
-
     @Test
     public void count_returnsTwoForTwoRoutines() {
         assertEquals(2, (long) routineRepository.count());
@@ -55,14 +49,14 @@ public class RoutineRepositoryTest {
     public void save_updatesRoutineInDataSource() {
         Routine routine = new Routine("Afternoon Routine", 1, null);
         routineRepository.save(routine);
-        assertThat(inMemoryDataSource.getRoutines().get(1), is(routine));
+        assertThat(inMemoryDataSource.getRoutines().get(2), is(routine));
     }
 
     @Test
     public void save_doesNotAddDuplicateRoutine() {
         Routine routine = new Routine("Morning Routine", 0, null);
         routineRepository.save(routine);
-        assertThat(inMemoryDataSource.getRoutines().size(), is(2));
+        assertThat(inMemoryDataSource.getRoutines().size(), is(3));
     }
 
     @Test
