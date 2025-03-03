@@ -30,6 +30,7 @@ public class EditRoutineFragment extends Fragment {
 
     private EditRoutineAdapter adapter;
     private int routineId;
+    private static final String ROUTINE_ARGS = "ROUTINE_ID";
 
     public EditRoutineFragment() {
         // Required empty public constructor
@@ -38,7 +39,7 @@ public class EditRoutineFragment extends Fragment {
     public static EditRoutineFragment newInstance(int routineId) {
         EditRoutineFragment fragment = new EditRoutineFragment();
         Bundle args = new Bundle();
-        args.putInt("ROUTINE_ID", routineId);
+        args.putInt(ROUTINE_ARGS, routineId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +49,7 @@ public class EditRoutineFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            routineId = getArguments().getInt("ROUTINE_ID");
+            routineId = getArguments().getInt(ROUTINE_ARGS);
         }
 
         var modelOwner = requireActivity();
