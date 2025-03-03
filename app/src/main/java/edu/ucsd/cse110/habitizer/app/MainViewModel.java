@@ -70,7 +70,7 @@ public class MainViewModel extends ViewModel {
 
             var newOrderedTasks = tasks.stream()
                     .sorted(Comparator.comparingInt(Task::getId))
-                    .collect(Collectors.toList());
+                    .toList();
 
             var ordering = new ArrayList<Integer>();
             for (Task t : newOrderedTasks) {
@@ -96,9 +96,13 @@ public class MainViewModel extends ViewModel {
         routineRepository.findAll().observe(routines -> {
             if (routines == null) return;
 
+            var newOrderedRoutines = routines.stream()
+                    .sorted(Comparator.comparingInt(Routine::getId))
+                    .toList();
+
             var ordering = new ArrayList<Integer>();
-            for (int i = 0; i < routines.size(); i++) {
-                ordering.add(i);
+            for (Routine routine : newOrderedRoutines) {
+                ordering.add(routine.getId());
             }
 
             RoutineOrdering.setValue(ordering);
@@ -139,13 +143,8 @@ public class MainViewModel extends ViewModel {
     }
 
     public void addTask(Task task, int routineId) {
-        if (routineId == 0) {
-            orderedRoutines.getValue().get(0).addTask(task);
-            mTaskRepository.save(task);
-        } else {
-            orderedRoutines.getValue().get(1).addTask(task);
-            mTaskRepository.save(task);
-        }
+        orderedRoutines.getValue().get(routineId).addTask(task);
+        mTaskRepository.save(task);
     }
 
     public Task getTask(int taskId) {
