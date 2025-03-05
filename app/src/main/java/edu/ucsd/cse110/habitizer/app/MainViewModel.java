@@ -167,11 +167,11 @@ public class MainViewModel extends ViewModel {
         orderedRoutines.setValue(routines);
     }
 
-    public PlainMutableSubject<String> getRoutineGoalTime() {
-        return routineGoalTime;
+    public String getRoutineGoalTime(int routineId) {
+        return orderedRoutines.getValue().get(routineId).getGoalTime();
     }
 
-    public void setRoutineGoalTime(int minutes) {
-        routineGoalTime.setValue(Integer.toString(minutes));
+    public void setRoutineGoalTime(int routineId, int minutes) {
+        orderedRoutines.getValue().get(routineId).setGoalTime(minutes);
     }
 }

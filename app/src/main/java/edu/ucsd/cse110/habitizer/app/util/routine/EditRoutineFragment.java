@@ -99,22 +99,18 @@ public class EditRoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 
-        activityModel.getRoutineGoalTime().observe(goalTime -> {
-            if (goalTime == null) return;
-            String elapsedText = "0 out of " + goalTime + " minutes elapsed";
-            // Using view binding to update the TextView:
-            this.view.routineElapsedTime.setText(elapsedText);
-            if (goalTime.equals("-")) view.goalTimeEditText.setText("");
-            else view.goalTimeEditText.setText(goalTime);
-        });
+        String goalTimeText = "0 out of " + activityModel.getRoutineGoalTime(routineId) + " minutes elapsed";
+        this.view.routineElapsedTime.setText(goalTimeText);
 
         // Handle when user enters a new goal time
         view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
             String input = view.goalTimeEditText.getText().toString();
             if (!input.isEmpty()) {
                 int newGoalTime = Integer.parseInt(input);
-                activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
+                activityModel.setRoutineGoalTime(routineId, newGoalTime); // Update ViewModel
                 view.goalTimeEditText.setText(""); // Clear the text field
+                String elapsedText = "0 out of " + newGoalTime + " minutes elapsed";
+                this.view.routineElapsedTime.setText(elapsedText);
             }
             return false;
         });
