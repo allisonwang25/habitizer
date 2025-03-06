@@ -38,6 +38,11 @@ public class SimpleTaskRepository implements TaskRepository {
     }
 
     @Override
+    public void removeTask(int taskId) {
+        dataSource.removeTask(taskId);
+    }
+
+    @Override
     public void save(Task task) {
         dataSource.putTask(task);
     }

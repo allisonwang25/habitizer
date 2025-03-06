@@ -56,6 +56,11 @@ public class RoomTaskRepository implements TaskRepository {
     }
 
     @Override
+    public void removeTask(int taskId) {
+        taskDao.remove(taskId);
+    }
+
+    @Override
     public void save(Task task) {
         taskDao.insert(TaskEntity.fromTask(task));
     }

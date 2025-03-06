@@ -27,7 +27,7 @@ public class Routine {
      *
      * @param name the name of the routine
      */
-    public Routine(String name, int routineType, Timer timer) {
+    public Routine(String name, int rid, Timer timer) {
         this.name = name;
         this.id = idCnt++;
         this.tasks = new ArrayList<>();

@@ -20,13 +20,9 @@ public class MainViewModel extends ViewModel {
     // Domain state (true "Model" state)
     private final RoutineRepository routineRepository;
     private final TaskRepository mTaskRepository;
-    private final TaskRepository eTaskRepository;
-
     // UI state
     private final PlainMutableSubject<String> routineGoalTime;
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
-    private final PlainMutableSubject<List<Integer>> eTaskOrdering;
-
     private final PlainMutableSubject<List<Integer>> RoutineOrdering;
 
     // LIST OF ORDERED TASKS
@@ -40,18 +36,16 @@ public class MainViewModel extends ViewModel {
                     creationExtras -> {
                         var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
                         assert app != null;
-                        return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(), app.getETaskRepository());
+                        return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository());
                     });
 
-    public MainViewModel(RoutineRepository r, TaskRepository m, TaskRepository e) {
+    public MainViewModel(RoutineRepository r, TaskRepository m) {
         this.routineRepository = r;
         this.mTaskRepository = m;
-        this.eTaskRepository = e;
 
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
         mTaskOrdering = new PlainMutableSubject<>();
-        eTaskOrdering = new PlainMutableSubject<>();
         RoutineOrdering = new PlainMutableSubject<>();
 
         orderedMTasks = new PlainMutableSubject<>();
