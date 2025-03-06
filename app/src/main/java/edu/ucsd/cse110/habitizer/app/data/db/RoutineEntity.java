@@ -34,4 +34,9 @@ public class RoutineEntity {
         return routine;
     }
 
+    public @NonNull Routine toRoutine() {
+        return new Routine();
+    }
+
+
 }
