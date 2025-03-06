@@ -21,6 +21,8 @@ public class Routine {
 
     private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
 
+    private int maxSortOrder = Integer.MIN_VALUE;
+
     /**
      * Constructs a new Routine with the given name.
      * Initializes an empty task list, starts the timer, and sets default values.

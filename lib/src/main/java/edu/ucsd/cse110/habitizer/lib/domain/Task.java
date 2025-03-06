@@ -11,6 +11,8 @@ public class Task {
     private final int rid;
     private static int idCounter = 0;  // Static counter to assign unique IDs
     private final Timer timer;
+    private int sortOrder;
+
 
     /**
      * Constructs a new Task with the specified name and a TimeProvider.
@@ -19,13 +21,14 @@ public class Task {
      * @param name         the name of the task
      * @param timer the TimeProvider to use for time-based operations
      */
-    public Task(String name, Timer timer, int rid) {
+    public Task(String name, Timer timer, int rid, int sortOrder) {
         this.checkedOff = false;
         this.timeElapsed = 0;
         this.name = name;
         this.tid = idCounter++;
         this.rid = rid;
         this.timer = timer;
+        this.sortOrder = sortOrder;
     }
 
     /**
@@ -88,4 +91,6 @@ public class Task {
     public void setName(String taskName){
         this.name = taskName;
     }
+
+    public void setSortOrder(int sortOrder){ this.sortOrder = sortOrder; }
 }
