@@ -25,7 +25,7 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public void append(Task task) {
-
+        taskDao.insert(TaskEntity.fromTask(task));
     }
 
     @Override
