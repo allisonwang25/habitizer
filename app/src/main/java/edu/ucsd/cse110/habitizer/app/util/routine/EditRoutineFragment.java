@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.app.util.routine;
 import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_LIST;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,8 @@ public class EditRoutineFragment extends Fragment {
             adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
             adapter.notifyDataSetChanged();
         });
+
+        activityModel.startUpdatingElapsedTime(routineId);
     }
 
     @Nullable
@@ -99,9 +102,6 @@ public class EditRoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 
-        String goalTimeText = "0 out of " + activityModel.getRoutineGoalTime(routineId) + " minutes elapsed";
-        this.view.routineElapsedTime.setText(goalTimeText);
-
         // Handle when user enters a new goal time
         view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
             String input = view.goalTimeEditText.getText().toString();
@@ -109,8 +109,6 @@ public class EditRoutineFragment extends Fragment {
                 int newGoalTime = Integer.parseInt(input);
                 activityModel.setRoutineGoalTime(routineId, newGoalTime); // Update ViewModel
                 view.goalTimeEditText.setText(""); // Clear the text field
-                String elapsedText = "0 out of " + newGoalTime + " minutes elapsed";
-                this.view.routineElapsedTime.setText(elapsedText);
             }
             return false;
         });
@@ -120,6 +118,10 @@ public class EditRoutineFragment extends Fragment {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
             }
+        });
+
+        activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.routineElapsedTime.setText(elapsedText);
         });
 
         return view.getRoot();

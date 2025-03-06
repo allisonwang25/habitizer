@@ -1,10 +1,13 @@
 package edu.ucsd.cse110.habitizer.app;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
-
+import 	androidx.lifecycle.MutableLiveData;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -29,6 +32,9 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<String> routineGoalTime;
     private final PlainMutableSubject<List<Integer>> mTaskOrdering;
     private final PlainMutableSubject<List<Integer>> eTaskOrdering;
+
+    // LiveData to hold the elapsed time text
+    private final MutableLiveData<String> elapsedTimeText = new MutableLiveData<>();
 
     private final PlainMutableSubject<List<Integer>> RoutineOrdering;
 
@@ -121,7 +127,6 @@ public class MainViewModel extends ViewModel {
             this.orderedRoutines.setValue(routines);
         });
 
-
         // Commented out the evening routine as we don't need 2 routines for this US
 //        eTaskRepository.findAll().observe(tasks -> {
 //            if (tasks == null) return; // not ready yet, ignore
@@ -143,8 +148,39 @@ public class MainViewModel extends ViewModel {
         return orderedRoutines;
     }
 
+    public Routine getRoutine(int routineId){
+        return orderedRoutines.getValue().get(routineId);
+    }
+    public LiveData<String> getElapsedTimeText() {
+        return elapsedTimeText;
+    }
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable updateElapsedTimeRunnable;
+
+    // Call this method to start the timer for a specific routine
+    public void startUpdatingElapsedTime(int routineId) {
+        updateElapsedTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // Get the goal time for this routine
+                String goalTime = getRoutineGoalTime(routineId);
+                // Get the elapsed minutes for this routine (replace with actual logic)
+                int elapsedMinutes = getRoutine(routineId).getTotalTimeElapsed();
+                String goalTimeText = elapsedMinutes + " out of " + goalTime + " minutes elapsed";
+                // Update the LiveData instead of directly updating a view
+                elapsedTimeText.setValue(goalTimeText);
+
+                // Schedule the next update after 1 second (1000ms)
+                handler.postDelayed(this, 1000);
+            }
+        };
+        // Start the periodic update
+        handler.post(updateElapsedTimeRunnable);
+    }
+
     public void addTask(Task task, int routineId){
-        orderedRoutines.getValue().get(routineId).addTask(task);
+        getRoutine(routineId).addTask(task);
         mTaskRepository.save(task);
     }
 
@@ -157,7 +193,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void removeTask(int taskId, int routineId) {
-        orderedRoutines.getValue().get(routineId).removeTask(taskId);
+        getRoutine(routineId).removeTask(taskId);
         mTaskRepository.removeTask(taskId);
     }
 
@@ -168,7 +204,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public String getRoutineGoalTime(int routineId) {
-        return orderedRoutines.getValue().get(routineId).getGoalTime();
+        return getRoutine(routineId).getGoalTime();
     }
 
     public void setRoutineGoalTime(int routineId, int minutes) {

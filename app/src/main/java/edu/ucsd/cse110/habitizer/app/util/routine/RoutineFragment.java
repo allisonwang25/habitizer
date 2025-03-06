@@ -71,6 +71,8 @@ public class RoutineFragment extends Fragment {
             adapter.addAll(new ArrayList<>(tasks));
             adapter.notifyDataSetChanged();
         });
+
+        activityModel.startUpdatingElapsedTime(routineId);
     }
 
     @Nullable
@@ -99,6 +101,9 @@ public class RoutineFragment extends Fragment {
             activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().advanceTime();
         });
 
+        activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.routineElapsedTime.setText(elapsedText);
+        });
 
         view.routine.setAdapter(adapter);
 

@@ -39,4 +39,10 @@ public class ElapsedTimeTester implements Timer {
     public void stopTimer(){
         return;
     }
+
+    // TODO: write tests
+    @Override
+    public int getCurrentlyElapsedTime(){
+        return -1;
+    }
 }
