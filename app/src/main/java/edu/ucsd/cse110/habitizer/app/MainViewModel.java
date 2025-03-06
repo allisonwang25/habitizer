@@ -12,7 +12,6 @@ import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -28,12 +27,10 @@ public class MainViewModel extends ViewModel {
     // Domain state (true "Model" state)
     private final RoutineRepository routineRepository;
     private final TaskRepository taskRepository;
-    private final TaskRepository eTaskRepository;
 
     // UI state
     private final PlainMutableSubject<String> routineGoalTime;
     private final PlainMutableSubject<List<Integer>> taskOrdering;
-    private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
     // LiveData to hold the elapsed time text
     private final MutableLiveData<String> routineElapsedTimeText = new MutableLiveData<>();
@@ -62,7 +59,6 @@ public class MainViewModel extends ViewModel {
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
         taskOrdering = new PlainMutableSubject<>();
-        eTaskOrdering = new PlainMutableSubject<>();
         RoutineOrdering = new PlainMutableSubject<>();
 
         orderedTasks = new PlainMutableSubject<>();
@@ -83,30 +79,30 @@ public class MainViewModel extends ViewModel {
 //            }
             var newOrdering = tasks.stream()
                             .sorted(Comparator.comparingInt(Task::getSortOrder))
-                            //.map(Task::getId)
+                            .map(Task::getTid)
                             .collect(Collectors.toList());
 //            Collections.sort(newOrdering);
             Log.d("Debug ordering", newOrdering.toString());
 
-            orderedTasks.setValue(newOrdering);
+            taskOrdering.setValue(newOrdering);
         });
 
-//        taskOrdering.observe(ordering -> {
-//            if (ordering == null) return;
-//
-//            var tasks = new ArrayList<Task>();
-//            for (var id : ordering) {
-//                var task = taskRepository.find(id).getValue();
-//                if (task == null) return;
-//                tasks.add(task);
-//
-//            }
-//            Log.d("asdfg", orderedTasks.getValue().toString());
-//            this.orderedTasks.setValue(tasks);
-//        });
+        taskOrdering.observe(ordering -> {
+            if (ordering == null) return;
+
+            var tasks = new ArrayList<Task>();
+            for (var id : ordering) {
+                var task = taskRepository.find(id).getValue();
+                if (task == null) return;
+                tasks.add(task);
+
+            }
+            Log.d("asdfg", tasks.toString());
+            this.orderedTasks.setValue(tasks);
+        });
 
         routineRepository.findAll().observe(routines -> {
-            if (routines == null) return;
+           if (routines == null) return;
 
             var newOrderedRoutines = routines.stream()
                     .sorted(Comparator.comparingInt(Routine::getId))
@@ -203,16 +199,12 @@ public class MainViewModel extends ViewModel {
         taskRepository.save(task);
     }
 
-    public void moveTaskUp(int taskId) {
-        Task task = taskRepository.find(taskId).getValue();
-        Routine routine = orderedRoutines.getValue().get(task.getRid());
-        routine.moveTaskUp(task);
+    public void moveTaskUp(int routineId, int taskId) {
+        routineRepository.moveTaskUp(routineId,taskId);
     }
 
-    public void moveTaskDown(int taskId) {
-        Task task = taskRepository.find(taskId).getValue();
-        Routine routine = orderedRoutines.getValue().get(task.getRid());
-        routine.moveTaskDown(task);
+    public void moveTaskDown(int routineId, int taskId) {
+        routineRepository.moveTaskDown(routineId, taskId);
     }
     public Task getTask(int taskId) {
         return taskRepository.find(taskId).getValue();

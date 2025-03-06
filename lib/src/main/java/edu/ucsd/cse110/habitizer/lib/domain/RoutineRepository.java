@@ -27,4 +27,11 @@ public class RoutineRepository {
     public void save(Routine routine) {
         dataSource.putRoutine(routine);
     }
+
+    public void moveTaskUp(int routineId, int taskId) {
+        dataSource.moveTaskUp(routineId, taskId);
+    }
+    public void moveTaskDown(int routineId, int taskId) {
+        dataSource.moveTaskDown(routineId, taskId);
+    }
 }

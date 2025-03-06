@@ -177,4 +177,17 @@ public class InMemoryDataSource {
                         .max(Integer::compareTo)
                         .orElse(Integer.MIN_VALUE));
     }
+
+    public void moveTaskUp(int routineId, int taskId) {
+        Task task = tasks.get(taskId);
+        Routine routine = routines.get(routineId);
+        routine.moveTaskUp(task);
+        allTasksSubjects.setValue(getTasks());
+    }
+    public void moveTaskDown(int routineId, int taskId) {
+        Task task = tasks.get(taskId);
+        Routine routine = routines.get(routineId);
+        routine.moveTaskDown(task);
+        allTasksSubjects.setValue(getTasks());
+    }
 }

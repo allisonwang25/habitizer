@@ -72,7 +72,7 @@ public class Routine {
     }
 
     public List<Task> getTasks() {
-        Collections.sort(tasks);
+        //Collections.sort(tasks);
         return this.tasks;
     }
     private void swapSortOrder(Task task1, Task task2) {

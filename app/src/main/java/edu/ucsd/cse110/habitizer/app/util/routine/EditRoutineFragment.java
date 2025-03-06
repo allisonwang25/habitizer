@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
@@ -67,9 +68,9 @@ public class EditRoutineFragment extends Fragment {
             var dialogFrament = new RenameTaskDialogFragment().newInstance(id);
             dialogFrament.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         }, id -> {
-            activityModel.moveTaskUp(id);
+            activityModel.moveTaskUp(routineId, id);
         }, id -> {
-            activityModel.moveTaskDown(id);
+            activityModel.moveTaskDown(routineId, id);
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {
@@ -84,7 +85,11 @@ public class EditRoutineFragment extends Fragment {
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
+//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
+            adapter.addAll(activityModel.getOrderedTasks().getValue()
+                    .stream()
+                    .filter(task -> task.getRid() == routineId)
+                    .collect(Collectors.toList()));
             adapter.notifyDataSetChanged();
         });
     }
