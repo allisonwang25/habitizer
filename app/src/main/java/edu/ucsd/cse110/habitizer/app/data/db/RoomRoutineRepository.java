@@ -13,6 +13,10 @@ import edu.ucsd.cse110.observables.PlainMutableSubject;
 public class RoomRoutineRepository implements RoutineRepository {
     private RoutineDao routineDao;
 
+    public RoomRoutineRepository(RoutineDao dao) {
+        this.routineDao = dao;
+    }
+
     @Override
     public Integer count() {
         return routineDao.count();
