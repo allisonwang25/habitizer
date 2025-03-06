@@ -3,7 +3,7 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import java.util.Objects;
 
-public class Task {
+public class Task implements Comparable<Task> {
     private boolean checkedOff;
     private String name;
     private int timeElapsed;
@@ -93,4 +93,14 @@ public class Task {
     }
 
     public void setSortOrder(int sortOrder){ this.sortOrder = sortOrder; }
+    public int getSortOrder(){
+        return sortOrder;
+    }
+    public int getRoutineId(){
+        return rid;
+    }
+
+    public int compareTo(Task task){
+        return this.sortOrder - task.getSortOrder();
+    }
 }

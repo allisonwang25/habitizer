@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,6 +72,7 @@ public class Routine {
     }
 
     public List<Task> getTasks() {
+        Collections.sort(tasks);
         return this.tasks;
     }
 

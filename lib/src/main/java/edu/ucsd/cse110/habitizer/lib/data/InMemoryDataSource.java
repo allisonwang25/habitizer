@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.lib.data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
@@ -19,6 +20,8 @@ public class InMemoryDataSource {
     private final Map<Integer, Routine> routines; // ID is 0: "Morning" or 1: "Evening"
     private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects;
     private final PlainMutableSubject<List<Routine>> allRoutinesSubjects;
+
+    private static Map<Integer, Integer> maxSortOrders = new HashMap<>();
 
     // Should the timers be initalized here?
     private static ElapsedTime mTimer = new ElapsedTime();
@@ -59,6 +62,7 @@ public class InMemoryDataSource {
         if (taskSubjects.containsKey(task.getTid())) {
             taskSubjects.get(task.getTid()).setValue(task);
         }
+        postInsert(task.getRoutineId());
         allTasksSubjects.setValue(getTasks());
     }
 
@@ -104,6 +108,7 @@ public class InMemoryDataSource {
         if (routineSubjects.containsKey(routine.getId())) {
             routineSubjects.get(routine.getId()).setValue(routine);
         }
+        maxSortOrders.put(routine.getId(), Integer.MIN_VALUE);
         allRoutinesSubjects.setValue(getRoutines());
     }
 
@@ -112,21 +117,21 @@ public class InMemoryDataSource {
             new Routine("Evening", eTimer)
     );
     public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
-            new Task("Shower", mTimer, 0),
-            new Task("Brush Teeth", mTimer, 0),
-            new Task("Dress", mTimer, 0),
-            new Task("Make Coffee", mTimer, 0),
-            new Task("Make Lunch", mTimer, 0),
-            new Task("Dinner Prep", mTimer, 0),
-            new Task("Pack Bag", mTimer, 0)
+            new Task("Shower", mTimer, 0, 1),
+            new Task("Brush Teeth", mTimer, 0, 2),
+            new Task("Dress", mTimer, 0, 0),
+            new Task("Make Coffee", mTimer, 0, 3),
+            new Task("Make Lunch", mTimer, 0, 4),
+            new Task("Dinner Prep", mTimer, 0, 5),
+            new Task("Pack Bag", mTimer, 0, 6)
     );
     public final static List<Task> DEFAULT_EVENING_TASKS = List.of(
-            new Task("Charge Devices", eTimer, 1),
-            new Task("Prepare Dinner", eTimer, 1),
-            new Task("Eat Dinner", eTimer, 1),
-            new Task("Wash Dishes", eTimer, 1),
-            new Task("Pack Bag for Morning", eTimer, 1),
-            new Task("Homework", eTimer, 1)
+            new Task("Charge Devices", eTimer, 1, 0),
+            new Task("Prepare Dinner", eTimer, 1, 1),
+            new Task("Eat Dinner", eTimer, 1, 2),
+            new Task("Wash Dishes", eTimer, 1, 3),
+            new Task("Pack Bag for Morning", eTimer, 1, 4),
+            new Task("Homework", eTimer, 1, 5)
     );
 
 
@@ -159,5 +164,18 @@ public class InMemoryDataSource {
     }
     public String getRoutineGoalTime(int id){
         return getRoutine(id).getGoalTime();
+    }
+
+    public int getMaxSortOrder(int routineId) {
+        return maxSortOrders.get(routineId);
+    }
+
+    private void postInsert(int routineId) {
+        maxSortOrders.put(routineId,
+                tasks.values().stream()
+                        .filter(task -> task.getRoutineId() == routineId)
+                        .map(Task::getSortOrder)
+                        .max(Integer::compareTo)
+                        .orElse(Integer.MIN_VALUE));
     }
 }
