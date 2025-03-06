@@ -136,7 +136,7 @@ public class RoutineTest {
     @Test
     public void testRoutinesNotEqualWithDifferentIds() {
         Routine routine1 = new Routine("Routine", mockTimer).setID(0);
-        Routine routine2 = new Routine("Routine", mockTimer).setID(0);
+        Routine routine2 = new Routine("Routine", mockTimer).setID(1);
 
         // THEN routines with different IDs should not be equal.
         assertThat("Routines with different ids should not be equal", routine1.equals(routine2), is(false));
