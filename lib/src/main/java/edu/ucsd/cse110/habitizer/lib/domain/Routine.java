@@ -11,6 +11,7 @@ public class Routine {
     private List<Task> tasks;
     // 0 for morning routine, 1 for evening routine
     private final int id;
+    private static int idCnt = 0;
     private String name;
     private boolean completed;
     // The routine's goal time in minutes (a negative value indicates none is set).
@@ -25,11 +26,10 @@ public class Routine {
      * Initializes an empty task list, starts the timer, and sets default values.
      *
      * @param name the name of the routine
-     * @param routineType type of routine (morning/evening)
      */
     public Routine(String name, int routineType, Timer timer) {
         this.name = name;
-        this.id = routineType;
+        this.id = idCnt++;
         this.tasks = new ArrayList<>();
         this.completed = false;
         this.goalTimeMinutes = "-";
@@ -56,6 +56,16 @@ public class Routine {
     public void removeTask(Task task) {
         this.tasks.remove(task);
         tasksSubject.setValue(tasks);
+    }
+
+    public void removeTask(int taskId) {
+        for (int i = 0; i < this.getTasks().size(); i++) {
+            Task cur = this.getTasks().get(i);
+            if (cur.getTid() == taskId) {
+                this.removeTask(cur);
+                return;
+            }
+        }
     }
 
     public List<Task> getTasks() {

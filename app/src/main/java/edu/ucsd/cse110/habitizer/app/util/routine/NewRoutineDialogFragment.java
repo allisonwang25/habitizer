@@ -1,40 +1,34 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
-import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.util.Log;
+import android.os.Bundle;
 
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogNewTaskBinding;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
-import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 
-public class NewTaskDialogFragment extends DialogFragment {
-    private FragmentDialogNewTaskBinding view;
-    private static int routineId;
+import edu.ucsd.cse110.habitizer.app.MainViewModel;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogNewRoutineBinding;
+
+public class NewRoutineDialogFragment extends DialogFragment {
+    private FragmentDialogNewRoutineBinding view;
     private MainViewModel activityModel;
-    public NewTaskDialogFragment() {}
-    public static NewTaskDialogFragment newInstance(int r) {
-        var fragment = new NewTaskDialogFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        routineId = r;
-        return fragment;
+    public NewRoutineDialogFragment() {
+    }
+    public static NewRoutineDialogFragment newInstance() {
+        return new NewRoutineDialogFragment();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        this.view = FragmentDialogNewTaskBinding.inflate(getLayoutInflater());
+        this.view = FragmentDialogNewRoutineBinding.inflate(getLayoutInflater());
         return new AlertDialog.Builder(getActivity())
-                .setTitle("New Task")
-                .setMessage("Please write your new task.")
+                .setTitle("Create your routine")
+                .setMessage("Please name your new routine.")
                 .setView(view.getRoot())
                 .setPositiveButton("Create", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
@@ -51,15 +45,14 @@ public class NewTaskDialogFragment extends DialogFragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
     }
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        var taskName = view.taskNameInput.getText().toString();
+        var routineName = view.editRoutineNameInput.getText().toString();
 
-        if (taskName.trim().isEmpty()) {
-            view.taskNameInput.setError("Task name cannot be empty");
+        if (routineName.trim().isEmpty()) {
+            view.editRoutineNameInput.setError("Routine name cannot be empty");
             return; // TODO: BUG: dialog should not be dismissed if task name is empty
         }
-        Task task = new Task(taskName, new ElapsedTime(), routineId);
-//        activityModel.getOrderedRoutines().getValue().get(0).addTask(task); // TODO: refactor to pass in current routine ID
-        activityModel.addTask(task, routineId);
+
+        activityModel.addRoutine(routineName);
         dialog.dismiss();
     }
 

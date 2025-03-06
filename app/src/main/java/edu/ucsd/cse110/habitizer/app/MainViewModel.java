@@ -5,17 +5,15 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import edu.ucsd.cse110.habitizer.app.HabitizerApplication;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class MainViewModel extends ViewModel {
@@ -37,13 +35,13 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<List<Routine>> orderedRoutines;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
-        new ViewModelInitializer<>(
-            MainViewModel.class,
-            creationExtras -> {
-                var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
-                assert app != null;
-                return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(),app.getETaskRepository());
-            });
+            new ViewModelInitializer<>(
+                    MainViewModel.class,
+                    creationExtras -> {
+                        var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
+                        assert app != null;
+                        return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(), app.getETaskRepository());
+                    });
 
     public MainViewModel(RoutineRepository r, TaskRepository m, TaskRepository e) {
         this.routineRepository = r;
@@ -68,10 +66,15 @@ public class MainViewModel extends ViewModel {
         mTaskRepository.findAll().observe(tasks -> {
             if (tasks == null) return; // not ready yet, ignore
 
+            var newOrderedTasks = tasks.stream()
+                    .sorted(Comparator.comparingInt(Task::getTid))
+                    .toList();
+
             var ordering = new ArrayList<Integer>();
-            for (int i = 0; i < tasks.size(); i++) {
-                ordering.add(i);
+            for (Task t : newOrderedTasks) {
+                ordering.add(t.getTid());
             }
+
             mTaskOrdering.setValue(ordering);
         });
 
@@ -86,15 +89,18 @@ public class MainViewModel extends ViewModel {
 
             }
             this.orderedMTasks.setValue(tasks);
-            Log.d("asdfg", "added!");
         });
 
         routineRepository.findAll().observe(routines -> {
-           if (routines == null) return;
+            if (routines == null) return;
 
-           var ordering = new ArrayList<Integer>();
-            for (int i = 0; i < routines.size(); i++) {
-                ordering.add(i);
+            var newOrderedRoutines = routines.stream()
+                    .sorted(Comparator.comparingInt(Routine::getId))
+                    .toList();
+
+            var ordering = new ArrayList<Integer>();
+            for (Routine routine : newOrderedRoutines) {
+                ordering.add(routine.getId());
             }
 
             RoutineOrdering.setValue(ordering);
@@ -126,26 +132,36 @@ public class MainViewModel extends ViewModel {
 
     }
 
-    public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedMTasks; }
-    public PlainMutableSubject<List<Routine>> getOrderedRoutines() { return orderedRoutines; }
+    public PlainMutableSubject<List<Task>> getOrderedTasks() {
+        return orderedMTasks;
+    }
+
+    public PlainMutableSubject<List<Routine>> getOrderedRoutines() {
+        return orderedRoutines;
+    }
 
     public void addTask(Task task, int routineId){
-        if (routineId == 0){
-            orderedRoutines.getValue().get(0).addTask(task);
-            mTaskRepository.save(task);
-        }
-        else {
-            orderedRoutines.getValue().get(1).addTask(task);
-            mTaskRepository.save(task);
-        }
+        orderedRoutines.getValue().get(routineId).addTask(task);
+        mTaskRepository.save(task);
     }
 
     public Task getTask(int taskId) {
         return mTaskRepository.find(taskId).getValue();
     }
 
-    public void renameTask(int taskId, String taskName){
+    public void renameTask(int taskId, String taskName) {
         mTaskRepository.renameTask(taskId, taskName);
+    }
+
+    public void addRoutine(String name){
+        List<Routine> routines = getOrderedRoutines().getValue();
+        routines.add(new Routine(name, 6969, new ElapsedTime()));
+        orderedRoutines.setValue(routines);
+    }
+
+    public void removeTask(int taskId, int routineId) {
+        orderedRoutines.getValue().get(routineId).removeTask(taskId);
+        mTaskRepository.removeTask(taskId);
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
