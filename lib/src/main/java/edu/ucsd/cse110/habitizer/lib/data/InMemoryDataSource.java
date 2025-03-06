@@ -55,9 +55,9 @@ public class InMemoryDataSource {
     }
 
     public void putTask(Task task) {
-        tasks.put(task.getId(), task);
-        if (taskSubjects.containsKey(task.getId())) {
-            taskSubjects.get(task.getId()).setValue(task);
+        tasks.put(task.getTid(), task);
+        if (taskSubjects.containsKey(task.getTid())) {
+            taskSubjects.get(task.getTid()).setValue(task);
         }
         allTasksSubjects.setValue(getTasks());
     }
@@ -112,21 +112,21 @@ public class InMemoryDataSource {
             new Routine("Evening",1, eTimer)
     );
     public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
-            new Task("Shower", mTimer),
-            new Task("Brush Teeth", mTimer),
-            new Task("Dress", mTimer),
-            new Task("Make Coffee", mTimer),
-            new Task("Make Lunch", mTimer),
-            new Task("Dinner Prep", mTimer),
-            new Task("Pack Bag", mTimer)
+            new Task("Shower", mTimer, 0),
+            new Task("Brush Teeth", mTimer, 0),
+            new Task("Dress", mTimer, 0),
+            new Task("Make Coffee", mTimer, 0),
+            new Task("Make Lunch", mTimer, 0),
+            new Task("Dinner Prep", mTimer, 0),
+            new Task("Pack Bag", mTimer, 0)
     );
     public final static List<Task> DEFAULT_EVENING_TASKS = List.of(
-            new Task("Charge Devices", eTimer),
-            new Task("Prepare Dinner", eTimer),
-            new Task("Eat Dinner", eTimer),
-            new Task("Wash Dishes", eTimer),
-            new Task("Pack Bag for Morning", eTimer),
-            new Task("Homework", eTimer)
+            new Task("Charge Devices", eTimer, 1),
+            new Task("Prepare Dinner", eTimer, 1),
+            new Task("Eat Dinner", eTimer, 1),
+            new Task("Wash Dishes", eTimer, 1),
+            new Task("Pack Bag for Morning", eTimer, 1),
+            new Task("Homework", eTimer, 1)
     );
 
 

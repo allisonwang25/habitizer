@@ -57,7 +57,7 @@ public class NewTaskDialogFragment extends DialogFragment {
             view.taskNameInput.setError("Task name cannot be empty");
             return; // TODO: BUG: dialog should not be dismissed if task name is empty
         }
-        Task task = new Task(taskName, new ElapsedTime());
+        Task task = new Task(taskName, new ElapsedTime(), routineId);
 //        activityModel.getOrderedRoutines().getValue().get(0).addTask(task); // TODO: refactor to pass in current routine ID
         activityModel.addTask(task, routineId);
         dialog.dismiss();

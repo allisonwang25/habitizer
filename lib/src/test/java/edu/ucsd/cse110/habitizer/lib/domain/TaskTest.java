@@ -1,6 +1,5 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -17,7 +16,7 @@ public class TaskTest {
     @Before
     public void setUp() {
         mockTimer = new ElapsedTimeTester();
-        task = new Task("New Test Task", mockTimer);
+        task = new Task("New Test Task", mockTimer, 0);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class TaskTest {
 
     @Test
     public void testUniqueIds() {
-        Task anotherTask = new Task("Another Task", mockTimer);
-        assertThat("Tasks should have unique IDs", task.getId(), is(not(anotherTask.getId())));
+        Task anotherTask = new Task("Another Task", mockTimer, 0);
+        assertThat("Tasks should have unique IDs", task.getTid(), is(not(anotherTask.getTid())));
     }
 }

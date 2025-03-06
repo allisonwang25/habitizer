@@ -25,8 +25,8 @@ public class RoutineTest {
     @Test
     public void testAddAndRemoveTasks() {
         Routine routine = new Routine("Billy's Morning Routine", 0, mockTimer);
-        Task task1 = new Task("Brush Teeth", mockTimer);
-        Task task2 = new Task("Meditate", mockTimer);
+        Task task1 = new Task("Brush Teeth", mockTimer, 0);
+        Task task2 = new Task("Meditate", mockTimer, 0);
 
         // GIVEN an empty routine.
         assertThat("Routine should start with no tasks", routine.getTasks(), is(empty()));
@@ -78,7 +78,7 @@ public class RoutineTest {
     @Test
     public void testCheckOffTaskWhenTaskExists() {
         Routine routine = new Routine("Routine", 0, mockTimer);
-        Task task = new Task("Read", mockTimer);
+        Task task = new Task("Read", mockTimer, routine.getId());
 
         // GIVEN a task that has not been checked off.
         assertThat("Task should not be checked off initially", task.isCheckedOff(), is(false));
@@ -103,7 +103,7 @@ public class RoutineTest {
     @Test
     public void testCheckOffTaskWhenTaskNotExists() {
         Routine routine = new Routine("Test Routine", 0, mockTimer);
-        Task task = new Task("Exercise", mockTimer);
+        Task task = new Task("Exercise", mockTimer, routine.getId());
 
         // GIVEN a task that is not part of the routine.
         assertThat("Task should not be checked off initially", task.isCheckedOff(), is(false));
@@ -119,8 +119,8 @@ public class RoutineTest {
     @Test
     public void testRemoveNonExistentTaskDoesNothing() {
         Routine routine = new Routine("Routine", 0, mockTimer);
-        Task task1 = new Task("Task 1", mockTimer);
-        Task task2 = new Task("Task 2", mockTimer);
+        Task task1 = new Task("Task 1", mockTimer, routine.getId());
+        Task task2 = new Task("Task 2", mockTimer, routine.getId());
 
         // GIVEN a routine containing only task1.
         routine.addTask(task1);
