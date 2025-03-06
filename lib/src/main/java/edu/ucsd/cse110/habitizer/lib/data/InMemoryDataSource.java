@@ -3,7 +3,6 @@ package edu.ucsd.cse110.habitizer.lib.data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
@@ -62,7 +61,7 @@ public class InMemoryDataSource {
         if (taskSubjects.containsKey(task.getTid())) {
             taskSubjects.get(task.getTid()).setValue(task);
         }
-        postInsert(task.getRoutineId());
+        postInsert(task.getRid());
         allTasksSubjects.setValue(getTasks());
     }
 
@@ -173,7 +172,7 @@ public class InMemoryDataSource {
     private void postInsert(int routineId) {
         maxSortOrders.put(routineId,
                 tasks.values().stream()
-                        .filter(task -> task.getRoutineId() == routineId)
+                        .filter(task -> task.getRid() == routineId)
                         .map(Task::getSortOrder)
                         .max(Integer::compareTo)
                         .orElse(Integer.MIN_VALUE));

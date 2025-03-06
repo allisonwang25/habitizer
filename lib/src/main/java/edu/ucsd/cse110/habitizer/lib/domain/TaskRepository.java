@@ -37,7 +37,7 @@ public class TaskRepository {
     }
 
     public void save(Task task) {
-        task.setSortOrder(dataSource.getMaxSortOrder(task.getRoutineId()) + 1);
+        task.setSortOrder(dataSource.getMaxSortOrder(task.getRid()) + 1);
         dataSource.putTask(task);
     }
 }

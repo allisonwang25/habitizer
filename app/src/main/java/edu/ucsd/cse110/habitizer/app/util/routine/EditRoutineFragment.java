@@ -64,6 +64,12 @@ public class EditRoutineFragment extends Fragment {
         }, id -> {
             var dialogFragment = new DeleteTaskDialogFragment().newInstance(id, routineId);
             dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
+            var dialogFrament = new RenameTaskDialogFragment().newInstance(id);
+            dialogFrament.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+        }, id -> {
+            activityModel.moveTaskUp(id);
+        }, id -> {
+            activityModel.moveTaskDown(id);
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {

@@ -203,6 +203,17 @@ public class MainViewModel extends ViewModel {
         taskRepository.save(task);
     }
 
+    public void moveTaskUp(int taskId) {
+        Task task = taskRepository.find(taskId).getValue();
+        Routine routine = orderedRoutines.getValue().get(task.getRid());
+        routine.moveTaskUp(task);
+    }
+
+    public void moveTaskDown(int taskId) {
+        Task task = taskRepository.find(taskId).getValue();
+        Routine routine = orderedRoutines.getValue().get(task.getRid());
+        routine.moveTaskDown(task);
+    }
     public Task getTask(int taskId) {
         return taskRepository.find(taskId).getValue();
     }
