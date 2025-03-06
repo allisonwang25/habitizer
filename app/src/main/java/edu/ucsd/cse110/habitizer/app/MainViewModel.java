@@ -79,27 +79,27 @@ public class MainViewModel extends ViewModel {
 //            }
             var newOrdering = tasks.stream()
                             .sorted(Comparator.comparingInt(Task::getSortOrder))
-                            .map(Task::getTid)
+                            //.map(Task::getId)
                             .collect(Collectors.toList());
 //            Collections.sort(newOrdering);
-            Log.d("Debug ordering", "taskRepo changed " + newOrdering.toString());
+            Log.d("Debug ordering", newOrdering.toString());
 
-            taskOrdering.setValue(newOrdering);
+            orderedTasks.setValue(newOrdering);
         });
 
-        taskOrdering.observe(ordering -> {
-            if (ordering == null) return;
-
-            var tasks = new ArrayList<Task>();
-            for (var id : ordering) {
-                var task = taskRepository.find(id).getValue();
-                if (task == null) return;
-                tasks.add(task);
-
-            }
-            Log.d("Debug ordering", "taskOrdering changed " + tasks.toString());
-            this.orderedTasks.setValue(tasks);
-        });
+//        taskOrdering.observe(ordering -> {
+//            if (ordering == null) return;
+//
+//            var tasks = new ArrayList<Task>();
+//            for (var id : ordering) {
+//                var task = taskRepository.find(id).getValue();
+//                if (task == null) return;
+//                tasks.add(task);
+//
+//            }
+//            Log.d("asdfg", orderedTasks.getValue().toString());
+//            this.orderedTasks.setValue(tasks);
+//        });
 
         routineRepository.findAll().observe(routines -> {
            if (routines == null) return;
@@ -201,8 +201,6 @@ public class MainViewModel extends ViewModel {
 
     public void moveTaskUp(int routineId, int taskId) {
         routineRepository.moveTaskUp(routineId,taskId);
-        Log.d("Debug ordering", "movingTaskUp" + taskOrdering.getValue().toString());
-
     }
 
     public void moveTaskDown(int routineId, int taskId) {

@@ -183,7 +183,6 @@ public class InMemoryDataSource {
         }
         for (Task task : DEFAULT_MORNING_TASKS) {
             data.putTask(task);
-
         }
         for (Task task : DEFAULT_EVENING_TASKS) {
             data.putTask(task);
@@ -206,19 +205,6 @@ public class InMemoryDataSource {
                         .max(Integer::compareTo)
                         .orElse(Integer.MIN_VALUE));
     }
-
-//    public void moveTaskUp(int routineId, int taskId) {
-//        Task task = tasks.get(taskId);
-//        Routine routine = routines.get(routineId);
-//        routine.moveTaskUp(task);
-//        allTasksSubjects.setValue(getTasks());
-//    }
-//    public void moveTaskDown(int routineId, int taskId) {
-//        Task task = tasks.get(taskId);
-//        Routine routine = routines.get(routineId);
-//        routine.moveTaskDown(task);
-//        allTasksSubjects.setValue(getTasks());
-//    }
 
     public void moveTaskUp(int routineId, int taskIdA){
         moveTask(routineId, taskIdA, -1);
