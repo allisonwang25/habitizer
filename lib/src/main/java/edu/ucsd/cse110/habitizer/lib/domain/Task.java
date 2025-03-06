@@ -3,7 +3,7 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import java.util.Objects;
 
-public class Task implements Comparable<Task> {
+public class Task {
     private boolean checkedOff;
     private String name;
     private int timeElapsed;
@@ -11,8 +11,6 @@ public class Task implements Comparable<Task> {
     private final int rid;
     private static int idCounter = 0;  // Static counter to assign unique IDs
     private final Timer timer;
-    private int sortOrder;
-
 
     /**
      * Constructs a new Task with the specified name and a TimeProvider.
@@ -21,14 +19,13 @@ public class Task implements Comparable<Task> {
      * @param name         the name of the task
      * @param timer the TimeProvider to use for time-based operations
      */
-    public Task(String name, Timer timer, int rid, int sortOrder) {
+    public Task(String name, Timer timer, int rid) {
         this.checkedOff = false;
         this.timeElapsed = 0;
         this.name = name;
         this.tid = idCounter++;
         this.rid = rid;
         this.timer = timer;
-        this.sortOrder = sortOrder;
     }
 
     /**
@@ -75,11 +72,6 @@ public class Task implements Comparable<Task> {
     }
 
     @Override
-    public String toString() {
-        return "ID: " + this.getId() + " | TITLE: " + this.getName();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -95,17 +87,5 @@ public class Task implements Comparable<Task> {
 
     public void setName(String taskName){
         this.name = taskName;
-    }
-
-    public void setSortOrder(int sortOrder){ this.sortOrder = sortOrder; }
-    public int getSortOrder(){
-        return sortOrder;
-    }
-    public int getRoutineId(){
-        return rid;
-    }
-
-    public int compareTo(Task task){
-        return this.sortOrder - task.getSortOrder();
     }
 }

@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardEditBinding;
-import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class EditRoutineAdapter extends ArrayAdapter<Task> {
@@ -45,12 +43,12 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         binding.taskTitle.setText(task.getName());
 
         binding.taskEditButton.setOnClickListener(v -> {
-            var id = task.getId();
+            var id = task.getTid();
             onEditClick.accept(id);
         });
 
         binding.taskDeleteButton.setOnClickListener(v -> {
-            var id = task.getId();
+            var id = task.getTid();
             onDeleteClick.accept(id);
         });
 
@@ -62,7 +60,7 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         var task = getItem(pos);
         assert task != null;
 
-        var id = task.getId();
+        var id = task.getTid();
 
 //        assert id != null;
 //        idk why this don't work bruh

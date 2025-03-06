@@ -34,8 +34,8 @@ public class InMemoryDataSourceTest {
 
     @Test
     public void getAllTasksSubject_returnsSubjectWithAllTasks() {
-        Task task1 = new Task("Task 1", null, 0, 0);
-        Task task2 = new Task("Task 2", null, 0, 1);
+        Task task1 = new Task("Task 1", null, 0);
+        Task task2 = new Task("Task 2", null, 0);
         dataSource.putTask(task1);
         dataSource.putTask(task2);
         Subject<List<Task>> allTasksSubject = dataSource.getAllTasksSubject();

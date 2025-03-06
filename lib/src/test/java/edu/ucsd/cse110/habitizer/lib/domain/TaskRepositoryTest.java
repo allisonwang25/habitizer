@@ -6,6 +6,12 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 import org.junit.Before;
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
+import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+
+import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class TaskRepositoryTest {
     private TaskRepository taskRepository;
@@ -15,9 +21,9 @@ public class TaskRepositoryTest {
     @Before
     public void setUp() {
         inMemoryDataSource = new InMemoryDataSource();
-        taskRepository = new SimpleTaskRepository(inMemoryDataSource);
-        taskRepository.save(new Task("Task 1", null));
-        taskRepository.save(new Task("Task 2", null));
+        taskRepository = new TaskRepository(inMemoryDataSource);
+        taskRepository.save(new Task("Task 1", null, 0));
+        taskRepository.save(new Task("Task 2", null, 0));
     }
 
     @Test
@@ -32,21 +38,21 @@ public class TaskRepositoryTest {
 
     @Test
     public void save_addsTaskToDataSource() {
-        Task task = new Task("Task 3", null);
+        Task task = new Task("Task 3", null, 0);
         taskRepository.save(task);
         assertThat(inMemoryDataSource.getTasks().size(), is(3));
     }
 
     @Test
     public void save_addsTaskToDataSourceWithCorrectId() {
-        Task task = new Task("Task 3", null);
+        Task task = new Task("Task 3", null, 0);
         taskRepository.save(task);
         assertThat(inMemoryDataSource.getTasks().get(2), is(task));
     }
 
     @Test
     public void save_updatesTaskInDataSource() {
-        Task task = new Task("Task 3", null);
+        Task task = new Task("Task 3", null, 0);
         taskRepository.save(task);
         assertThat(inMemoryDataSource.getTasks().get(2), is(task));
     }
