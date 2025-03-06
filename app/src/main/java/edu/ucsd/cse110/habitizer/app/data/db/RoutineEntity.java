@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 
 @Entity(tableName = "Routine")
 public class RoutineEntity {
@@ -35,8 +36,7 @@ public class RoutineEntity {
     }
 
     public @NonNull Routine toRoutine() {
-        return new Routine();
+        //TODO: this don't look right
+        return new Routine(name, rid, null);
     }
-
-
 }

@@ -15,5 +15,7 @@ public interface TaskRepository {
 
     void renameTask(int taskId, String taskName);
 
+    void removeTask(int taskId);
+
     void save(Task task);
 }
