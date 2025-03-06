@@ -52,13 +52,12 @@ public class MainViewModel extends ViewModel {
             creationExtras -> {
                 var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
                 assert app != null;
-                return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository(),app.getETaskRepository());
+                return new MainViewModel(app.getRoutineRepository(), app.getTaskRepository());
             });
 
-    public MainViewModel(RoutineRepository r, TaskRepository m, TaskRepository e) {
+    public MainViewModel(RoutineRepository r, TaskRepository t) {
         this.routineRepository = r;
-        this.taskRepository = m;
-        this.eTaskRepository = e;
+        this.taskRepository = t;
 
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
