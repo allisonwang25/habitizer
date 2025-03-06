@@ -37,6 +37,6 @@ public class RoutineEntity {
 
     public @NonNull Routine toRoutine() {
         //TODO: this don't look right
-        return new Routine(name, rid, null);
+        return new Routine(name, null).setID(rid);
     }
 }
