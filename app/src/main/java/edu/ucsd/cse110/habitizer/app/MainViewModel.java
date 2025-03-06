@@ -179,6 +179,14 @@ public class MainViewModel extends ViewModel {
         handler.post(updateElapsedTimeRunnable);
     }
 
+    public void stopUpdatingElapsedTime() {
+        if (updateElapsedTimeRunnable != null) {
+            handler.removeCallbacks(updateElapsedTimeRunnable);
+            updateElapsedTimeRunnable = null;
+        }
+    }
+
+
     public void addTask(Task task, int routineId){
         getRoutine(routineId).addTask(task);
         mTaskRepository.save(task);

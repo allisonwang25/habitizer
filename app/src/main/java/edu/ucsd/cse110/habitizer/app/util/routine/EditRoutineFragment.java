@@ -81,8 +81,6 @@ public class EditRoutineFragment extends Fragment {
             adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
             adapter.notifyDataSetChanged();
         });
-
-        activityModel.startUpdatingElapsedTime(routineId);
     }
 
     @Nullable
@@ -117,8 +115,11 @@ public class EditRoutineFragment extends Fragment {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
+                activityModel.stopUpdatingElapsedTime();
             }
         });
+
+        activityModel.startUpdatingElapsedTime(routineId);
 
         activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
             view.routineElapsedTime.setText(elapsedText);
