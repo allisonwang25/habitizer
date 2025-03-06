@@ -40,9 +40,9 @@ public class ElapsedTimeTester implements Timer {
         return;
     }
 
-    // TODO: write tests
     @Override
     public int getCurrentlyElapsedTime(){
-        return -1;
+        int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, this.currTime);
+        return (int) Math.ceil(timeElapsed / 60.0);
     }
 }
