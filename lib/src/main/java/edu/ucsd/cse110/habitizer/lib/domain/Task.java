@@ -7,7 +7,8 @@ public class Task {
     private boolean checkedOff;
     private String name;
     private int timeElapsed;
-    private final int id;
+    private final int tid;
+    private final int rid;
     private static int idCounter = 0;  // Static counter to assign unique IDs
     private final Timer timer;
 
@@ -18,11 +19,12 @@ public class Task {
      * @param name         the name of the task
      * @param timer the TimeProvider to use for time-based operations
      */
-    public Task(String name, Timer timer) {
+    public Task(String name, Timer timer, int rid) {
         this.checkedOff = false;
         this.timeElapsed = 0;
         this.name = name;
-        this.id = idCounter++;
+        this.tid = idCounter++;
+        this.rid = rid;
         this.timer = timer;
     }
 
@@ -58,13 +60,15 @@ public class Task {
         this.name = name;
     }
 
-    public int getId() {
-        return this.id;
+    public int getTid() {
+        return this.tid;
     }
+
+    public int getRid() {return this.rid;}
 
     @Override
     public String toString() {
-        return "ID: " + this.getId() + " | TITLE: " + this.getName();
+        return "ID: " + this.getTid() + " | TITLE: " + this.getName();
     }
 
     @Override
@@ -73,12 +77,12 @@ public class Task {
         if (o == null || getClass() != o.getClass()) return false;
 
         Task task = (Task) o;
-        return id == task.id;
+        return tid == task.tid;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(tid);
     }
 
     public void setName(String taskName){

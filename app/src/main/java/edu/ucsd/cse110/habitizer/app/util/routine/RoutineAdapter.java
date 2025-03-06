@@ -1,10 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.util.routine;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +59,7 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         var task = getItem(pos);
         assert task != null;
 
-        var id = task.getId();
+        var id = task.getTid();
 
 //        assert id != null;
 //        idk why this don't work bruh
