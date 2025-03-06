@@ -33,36 +33,36 @@ public class RoutineRepositoryTest {
 
     @Test
     public void save_addsRoutineToDataSource() {
-        Routine routine = new Routine("Afternoon Routine", null).setID(2);
+        Routine routine = new Routine("Afternoon Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().size(), is(3));
     }
 
     @Test
     public void save_addsRoutineToDataSourceWithCorrectId() {
-        Routine routine = new Routine("Afternoon Routine", null).setID(1);
+        Routine routine = new Routine("Afternoon Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().get(2), is(routine));
     }
 
     @Test
     public void save_updatesRoutineInDataSource() {
-        Routine routine = new Routine("Afternoon Routine", null).setID(1);
+        Routine routine = new Routine("Afternoon Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().get(2), is(routine));
     }
 
     @Test
     public void save_doesNotAddDuplicateRoutine() {
-        Routine routine = new Routine("Morning Routine", null).setID(0);
+        Routine routine = new Routine("Morning Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().size(), is(3));
     }
 
     @Test
     public void save_doesNotUpdateRoutineWithDifferentId() {
-        Routine routine = new Routine("Afternoon Routine", null).setID(1);
-        routineRepository.save(routine);
+        Routine routine = new Routine("Afternoon Routine", null);
+            routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().get(1), not(routine));
     }
 
