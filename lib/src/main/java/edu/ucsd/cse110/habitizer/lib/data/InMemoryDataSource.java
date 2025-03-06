@@ -108,8 +108,8 @@ public class InMemoryDataSource {
     }
 
     public final static List<Routine> DEFAULT_ROUTINES = List.of(
-            new Routine("Morning",0, mTimer),
-            new Routine("Evening",1, eTimer)
+            new Routine("Morning", mTimer),
+            new Routine("Evening", eTimer)
     );
     public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
             new Task("Shower", mTimer, 0),

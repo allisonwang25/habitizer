@@ -147,15 +147,13 @@ public class MainViewModel extends ViewModel {
         mTaskRepository.renameTask(taskId, taskName);
     }
 
-    public void addRoutine(String name){
-        List<Routine> routines = getOrderedRoutines().getValue();
-        routines.add(new Routine(name, 6969, new ElapsedTime()));
-        orderedRoutines.setValue(routines);
-    }
-
     public void removeTask(int taskId, int routineId) {
         orderedRoutines.getValue().get(routineId).removeTask(taskId);
         mTaskRepository.removeTask(taskId);
+    }
+
+    public void addRoutine(String name){
+        routineRepository.save(new Routine(name, new ElapsedTime()));
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
