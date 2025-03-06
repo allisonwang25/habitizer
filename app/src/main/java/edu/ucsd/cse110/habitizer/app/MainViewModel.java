@@ -159,9 +159,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void addRoutine(String name){
-        List<Routine> routines = getOrderedRoutines().getValue();
-        routines.add(new Routine(name, 6969, new ElapsedTime()));
-        orderedRoutines.setValue(routines);
+        routineRepository.save(new Routine(name, new ElapsedTime()));
     }
 
     public PlainMutableSubject<String> getRoutineGoalTime() {
