@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.room.Room;
 
 import edu.ucsd.cse110.habitizer.app.data.db.HabitizerDatabase;
+import edu.ucsd.cse110.habitizer.app.data.db.RoomRoutineRepository;
+import edu.ucsd.cse110.habitizer.app.data.db.RoomTaskRepository;
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
@@ -13,7 +15,7 @@ public class HabitizerApplication extends Application {
     InMemoryDataSource dataSource;
     private RoutineRepository routineRepository;
     private TaskRepository mTaskRepository;
-    private TaskRepository eTaskRepository;
+//    private TaskRepository eTaskRepository;
 
     @Override
     public void onCreate() {
@@ -34,7 +36,8 @@ public class HabitizerApplication extends Application {
             .build();
 
         // TODO: oop
-//        this.TaskRepository = new RoomTaskRepository(database.TaskDao());
+        this.mTaskRepository = new RoomTaskRepository(database.taskDao());
+        this.routineRepository = new RoomRoutineRepository(database.routineDao());
 
         var sharedPref = getSharedPreferences("habitizer", MODE_PRIVATE);
         var isFirstRun = sharedPref.getBoolean("isFirstRun", true);
@@ -51,9 +54,9 @@ public class HabitizerApplication extends Application {
     public RoutineRepository getRoutineRepository(){
         return routineRepository;
     }
-    public TaskRepository getETaskRepository(){
-        return eTaskRepository;
-    }
+//    public TaskRepository getETaskRepository(){
+//        return eTaskRepository;
+//    }
     public TaskRepository getMTaskRepository(){
         return mTaskRepository;
     }
