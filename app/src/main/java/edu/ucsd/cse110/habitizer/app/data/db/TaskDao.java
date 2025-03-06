@@ -25,6 +25,12 @@ public interface TaskDao {
     @Query("SELECT * FROM Task WHERE tid = :tid")
     LiveData<TaskEntity> findAsLiveData(int tid);
 
+    @Query("SELECT * FROM Task")
+    LiveData<List<TaskEntity>> findAllAsLiveData();
+    //TODO: this should probably take in a RID
+
+    @Query("UPDATE Task SET name = :name WHERE tid = :tid")
+    void updateName(String name, int tid);
 
     @Query("SELECT count(*) FROM Task")
     int count();

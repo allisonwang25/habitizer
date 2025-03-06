@@ -25,23 +25,28 @@ public class TaskEntity {
     @ColumnInfo(name = "rid")
     public Integer rid = null;
 
+    @ColumnInfo(name = "name")
+    public String name = null;
+
     @ColumnInfo(name = "isCheckedOff")
     public Boolean isCheckedOff = null;
 
-    TaskEntity(@NonNull Integer tid, @NonNull Integer rid, @NonNull Boolean isCheckedOff) {
+
+    TaskEntity(@NonNull Integer tid, @NonNull Integer rid, @NonNull String name, @NonNull Boolean isCheckedOff) {
         this.tid = tid;
         this.rid = rid;
+        this.name = name;
         this.isCheckedOff = isCheckedOff;
     }
 
     //  TODO: Constructor depends on setting rid, which doesn't exist in the Task Class as of now
-//    public static TaskEntity fromTask(@NonNull Task task) {
-//        var task_card = new TaskEntity(task.getId())
-//    }
+    public static TaskEntity fromTask(@NonNull Task task) {
+//        var task_card = new TaskEntity(task.getId(), task.getRId(), task.isCheckedOff());
+    }
 
     // TODO: Same deal, incompatible constructors
-//    public @NonNull Task toTask() {
-////        return new Task(tid, )
-//    }
+    public @NonNull Task toTask() {
+        return new Task();
+    }
 
 }

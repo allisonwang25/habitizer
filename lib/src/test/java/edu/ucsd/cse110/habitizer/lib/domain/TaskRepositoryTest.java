@@ -6,12 +6,6 @@ import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 import org.junit.Before;
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
-import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
-import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
-import edu.ucsd.cse110.habitizer.lib.domain.Routine;
-
-import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class TaskRepositoryTest {
     private TaskRepository taskRepository;
@@ -21,7 +15,7 @@ public class TaskRepositoryTest {
     @Before
     public void setUp() {
         inMemoryDataSource = new InMemoryDataSource();
-        taskRepository = new TaskRepository(inMemoryDataSource);
+        taskRepository = new SimpleTaskRepository(inMemoryDataSource);
         taskRepository.save(new Task("Task 1", null));
         taskRepository.save(new Task("Task 2", null));
     }

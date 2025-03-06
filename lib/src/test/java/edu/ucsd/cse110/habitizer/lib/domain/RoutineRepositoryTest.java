@@ -16,7 +16,7 @@ public class RoutineRepositoryTest {
     @Before
     public void setUp() {
         inMemoryDataSource = new InMemoryDataSource();
-        routineRepository = new RoutineRepository(inMemoryDataSource);
+        routineRepository = new SimpleRoutineRepository(inMemoryDataSource);
         routineRepository.save(new Routine("Morning Routine", 0, null));
         routineRepository.save(new Routine("Evening Routine", 1, null));
     }
