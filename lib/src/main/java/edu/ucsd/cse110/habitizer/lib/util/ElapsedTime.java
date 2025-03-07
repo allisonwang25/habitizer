@@ -32,7 +32,7 @@ public class ElapsedTime implements Timer{
         this.prevTaskFinishTime = LocalDateTime.now();
     }
 
-    // called when a task is completed
+    // called when a task is completed returns IN SECONDS
     @Override
     public int getTaskTimeElapsed(){
         if (stopped){
@@ -41,15 +41,9 @@ public class ElapsedTime implements Timer{
 
         int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()) + this.taskSecondsElapsed;
 
-        if (timeElapsed < 60) {
-            return timeElapsed; // TODO: refactor to differentiate seconds from minutes
-        }
-
-        int timeElapsedRounded = (int) Math.ceil(timeElapsed / 60.0);
-
         this.prevTaskFinishTime = LocalDateTime.now(); // update time the most recent task was completed
         this.taskSecondsElapsed = 0; // reset task time
-        return timeElapsedRounded;
+        return timeElapsed;
     }
 
     // called frequently to get routine time
