@@ -24,7 +24,7 @@ public class RoutineTest {
 
     @Test
     public void testAddAndRemoveTasks() {
-        Routine routine = new Routine("Billy's Morning Routine", 0, mockTimer);
+        Routine routine = new Routine("Billy's Morning Routine", mockTimer).setID(0);
         Task task1 = new Task("Brush Teeth", mockTimer, 0);
         Task task2 = new Task("Meditate", mockTimer, 0);
 
@@ -47,7 +47,7 @@ public class RoutineTest {
 
     @Test
     public void testSetAndGetGoalTime() {
-        Routine routine = new Routine("Billy's Evening Routine", 0, mockTimer);
+        Routine routine = new Routine("Billy's Evening Routine", mockTimer).setID(0);
 
         // WHEN setting a goal time.
         routine.setGoalTime(30);
@@ -57,7 +57,7 @@ public class RoutineTest {
 
     @Test
     public void testCompleteRoutine() {
-        Routine routine = new Routine("Test Routine", 0, mockTimer);
+        Routine routine = new Routine("Test Routine",  mockTimer).setID(0);
 
         // GIVEN a routine that is not yet completed.
         assertThat("Routine should not be ended initially", routine.isEnded(), is(false));
@@ -77,7 +77,7 @@ public class RoutineTest {
 
     @Test
     public void testCheckOffTaskWhenTaskExists() {
-        Routine routine = new Routine("Routine", 0, mockTimer);
+        Routine routine = new Routine("Routine",  mockTimer).setID(0);
         Task task = new Task("Read", mockTimer, routine.getId());
 
         // GIVEN a task that has not been checked off.
@@ -102,7 +102,7 @@ public class RoutineTest {
 
     @Test
     public void testCheckOffTaskWhenTaskNotExists() {
-        Routine routine = new Routine("Test Routine", 0, mockTimer);
+        Routine routine = new Routine("Test Routine", mockTimer).setID(0);
         Task task = new Task("Exercise", mockTimer, routine.getId());
 
         // GIVEN a task that is not part of the routine.
@@ -118,7 +118,7 @@ public class RoutineTest {
 
     @Test
     public void testRemoveNonExistentTaskDoesNothing() {
-        Routine routine = new Routine("Routine", 0, mockTimer);
+        Routine routine = new Routine("Routine", mockTimer).setID(0);
         Task task1 = new Task("Task 1", mockTimer, routine.getId());
         Task task2 = new Task("Task 2", mockTimer, routine.getId());
 
@@ -135,8 +135,8 @@ public class RoutineTest {
 
     @Test
     public void testRoutinesNotEqualWithDifferentIds() {
-        Routine routine1 = new Routine("Routine", 0, mockTimer);
-        Routine routine2 = new Routine("Routine", 1, mockTimer);
+        Routine routine1 = new Routine("Routine", mockTimer).setID(0);
+        Routine routine2 = new Routine("Routine", mockTimer).setID(1);
 
         // THEN routines with different IDs should not be equal.
         assertThat("Routines with different ids should not be equal", routine1.equals(routine2), is(false));
