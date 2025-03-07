@@ -98,8 +98,15 @@ public class InMemoryDataSource {
             return;
         }
 
+        Map<Integer,Integer> routineSO = new HashMap<>();
+        int routineId = tasks.get(taskId).getRid();
+        int sortOrder = tasks.get(taskId).getSortOrder();
+        routineSO.put(routineId, sortOrder);
         tasks.remove(taskId);
         taskSubjects.remove(taskId);
+        tasksBySortOrder.remove(routineSO);
+        shiftSortOrders(routineId, sortOrder, maxSortOrders.get(routineId), -1);
+
         allTasksSubjects.setValue(getTasks());
     }
 
