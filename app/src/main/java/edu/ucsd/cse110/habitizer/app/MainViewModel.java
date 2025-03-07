@@ -8,6 +8,7 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
@@ -23,7 +24,7 @@ public class MainViewModel extends ViewModel {
     // UI state
     private final PlainMutableSubject<String> routineGoalTime;
     private final PlainMutableSubject<List<Integer>> taskOrdering;
-    private final PlainMutableSubject<List<Integer>> RoutineOrdering;
+    private final PlainMutableSubject<List<Integer>> routineOrdering;
 
     // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedTasks;
@@ -46,7 +47,7 @@ public class MainViewModel extends ViewModel {
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
         taskOrdering = new PlainMutableSubject<>();
-        RoutineOrdering = new PlainMutableSubject<>();
+        routineOrdering = new PlainMutableSubject<>();
 
         orderedTasks = new PlainMutableSubject<>();
         orderedRoutines = new PlainMutableSubject<>();
@@ -62,13 +63,14 @@ public class MainViewModel extends ViewModel {
 
             var newOrderedTasks = tasks.stream()
                     .sorted(Comparator.comparingInt(Task::getTid))
-                    .toList();
+                    .collect(Collectors.toList());
 
             var ordering = new ArrayList<Integer>();
             for (Task t : newOrderedTasks) {
                 ordering.add(t.getTid());
             }
 
+            orderedTasks.setValue(newOrderedTasks);
             taskOrdering.setValue(ordering);
         });
 
@@ -82,7 +84,7 @@ public class MainViewModel extends ViewModel {
                 tasks.add(task);
 
             }
-            this.orderedTasks.setValue(tasks);
+//            this.orderedTasks.setValue(tasks);
         });
 
         routineRepository.findAll().observe(routines -> {
@@ -90,17 +92,18 @@ public class MainViewModel extends ViewModel {
 
             var newOrderedRoutines = routines.stream()
                     .sorted(Comparator.comparingInt(Routine::getId))
-                    .toList();
+                    .collect(Collectors.toList());
 
             var ordering = new ArrayList<Integer>();
             for (Routine routine : newOrderedRoutines) {
                 ordering.add(routine.getId());
             }
 
-            RoutineOrdering.setValue(ordering);
+            routineOrdering.setValue(ordering);
+            orderedRoutines.setValue(newOrderedRoutines);
         });
 
-        RoutineOrdering.observe(ordering -> {
+        routineOrdering.observe(ordering -> {
             if (ordering == null) return;
 
             var routines = new ArrayList<Routine>();
@@ -109,7 +112,7 @@ public class MainViewModel extends ViewModel {
                 if (routine == null) return;
                 routines.add(routine);
             }
-            this.orderedRoutines.setValue(routines);
+//            this.orderedRoutines.setValue(routines);
         });
 
 
