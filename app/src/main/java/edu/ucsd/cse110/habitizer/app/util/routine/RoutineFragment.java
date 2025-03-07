@@ -102,8 +102,12 @@ public class RoutineFragment extends Fragment {
 
         activityModel.startUpdatingElapsedTime(routineId);
 
-        activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+        activityModel.getRoutineElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
             view.routineElapsedTime.setText(elapsedText);
+        });
+
+        activityModel.getTaskElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.currTaskElapsedTime.setText(elapsedText);
         });
 
         view.routine.setAdapter(adapter);

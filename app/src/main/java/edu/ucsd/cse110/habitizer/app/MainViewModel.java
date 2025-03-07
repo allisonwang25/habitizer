@@ -34,7 +34,8 @@ public class MainViewModel extends ViewModel {
     private final PlainMutableSubject<List<Integer>> eTaskOrdering;
 
     // LiveData to hold the elapsed time text
-    private final MutableLiveData<String> elapsedTimeText = new MutableLiveData<>();
+    private final MutableLiveData<String> routineElapsedTimeText = new MutableLiveData<>();
+    private final MutableLiveData<String> taskElapsedTimeText = new MutableLiveData<>();
 
     private final PlainMutableSubject<List<Integer>> RoutineOrdering;
 
@@ -151,8 +152,12 @@ public class MainViewModel extends ViewModel {
     public Routine getRoutine(int routineId){
         return orderedRoutines.getValue().get(routineId);
     }
-    public LiveData<String> getElapsedTimeText() {
-        return elapsedTimeText;
+    public LiveData<String> getRoutineElapsedTimeText() {
+        return routineElapsedTimeText;
+    }
+
+    public LiveData<String> getTaskElapsedTimeText() {
+        return taskElapsedTimeText;
     }
 
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -163,14 +168,20 @@ public class MainViewModel extends ViewModel {
         updateElapsedTimeRunnable = new Runnable() {
             @Override
             public void run() {
-                // Get the goal time for this routine
                 String goalTime = getRoutineGoalTime(routineId);
-                // Get the elapsed minutes for this routine (replace with actual logic)
-                int elapsedMinutes = getRoutine(routineId).getTotalTimeElapsed();
-                String goalTimeText = elapsedMinutes + " out of " + goalTime + " minutes elapsed";
-                // Update the LiveData instead of directly updating a view
-                elapsedTimeText.setValue(goalTimeText);
+                int routineElapsedMinutes = getRoutine(routineId).getTotalTimeElapsed();
+                String goalTimeText = routineElapsedMinutes + " out of " + goalTime + " minutes elapsed";
+                routineElapsedTimeText.setValue(goalTimeText);
 
+                int currTaskElapsedTime = getRoutine(routineId).getTimer().getCurrTaskTimeElapsed();
+                if (currTaskElapsedTime < 60){
+                    String currTaskTimeText = currTaskElapsedTime + " seconds elapsed";
+                    taskElapsedTimeText.setValue(currTaskTimeText);
+                }
+                else {
+                    String currTaskTimeText = currTaskElapsedTime / 60 + " minutes elapsed";
+                    taskElapsedTimeText.setValue(currTaskTimeText);
+                }
                 // Schedule the next update after 1 second (1000ms)
                 handler.postDelayed(this, 1000);
             }
@@ -214,6 +225,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setRoutineGoalTime(int routineId, int minutes) {
-        orderedRoutines.getValue().get(routineId).setGoalTime(minutes);
+        getRoutine(routineId).setGoalTime(minutes);
     }
 }

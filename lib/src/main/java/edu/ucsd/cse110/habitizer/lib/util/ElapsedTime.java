@@ -46,11 +46,20 @@ public class ElapsedTime implements Timer{
         return timeElapsed;
     }
 
+    @Override
+    public int getCurrTaskTimeElapsed(){
+        if (stopped){
+            return calcStoppedTaskTime();
+        }
+
+        return (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
+    }
+
     // called frequently to get routine time
     @Override
     public int getTotalTimeElapsed(){
         if (stopped){
-            return calcStoppedRoutineTime();
+            return calcStoppedRoutineTime() * 60;
         }
         int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
         return (int) Math.ceil(timeElapsed / 60.0);
@@ -96,5 +105,14 @@ public class ElapsedTime implements Timer{
             return calcStoppedRoutineTime();
         }
         return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
+    }
+
+    private boolean started = false;
+    @Override
+    public void startTime() {
+        if (started) return;
+        this.startTime = LocalDateTime.now();
+        this.prevTaskFinishTime = startTime;
+        started = true;
     }
 }

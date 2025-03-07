@@ -46,7 +46,7 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
             // 2025 02 12
             // Took the method of setting flags to set strikethrough
 
-            binding.elapsedTime.setText(String.format(String.valueOf(task.getTimeElapsed()) + " Minutes Elapsed"));
+            binding.elapsedTime.setText(String.format(String.valueOf((int)Math.ceil(task.getTimeElapsed() / 60.0)) + " Minutes Elapsed"));
             binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         });
 

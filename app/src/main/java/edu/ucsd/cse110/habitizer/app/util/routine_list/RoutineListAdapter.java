@@ -51,6 +51,7 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_ACTIVE, i);
+                routine.getTimer().startTime();
             }
         }) ;
 
