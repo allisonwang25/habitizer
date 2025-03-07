@@ -40,6 +40,11 @@ public class ElapsedTime implements Timer{
         }
 
         int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()) + this.taskSecondsElapsed;
+
+        if (timeElapsed < 60) {
+            return timeElapsed; // TODO: refactor to differentiate seconds from minutes
+        }
+
         int timeElapsedRounded = (int) Math.ceil(timeElapsed / 60.0);
 
         this.prevTaskFinishTime = LocalDateTime.now(); // update time the most recent task was completed
