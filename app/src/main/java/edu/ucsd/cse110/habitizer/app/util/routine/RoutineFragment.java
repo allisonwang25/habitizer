@@ -87,6 +87,7 @@ public class RoutineFragment extends Fragment {
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
+                activityModel.stopUpdatingElapsedTime();
                 mainActivity.setActiveFragment(ROUTINE_LIST, 69420);
             }
         });
@@ -99,6 +100,11 @@ public class RoutineFragment extends Fragment {
             activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().advanceTime();
         });
 
+        activityModel.startUpdatingElapsedTime(routineId);
+
+        activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.routineElapsedTime.setText(elapsedText);
+        });
 
         view.routine.setAdapter(adapter);
 

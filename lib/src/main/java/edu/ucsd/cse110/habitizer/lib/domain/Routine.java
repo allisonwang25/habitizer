@@ -17,7 +17,7 @@ public class Routine {
     // The routine's goal time in minutes (a negative value indicates none is set).
     private String goalTimeMinutes;
     private Timer timer;
-    private int totalTimeElapsed;
+    private int totalRoutineTimeElapsed;
 
     private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
 
@@ -33,7 +33,7 @@ public class Routine {
         this.tasks = new ArrayList<>();
         this.completed = false;
         this.goalTimeMinutes = "-";
-        this.totalTimeElapsed = 0;
+        this.totalRoutineTimeElapsed = 0;
         this.timer = timer;
         tasksSubject.setValue(tasks);
     }
@@ -103,11 +103,11 @@ public class Routine {
      */
     public void completeRoutine() {
         this.completed = true;
-        this.totalTimeElapsed = this.timer.getTotalTimeElapsed();
+        this.totalRoutineTimeElapsed = this.timer.getTotalTimeElapsed();
     }
 
     public int getTotalTimeElapsed(){
-        return this.totalTimeElapsed;
+        return this.timer.getCurrentlyElapsedTime();
     }
 
     public boolean isEnded() {
@@ -134,7 +134,7 @@ public class Routine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Routine routine = (Routine) o;
-        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalTimeElapsed == routine.totalTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
+        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalRoutineTimeElapsed == routine.totalRoutineTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
     }
 
     @Override

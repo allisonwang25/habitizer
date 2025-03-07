@@ -57,4 +57,11 @@ public class ElapsedTime implements Timer{
 
         this.endTime = this.endTime.plusSeconds(30);
     }
+    @Override
+    public int getCurrentlyElapsedTime(){
+        if (stopped){
+            return (int) ChronoUnit.MINUTES.between(this.startTime, this.endTime);
+    }
+        return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now());
+    }
 }

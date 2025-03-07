@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.app.util.routine;
 import static edu.ucsd.cse110.habitizer.app.util.fragments.ROUTINE_LIST;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,21 +100,12 @@ public class EditRoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
         });
 
-        activityModel.getRoutineGoalTime().observe(goalTime -> {
-            if (goalTime == null) return;
-            String elapsedText = "0 out of " + goalTime + " minutes elapsed";
-            // Using view binding to update the TextView:
-            this.view.routineElapsedTime.setText(elapsedText);
-            if (goalTime.equals("-")) view.goalTimeEditText.setText("");
-            else view.goalTimeEditText.setText(goalTime);
-        });
-
         // Handle when user enters a new goal time
         view.goalTimeEditText.setOnEditorActionListener((v, actionId, event) -> {
             String input = view.goalTimeEditText.getText().toString();
             if (!input.isEmpty()) {
                 int newGoalTime = Integer.parseInt(input);
-                activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
+                activityModel.setRoutineGoalTime(routineId, newGoalTime); // Update ViewModel
                 view.goalTimeEditText.setText(""); // Clear the text field
             }
             return false;
@@ -123,7 +115,14 @@ public class EditRoutineFragment extends Fragment {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
+                activityModel.stopUpdatingElapsedTime();
             }
+        });
+
+        activityModel.startUpdatingElapsedTime(routineId);
+
+        activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.routineElapsedTime.setText(elapsedText);
         });
 
         return view.getRoot();

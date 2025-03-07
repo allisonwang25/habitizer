@@ -37,20 +37,11 @@
 
             <TextView
                 android:id="@+id/routine_elapsed_time"
-                android:layout_width="197dp"
+                android:layout_width="403dp"
                 android:layout_height="wrap_content"
                 android:text="0_out_of_0_minutes_elapsed"
                 android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/goalTimeEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="Enter goal time (minutes)"
-                android:inputType="number"
-                android:maxLength="3"
-                android:textAlignment="center" />
         </LinearLayout>
 
         <ListView
