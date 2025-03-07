@@ -114,7 +114,6 @@ public class RoutineFragment extends Fragment {
         });
 
         view.routine.setAdapter(adapter);
-
         return view.getRoot();
     }
 }
