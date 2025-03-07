@@ -45,4 +45,12 @@ public class ElapsedTimeTester implements Timer {
         int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, this.currTime);
         return (int) Math.ceil(timeElapsed / 60.0);
     }
+
+    @Override
+    public int getCurrTaskTimeElapsed() {
+        return -1;
+    }
+
+    @Override
+    public void startTime(){}
 }
