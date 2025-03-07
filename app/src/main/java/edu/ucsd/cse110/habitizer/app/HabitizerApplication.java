@@ -14,8 +14,7 @@ import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
 public class HabitizerApplication extends Application {
     InMemoryDataSource dataSource;
     private RoutineRepository routineRepository;
-    private TaskRepository mTaskRepository;
-//    private TaskRepository eTaskRepository;
+    private TaskRepository taskRepository;
 
     @Override
     public void onCreate() {
@@ -35,8 +34,7 @@ public class HabitizerApplication extends Application {
             .allowMainThreadQueries()
             .build();
 
-        // TODO: oop
-        this.mTaskRepository = new RoomTaskRepository(database.taskDao());
+        this.taskRepository = new RoomTaskRepository(database.taskDao());
         this.routineRepository = new RoomRoutineRepository(database.routineDao());
 
         var sharedPref = getSharedPreferences("habitizer", MODE_PRIVATE);
@@ -54,10 +52,8 @@ public class HabitizerApplication extends Application {
     public RoutineRepository getRoutineRepository(){
         return routineRepository;
     }
-//    public TaskRepository getETaskRepository(){
-//        return eTaskRepository;
-//    }
-    public TaskRepository getMTaskRepository(){
-        return mTaskRepository;
+
+    public TaskRepository getTaskRepository(){
+        return taskRepository;
     }
 }

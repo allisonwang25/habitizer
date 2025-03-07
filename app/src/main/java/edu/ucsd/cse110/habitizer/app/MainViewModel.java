@@ -19,14 +19,14 @@ import edu.ucsd.cse110.observables.PlainMutableSubject;
 public class MainViewModel extends ViewModel {
     // Domain state (true "Model" state)
     private final RoutineRepository routineRepository;
-    private final TaskRepository mTaskRepository;
+    private final TaskRepository taskRepository;
     // UI state
     private final PlainMutableSubject<String> routineGoalTime;
-    private final PlainMutableSubject<List<Integer>> mTaskOrdering;
+    private final PlainMutableSubject<List<Integer>> taskOrdering;
     private final PlainMutableSubject<List<Integer>> RoutineOrdering;
 
     // LIST OF ORDERED TASKS
-    private final PlainMutableSubject<List<Task>> orderedMTasks;
+    private final PlainMutableSubject<List<Task>> orderedTasks;
 
     private final PlainMutableSubject<List<Routine>> orderedRoutines;
 
@@ -36,19 +36,19 @@ public class MainViewModel extends ViewModel {
                     creationExtras -> {
                         var app = (HabitizerApplication) creationExtras.get(APPLICATION_KEY);
                         assert app != null;
-                        return new MainViewModel(app.getRoutineRepository(), app.getMTaskRepository());
+                        return new MainViewModel(app.getRoutineRepository(), app.getTaskRepository());
                     });
 
     public MainViewModel(RoutineRepository r, TaskRepository m) {
         this.routineRepository = r;
-        this.mTaskRepository = m;
+        this.taskRepository = m;
 
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
-        mTaskOrdering = new PlainMutableSubject<>();
+        taskOrdering = new PlainMutableSubject<>();
         RoutineOrdering = new PlainMutableSubject<>();
 
-        orderedMTasks = new PlainMutableSubject<>();
+        orderedTasks = new PlainMutableSubject<>();
         orderedRoutines = new PlainMutableSubject<>();
 
         routineRepository.find(0).observe(routine -> {
@@ -57,7 +57,7 @@ public class MainViewModel extends ViewModel {
         });
 
         // When the list of tasks changes (or is first loaded), reset the ordering.
-        mTaskRepository.findAll().observe(tasks -> {
+        taskRepository.findAll().observe(tasks -> {
             if (tasks == null) return; // not ready yet, ignore
 
             var newOrderedTasks = tasks.stream()
@@ -69,20 +69,20 @@ public class MainViewModel extends ViewModel {
                 ordering.add(t.getTid());
             }
 
-            mTaskOrdering.setValue(ordering);
+            taskOrdering.setValue(ordering);
         });
 
-        mTaskOrdering.observe(ordering -> {
+        taskOrdering.observe(ordering -> {
             if (ordering == null) return;
 
             var tasks = new ArrayList<Task>();
             for (var id : ordering) {
-                var task = mTaskRepository.find(id).getValue();
+                var task = taskRepository.find(id).getValue();
                 if (task == null) return;
                 tasks.add(task);
 
             }
-            this.orderedMTasks.setValue(tasks);
+            this.orderedTasks.setValue(tasks);
         });
 
         routineRepository.findAll().observe(routines -> {
@@ -127,7 +127,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() {
-        return orderedMTasks;
+        return orderedTasks;
     }
 
     public PlainMutableSubject<List<Routine>> getOrderedRoutines() {
@@ -136,20 +136,20 @@ public class MainViewModel extends ViewModel {
 
     public void addTask(Task task, int routineId){
         orderedRoutines.getValue().get(routineId).addTask(task);
-        mTaskRepository.save(task);
+        taskRepository.save(task);
     }
 
     public Task getTask(int taskId) {
-        return mTaskRepository.find(taskId).getValue();
+        return taskRepository.find(taskId).getValue();
     }
 
     public void renameTask(int taskId, String taskName) {
-        mTaskRepository.renameTask(taskId, taskName);
+        taskRepository.renameTask(taskId, taskName);
     }
 
     public void removeTask(int taskId, int routineId) {
         orderedRoutines.getValue().get(routineId).removeTask(taskId);
-        mTaskRepository.removeTask(taskId);
+        taskRepository.removeTask(taskId);
     }
 
     public void addRoutine(String name){
