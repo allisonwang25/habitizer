@@ -71,7 +71,7 @@ public class InMemoryDataSource {
         allTasksSubjects.setValue(getTasks());
     }
     public void putTasks(List<Task> tasks) {
-        tasks.forEach(task -> this.tasks.put(task.getId(), task));
+        tasks.forEach(task -> this.tasks.put(task.getTid(), task));
         postInsert(tasks.get(0).getRid());
 
         tasks.forEach(task -> {
@@ -81,8 +81,8 @@ public class InMemoryDataSource {
         });
 
         tasks.forEach(task -> {
-            if (taskSubjects.containsKey(task.getId())) {
-                taskSubjects.get(task.getId()).setValue(task);
+            if (taskSubjects.containsKey(task.getTid())) {
+                taskSubjects.get(task.getTid()).setValue(task);
             }
         });
     }
