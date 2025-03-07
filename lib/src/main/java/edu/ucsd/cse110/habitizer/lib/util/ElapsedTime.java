@@ -21,12 +21,14 @@ public class ElapsedTime implements Timer{
         this.taskSecondsElapsed = 0;
     }
 
+    @Override
     public void pauseTime() {
         this.paused = true;
         this.prevSecondsElapsed += (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now());
         this.taskSecondsElapsed += (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
     }
 
+    @Override
     public void resumeTime() {
         this.paused = false;
         this.startTime = LocalDateTime.now();
