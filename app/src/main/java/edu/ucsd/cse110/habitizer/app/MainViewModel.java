@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import 	androidx.lifecycle.MutableLiveData;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -13,7 +14,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
@@ -76,12 +76,12 @@ public class MainViewModel extends ViewModel {
             if (tasks == null) return; // not ready yet, ignore
 
             var newOrderedTasks = tasks.stream()
-                    .sorted(Comparator.comparingInt(Task::getId))
+                    .sorted(Comparator.comparingInt(Task::getTid))
                     .toList();
 
             var ordering = new ArrayList<Integer>();
             for (Task t : newOrderedTasks) {
-                ordering.add(t.getId());
+                ordering.add(t.getTid());
             }
 
             mTaskOrdering.setValue(ordering);
