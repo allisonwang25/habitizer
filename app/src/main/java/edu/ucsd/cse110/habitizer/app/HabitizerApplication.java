@@ -4,11 +4,14 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import java.util.List;
+
 import edu.ucsd.cse110.habitizer.app.data.db.HabitizerDatabase;
 import edu.ucsd.cse110.habitizer.app.data.db.RoomRoutineRepository;
 import edu.ucsd.cse110.habitizer.app.data.db.RoomTaskRepository;
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
 
 public class HabitizerApplication extends Application {
@@ -40,9 +43,11 @@ public class HabitizerApplication extends Application {
         var sharedPref = getSharedPreferences("habitizer", MODE_PRIVATE);
         var isFirstRun = sharedPref.getBoolean("isFirstRun", true);
 
-        //TODO : Our Routines has tasks on init?
         if (isFirstRun && database.routineDao().count() == 0) {
-//            TaskRepository.save(InMemoryDataSource.DEFAULT_CARDS);
+            routineRepository.saveAll(InMemoryDataSource.DEFAULT_ROUTINES);
+
+            taskRepository.saveAll(InMemoryDataSource.DEFAULT_MORNING_TASKS);
+            taskRepository.saveAll(InMemoryDataSource.DEFAULT_EVENING_TASKS);
 
             sharedPref.edit()
                 .putBoolean("isFirstRun", false)

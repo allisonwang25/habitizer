@@ -46,4 +46,9 @@ public class SimpleTaskRepository implements TaskRepository {
     public void save(Task task) {
         dataSource.putTask(task);
     }
+    public void saveAll(List<Task> tasks) {
+        for (Task task : tasks) {
+            dataSource.putTask(task);
+        }
+    }
 }

@@ -31,4 +31,9 @@ public class SimpleRoutineRepository implements RoutineRepository {
     public void save(Routine routine) {
         dataSource.putRoutine(routine);
     }
+
+    @Override
+    public void saveAll(List<Routine> routines) {
+        routines.forEach(routine -> dataSource.putRoutine(routine));
+    }
 }

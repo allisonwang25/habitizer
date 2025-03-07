@@ -10,6 +10,7 @@ import edu.ucsd.cse110.habitizer.app.util.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
+import edu.ucsd.cse110.observables.Subject;
 
 public class RoomTaskRepository implements TaskRepository {
     private final TaskDao taskDao;
@@ -29,16 +30,15 @@ public class RoomTaskRepository implements TaskRepository {
     }
 
     @Override
-    public PlainMutableSubject<Task> find(int id) {
+    public Subject<Task> find(int id) {
         var entityLiveData = taskDao.findAsLiveData(id);
-//        var taskLiveData = Transformations.map(entityLiveData, TaskEntity::toTask());
+        var taskLiveData = Transformations.map(entityLiveData, TaskEntity::toTask);
 
-//        return new LiveDataSubjectAdapter<>(taskLiveData);
-        return null;
+        return new LiveDataSubjectAdapter<>(taskLiveData);
     }
 
     @Override
-    public PlainMutableSubject<List<Task>> findAll() {
+    public Subject<List<Task>> findAll() {
         var entitiesLivaDaa = taskDao.findAllAsLiveData();
         var tasksLiveData = Transformations.map(entitiesLivaDaa, entities -> {
             return entities.stream()
@@ -46,8 +46,7 @@ public class RoomTaskRepository implements TaskRepository {
                 .collect(Collectors.toList());
         });
 
-//        return new LiveDataSubjectAdapter<>(tasksLiveData);
-        return null;
+        return new LiveDataSubjectAdapter<>(tasksLiveData);
     }
 
     @Override
@@ -63,5 +62,12 @@ public class RoomTaskRepository implements TaskRepository {
     @Override
     public void save(Task task) {
         taskDao.insert(TaskEntity.fromTask(task));
+    }
+
+    @Override
+    public void saveAll(List<Task> tasks) {
+        taskDao.insert(tasks.stream()
+            .map(TaskEntity::fromTask)
+            .collect(Collectors.toList()));
     }
 }
