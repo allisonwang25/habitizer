@@ -107,6 +107,7 @@ public class EditRoutineFragment extends Fragment {
                 int newGoalTime = Integer.parseInt(input);
                 activityModel.setRoutineGoalTime(routineId, newGoalTime); // Update ViewModel
                 view.goalTimeEditText.setText(""); // Clear the text field
+                view.routineElapsedTime.setText("Goal time: " + newGoalTime + " minutes");
             }
             return false;
         });
@@ -115,15 +116,9 @@ public class EditRoutineFragment extends Fragment {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
-                activityModel.stopUpdatingElapsedTime();
             }
         });
 
-        activityModel.startUpdatingElapsedTime(routineId);
-
-        activityModel.getElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
-            view.routineElapsedTime.setText(elapsedText);
-        });
 
         return view.getRoot();
     }
