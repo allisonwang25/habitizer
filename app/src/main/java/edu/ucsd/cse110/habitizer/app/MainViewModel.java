@@ -82,7 +82,7 @@ public class MainViewModel extends ViewModel {
                             .map(Task::getTid)
                             .collect(Collectors.toList());
 //            Collections.sort(newOrdering);
-            Log.d("Debug ordering", newOrdering.toString());
+            Log.d("Debug ordering", "taskRepo changed " + newOrdering.toString());
 
             taskOrdering.setValue(newOrdering);
         });
@@ -97,7 +97,7 @@ public class MainViewModel extends ViewModel {
                 tasks.add(task);
 
             }
-            Log.d("asdfg", tasks.toString());
+            Log.d("Debug ordering", "taskOrdering changed " + tasks.toString());
             this.orderedTasks.setValue(tasks);
         });
 
@@ -201,6 +201,8 @@ public class MainViewModel extends ViewModel {
 
     public void moveTaskUp(int routineId, int taskId) {
         routineRepository.moveTaskUp(routineId,taskId);
+        Log.d("Debug ordering", "movingTaskUp" + taskOrdering.getValue().toString());
+
     }
 
     public void moveTaskDown(int routineId, int taskId) {

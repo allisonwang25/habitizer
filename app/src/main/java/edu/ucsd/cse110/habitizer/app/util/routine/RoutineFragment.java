@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
@@ -63,12 +64,22 @@ public class RoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
-        activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(routineId);
-            List<Task> tasks = routine.getTasks();
+//        activityModel.getOrderedRoutines().observe(routines -> {
+//            Routine routine = routines.get(routineId);
+//            List<Task> tasks = routine.getTasks();
+//            if (tasks == null) return;
+//            adapter.clear();
+//            adapter.addAll(new ArrayList<>(tasks));
+//            adapter.notifyDataSetChanged();
+//        });
+        activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks));
+//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
+            adapter.addAll(activityModel.getOrderedTasks().getValue()
+                    .stream()
+                    .filter(task -> task.getRid() == routineId)
+                    .collect(Collectors.toList()));
             adapter.notifyDataSetChanged();
         });
     }

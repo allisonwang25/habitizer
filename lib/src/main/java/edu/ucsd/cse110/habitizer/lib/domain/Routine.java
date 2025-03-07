@@ -22,8 +22,6 @@ public class Routine {
 
     private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
 
-    private int maxSortOrder = Integer.MIN_VALUE;
-
     /**
      * Constructs a new Routine with the given name.
      * Initializes an empty task list, starts the timer, and sets default values.
@@ -75,35 +73,35 @@ public class Routine {
         //Collections.sort(tasks);
         return this.tasks;
     }
-    private void swapSortOrder(Task task1, Task task2) {
+    public void swapSortOrder(Task task1, Task task2) {
         int temp = task1.getSortOrder();
         task1.setSortOrder(task2.getSortOrder());
         task2.setSortOrder(temp);
     }
 
-    public void moveTaskUp(Task task) {
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i) == task) {
-                if (i > 0) {
-                    swapSortOrder(tasks.get(i), tasks.get(i - 1));
-                }
-                Collections.sort(tasks);
-                return;
-            }
-        }
-    }
-
-    public void moveTaskDown(Task task) {
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i) == task) {
-                if (i < tasks.size() - 1) {
-                    swapSortOrder(tasks.get(i), tasks.get(i + 1));
-                }
-                Collections.sort(tasks);
-                return;
-            }
-        }
-    }
+//    public void moveTaskUp(Task task) {
+//        for (int i = 0; i < tasks.size(); i++) {
+//            if (tasks.get(i) == task) {
+//                if (i > 0) {
+//                    swapSortOrder(tasks.get(i), tasks.get(i - 1));
+//                }
+//                Collections.sort(tasks);
+//                return;
+//            }
+//        }
+//    }
+//
+//    public void moveTaskDown(Task task) {
+//        for (int i = 0; i < tasks.size(); i++) {
+//            if (tasks.get(i) == task) {
+//                if (i < tasks.size() - 1) {
+//                    swapSortOrder(tasks.get(i), tasks.get(i + 1));
+//                }
+//                Collections.sort(tasks);
+//                return;
+//            }
+//        }
+//    }
 
 
 

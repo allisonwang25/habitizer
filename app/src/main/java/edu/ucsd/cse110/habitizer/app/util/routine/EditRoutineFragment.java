@@ -73,14 +73,14 @@ public class EditRoutineFragment extends Fragment {
             activityModel.moveTaskDown(routineId, id);
         });
 
-        activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(routineId);
-            List<Task> tasks = routine.getTasks();
-            if (tasks == null) return;
-            adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks));
-            adapter.notifyDataSetChanged();
-        });
+//        activityModel.getOrderedRoutines().observe(routines -> {
+//            Routine routine = routines.get(routineId);
+//            List<Task> tasks = routine.getTasks();
+//            if (tasks == null) return;
+//            adapter.clear();
+//            adapter.addAll(new ArrayList<>(tasks));
+//            adapter.notifyDataSetChanged();
+//        });
 
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;

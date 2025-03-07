@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.lib.data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
@@ -13,6 +14,7 @@ import edu.ucsd.cse110.observables.Subject;
 
 public class InMemoryDataSource {
     private final Map<Integer, Task> tasks;
+    private final Map<Map<Integer,Integer>, Task> tasksBySortOrder;
     private final Map<Integer, PlainMutableSubject<Task>> taskSubjects;
     private final PlainMutableSubject<List<Task>> allTasksSubjects;
 
@@ -28,6 +30,7 @@ public class InMemoryDataSource {
 
     public InMemoryDataSource() {
         tasks = new HashMap<>();
+        tasksBySortOrder = new HashMap<>();
         taskSubjects = new HashMap<>();
         allTasksSubjects = new PlainMutableSubject<>();
         routines = new HashMap<>();
@@ -58,11 +61,30 @@ public class InMemoryDataSource {
 
     public void putTask(Task task) {
         tasks.put(task.getTid(), task);
+        Map<Integer, Integer> routineSO = new HashMap<>();
+        routineSO.put(task.getRid(), task.getSortOrder());
+        tasksBySortOrder.put(routineSO, task);
         if (taskSubjects.containsKey(task.getTid())) {
             taskSubjects.get(task.getTid()).setValue(task);
         }
         postInsert(task.getRid());
         allTasksSubjects.setValue(getTasks());
+    }
+    public void putTasks(List<Task> tasks) {
+        tasks.forEach(task -> this.tasks.put(task.getId(), task));
+        postInsert(tasks.get(0).getRid());
+
+        tasks.forEach(task -> {
+            Map<Integer, Integer> routineSO = new HashMap<>();
+            routineSO.put(task.getRid(), task.getSortOrder());
+            tasksBySortOrder.put(routineSO, task);
+        });
+
+        tasks.forEach(task -> {
+            if (taskSubjects.containsKey(task.getId())) {
+                taskSubjects.get(task.getId()).setValue(task);
+            }
+        });
     }
 
     public void renameTask(int taskId, String taskName){
@@ -137,7 +159,6 @@ public class InMemoryDataSource {
 
     public static InMemoryDataSource fromDefault() {
         var data = new InMemoryDataSource();
-
         for (int i = 0; i < DEFAULT_ROUTINES.size(); ++i) {
             Routine routine = DEFAULT_ROUTINES.get(i);
             data.putRoutine(routine);
@@ -155,6 +176,7 @@ public class InMemoryDataSource {
         }
         for (Task task : DEFAULT_MORNING_TASKS) {
             data.putTask(task);
+
         }
         for (Task task : DEFAULT_EVENING_TASKS) {
             data.putTask(task);
@@ -178,16 +200,61 @@ public class InMemoryDataSource {
                         .orElse(Integer.MIN_VALUE));
     }
 
-    public void moveTaskUp(int routineId, int taskId) {
-        Task task = tasks.get(taskId);
+//    public void moveTaskUp(int routineId, int taskId) {
+//        Task task = tasks.get(taskId);
+//        Routine routine = routines.get(routineId);
+//        routine.moveTaskUp(task);
+//        allTasksSubjects.setValue(getTasks());
+//    }
+//    public void moveTaskDown(int routineId, int taskId) {
+//        Task task = tasks.get(taskId);
+//        Routine routine = routines.get(routineId);
+//        routine.moveTaskDown(task);
+//        allTasksSubjects.setValue(getTasks());
+//    }
+
+    public void moveTaskUp(int routineId, int taskIdA){
+        moveTask(routineId, taskIdA, -1);
+    }
+    public void moveTaskDown(int routineId, int taskIdA){
+        moveTask(routineId, taskIdA, 1);
+    }
+
+    private void moveTask(int routineId, int taskIdA, int by) {
+        Task taskA = tasks.get(taskIdA);
+        int originA = taskA.getSortOrder();
+        Map<Integer, Integer> routineSO = new HashMap<>();
+        routineSO.put(taskA.getRid(), taskA.getSortOrder() + by);
+
+        if(!tasksBySortOrder.containsKey(routineSO)){
+            return;
+        }
+        Task taskB = tasksBySortOrder.get(routineSO);
+        int originB = taskB.getSortOrder();
+
         Routine routine = routines.get(routineId);
-        routine.moveTaskUp(task);
+        Map<Integer, Integer> mapA = new HashMap<>();
+        mapA.put(taskA.getRid(), originA);
+        Map<Integer, Integer> mapB = new HashMap<>();
+        mapB.put(taskA.getRid(), originB);
+
+        tasksBySortOrder.put(mapA, taskB);
+        tasksBySortOrder.put(mapB, taskA);
+        routine.swapSortOrder(taskA, taskB);
+
         allTasksSubjects.setValue(getTasks());
     }
-    public void moveTaskDown(int routineId, int taskId) {
-        Task task = tasks.get(taskId);
-        Routine routine = routines.get(routineId);
-        routine.moveTaskDown(task);
-        allTasksSubjects.setValue(getTasks());
+
+    // this is for removingTask
+    public void shiftSortOrders(int routineId, int from, int to, int by) {
+        var tasks = this.tasks.values().stream()
+                .filter(task -> task.getRid() == routineId)
+                .filter(task -> task.getSortOrder() >= from && task.getSortOrder() <= to)
+                .map(task -> {
+                    task.setSortOrder(task.getSortOrder() + by); // Modify the task
+                    return task;})
+                .collect(Collectors.toList());
+
+        putTasks(tasks);
     }
 }
