@@ -64,8 +64,8 @@ public class RoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
-        activityModel.getOrderedTasks().observe(task -> {
-            if (task == null) return;
+        activityModel.getOrderedTasks().observe(tasks -> {
+            if (tasks == null) return;
             adapter.clear();
 //            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
             adapter.addAll(activityModel.getOrderedTasks().getValue()
