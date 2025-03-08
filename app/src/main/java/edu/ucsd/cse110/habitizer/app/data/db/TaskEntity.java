@@ -9,15 +9,7 @@ import androidx.room.PrimaryKey;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 
-@Entity(
-    tableName = "Task",
-    foreignKeys = @ForeignKey(
-        entity = RoutineEntity.class,
-        parentColumns = "rid",
-        childColumns = "rid",
-        onDelete = ForeignKey.CASCADE
-    )
-)
+@Entity(tableName = "Task")
 public class TaskEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tid")

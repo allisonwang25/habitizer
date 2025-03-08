@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -144,6 +146,15 @@ public class MainViewModel extends ViewModel {
 
     public Task getTask(int taskId) {
         return taskRepository.find(taskId).getValue();
+    }
+
+    public List<Task> getTasks(int routineId) {
+        List<Task> tasks = taskRepository.findAllWithRID(routineId).getValue();
+        if (tasks == null) {
+            Log.d("Exception", "Tasks is null");
+        }
+        return taskRepository.findAllWithRID(routineId).getValue();
+//        return taskRepository.findAll().getValue();
     }
 
     public void renameTask(int taskId, String taskName) {
