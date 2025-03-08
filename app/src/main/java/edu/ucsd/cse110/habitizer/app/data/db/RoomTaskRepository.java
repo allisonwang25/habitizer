@@ -50,6 +50,18 @@ public class RoomTaskRepository implements TaskRepository {
     }
 
     @Override
+    public Subject<List<Task>> findAllWithRID(int rid) {
+        var entitiesLiveData = taskDao.findAllWithRIDAsLiveData(rid);
+        var tasksLiveData = Transformations.map(entitiesLiveData, entities -> {
+            return entities.stream()
+                .map(TaskEntity::toTask)
+                .collect(Collectors.toList());
+        });
+
+        return new LiveDataSubjectAdapter<>(tasksLiveData);
+    }
+
+    @Override
     public void renameTask(int taskId, String taskName) {
         taskDao.updateName(taskName, taskId);
     }

@@ -66,8 +66,7 @@ public class EditRoutineFragment extends Fragment {
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(routineId);
-            List<Task> tasks = routine.getTasks();
+            List<Task> tasks = activityModel.getTasks(routineId);
             if (tasks == null) return;
             adapter.clear();
             adapter.addAll(new ArrayList<>(tasks));

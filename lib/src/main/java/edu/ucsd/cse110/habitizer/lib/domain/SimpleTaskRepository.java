@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
+import edu.ucsd.cse110.observables.Subject;
 
 public class SimpleTaskRepository implements TaskRepository {
     private final InMemoryDataSource dataSource;
@@ -30,6 +31,11 @@ public class SimpleTaskRepository implements TaskRepository {
     @Override
     public PlainMutableSubject<List<Task>> findAll() {
         return (PlainMutableSubject<List<Task>>) dataSource.getAllTasksSubject();
+    }
+
+    @Override
+    public Subject<List<Task>> findAllWithRID(int rid) {
+        return dataSource.getAllTasksWithRIDSubject();
     }
 
     @Override

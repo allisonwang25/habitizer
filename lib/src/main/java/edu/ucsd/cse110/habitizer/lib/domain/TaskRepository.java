@@ -14,6 +14,8 @@ public interface TaskRepository {
 
     Subject<List<Task>> findAll();
 
+    Subject<List<Task>> findAllWithRID(int rid);
+
     void renameTask(int taskId, String taskName);
 
     void removeTask(int taskId);

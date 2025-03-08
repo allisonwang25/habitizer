@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,15 +58,16 @@ public class RoutineFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-    // Initialize the Adapter (with an empty list for now)
+        // Initialize the Adapter (with an empty list for now)
         this.adapter = new RoutineAdapter(requireActivity(), List.of(), id -> {
             var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
         activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(routineId);
-            List<Task> tasks = routine.getTasks();
+//            Routine routine = routines.get(routineId);
+            List<Task> tasks = activityModel.getTasks(routineId);
+//            Log.d("RoutineFragment", "Tasks: " + tasks.toString());
             if (tasks == null) return;
             adapter.clear();
             adapter.addAll(new ArrayList<>(tasks));

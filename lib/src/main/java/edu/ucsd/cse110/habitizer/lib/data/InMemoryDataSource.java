@@ -160,4 +160,8 @@ public class InMemoryDataSource {
     public String getRoutineGoalTime(int id){
         return getRoutine(id).getGoalTime();
     }
+
+    public Subject<List<Task>> getAllTasksWithRIDSubject() {
+        return null;
+    }
 }
