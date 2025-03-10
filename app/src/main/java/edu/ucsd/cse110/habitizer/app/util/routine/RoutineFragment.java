@@ -64,15 +64,24 @@ public class RoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
-        activityModel.getOrderedRoutines().observe(routines -> {
-//            Routine routine = routines.get(routineId);
-            List<Task> tasks = activityModel.getTasks(routineId);
-//            Log.d("RoutineFragment", "Tasks: " + tasks.toString());
+        activityModel.getOrderedTasksWithId(routineId).observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks));
+            for (Task task : tasks) {
+                adapter.add(task);
+            }
             adapter.notifyDataSetChanged();
         });
+
+//        activityModel.getOrderedRoutines().observe(routines -> {
+////            Routine routine = routines.get(routineId);
+//            List<Task> tasks = activityModel.getTasks(routineId);
+////            Log.d("RoutineFragment", "Tasks: " + tasks.toString());
+//            if (tasks == null) return;
+//            adapter.clear();
+//            adapter.addAll(new ArrayList<>(tasks));
+//            adapter.notifyDataSetChanged();
+//        });
     }
 
     @Nullable
