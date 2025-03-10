@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 
 @Entity(tableName = "Timer")
-public class TimerEntitiy {
+public class TimerEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tid")
     public Integer tid = null;
@@ -19,15 +19,15 @@ public class TimerEntitiy {
     // TODO: Add more timer attributes
 
 
-    TimerEntitiy(@NonNull Integer tid, @NonNull Integer rid) {
+    TimerEntity(@NonNull Integer tid, @NonNull Integer rid) {
         this.tid = tid;
         this.rid = rid;
 
         //TODO: Update constructor to include more timer attributes
     }
 
-    public static TimerEntitiy fromTimer(@NonNull Timer timer, @NonNull Integer rid, @NonNull Integer tid) {
-        var timer = new TimerEntitiy(tid, rid, );
+    public static TimerEntity fromTimer(@NonNull Timer timer, @NonNull Integer rid, @NonNull Integer tid) {
+        var timer = new TimerEntity(tid, rid, );
 
         return timer;
     }

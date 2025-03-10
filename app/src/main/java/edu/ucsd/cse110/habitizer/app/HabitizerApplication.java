@@ -30,8 +30,8 @@ public class HabitizerApplication extends Application {
             .allowMainThreadQueries()
             .build();
 
-        this.taskRepository = new RoomTaskRepository(database.taskDao());
-        this.routineRepository = new RoomRoutineRepository(database.routineDao());
+        this.taskRepository = new RoomTaskRepository(database.taskDao(), database.timerDao());
+        this.routineRepository = new RoomRoutineRepository(database.routineDao(), database.timerDao());
 
         var sharedPref = getSharedPreferences("habitizer", MODE_PRIVATE);
         var isFirstRun = sharedPref.getBoolean("isFirstRun", true);

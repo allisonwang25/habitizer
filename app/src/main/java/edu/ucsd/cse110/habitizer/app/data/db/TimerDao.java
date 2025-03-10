@@ -9,10 +9,10 @@ import java.util.List;
 @Dao
 public interface TimerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insert(TimerEntitiy timer);
+    Long insert(TimerEntity timer);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(List<TimerEntitiy> timer);
+    List<Long> insert(List<TimerEntity> timer);
 
     //TODO : Add more queries
 }
