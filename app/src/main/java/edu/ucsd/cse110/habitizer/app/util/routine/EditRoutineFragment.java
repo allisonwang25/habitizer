@@ -65,20 +65,29 @@ public class EditRoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
         });
 
-        activityModel.getOrderedRoutines().observe(routines -> {
-            List<Task> tasks = activityModel.getTasks(routineId);
+        activityModel.getOrderedTasksWithId(routineId).observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks));
+            for (Task task : tasks) {
+                adapter.add(task);
+            }
             adapter.notifyDataSetChanged();
         });
 
-        activityModel.getOrderedTasks().observe(tasks -> {
-            if (tasks == null) return;
-            adapter.clear();
-            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
-            adapter.notifyDataSetChanged();
-        });
+//        activityModel.getOrderedRoutines().observe(routines -> {
+//            List<Task> tasks = activityModel.getTasks(routineId);
+//            if (tasks == null) return;
+//            adapter.clear();
+//            adapter.addAll(new ArrayList<>(tasks));
+//            adapter.notifyDataSetChanged();
+//        });
+//
+//        activityModel.getOrderedTasks().observe(tasks -> {
+//            if (tasks == null) return;
+//            adapter.clear();
+//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
+//            adapter.notifyDataSetChanged();
+//        });
     }
 
     @Nullable

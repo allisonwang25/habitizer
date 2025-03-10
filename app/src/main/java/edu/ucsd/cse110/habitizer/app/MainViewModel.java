@@ -72,22 +72,22 @@ public class MainViewModel extends ViewModel {
                 ordering.add(t.getTid());
             }
 
-            orderedTasks.setValue(newOrderedTasks);
             taskOrdering.setValue(ordering);
+            orderedTasks.setValue(newOrderedTasks);
         });
 
-        taskOrdering.observe(ordering -> {
-            if (ordering == null) return;
-
-            var tasks = new ArrayList<Task>();
-            for (var id : ordering) {
-                var task = taskRepository.find(id).getValue();
-                if (task == null) return;
-                tasks.add(task);
-
-            }
-//            this.orderedTasks.setValue(tasks);
-        });
+//        taskOrdering.observe(ordering -> {
+//            if (ordering == null) return;
+//
+//            var tasks = new ArrayList<Task>();
+//            for (var id : ordering) {
+//                var task = taskRepository.find(id).getValue();
+//                if (task == null) return;
+//                tasks.add(task);
+//
+//            }
+////            this.orderedTasks.setValue(tasks);
+//        });
 
         routineRepository.findAll().observe(routines -> {
             if (routines == null) return;
@@ -105,17 +105,17 @@ public class MainViewModel extends ViewModel {
             orderedRoutines.setValue(newOrderedRoutines);
         });
 
-        routineOrdering.observe(ordering -> {
-            if (ordering == null) return;
-
-            var routines = new ArrayList<Routine>();
-            for (var id : ordering) {
-                var routine = routineRepository.find(id).getValue();
-                if (routine == null) return;
-                routines.add(routine);
-            }
-//            this.orderedRoutines.setValue(routines);
-        });
+//        routineOrdering.observe(ordering -> {
+//            if (ordering == null) return;
+//
+//            var routines = new ArrayList<Routine>();
+//            for (var id : ordering) {
+//                var routine = routineRepository.find(id).getValue();
+//                if (routine == null) return;
+//                routines.add(routine);
+//            }
+////            this.orderedRoutines.setValue(routines);
+//        });
 
 
         // Commented out the evening routine as we don't need 2 routines for this US
@@ -132,7 +132,22 @@ public class MainViewModel extends ViewModel {
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() {
+//        Log.d("debug", orderedTasks.getValue().toString());
         return orderedTasks;
+    }
+
+    public PlainMutableSubject<List<Task>> getOrderedTasksWithId(int rid) {
+        List<Task> tempList = orderedTasks.getValue();
+        List<Task> outputList = new ArrayList<>();
+
+        for (Task t : tempList) {
+            if (t.getRid() == rid) {
+                outputList.add(t);
+            }
+        }
+
+        PlainMutableSubject<List<Task>> output = new PlainMutableSubject<>(outputList);
+        return output;
     }
 
     public PlainMutableSubject<List<Routine>> getOrderedRoutines() {
