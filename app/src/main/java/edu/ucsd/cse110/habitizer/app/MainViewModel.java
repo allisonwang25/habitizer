@@ -121,7 +121,7 @@ public class MainViewModel extends ViewModel {
                     taskElapsedTimeText.setValue(currTaskTimeText);
                 }
                 // Schedule the next update after 1 second (1000ms)
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 100);
             }
         };
         // Start the periodic update

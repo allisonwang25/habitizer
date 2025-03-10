@@ -86,9 +86,8 @@ public class ElapsedTime implements Timer{
     public int calcStoppedTaskTime(){
         if (stopped){
             int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, endTime) + this.taskSecondsElapsed;
-            this.prevTaskFinishTime = endTime;
 
-            return (int) Math.ceil(timeElapsed / 60.0);
+            return timeElapsed;
         }
         return -1;
     }
@@ -107,9 +106,10 @@ public class ElapsedTime implements Timer{
 
     @Override
     public void advanceTime(){
-        if (!stopped || ended) return;
+        if (!stopped && !paused) return;
 
-        this.endTime = this.endTime.plusSeconds(30);
+        this.taskSecondsElapsed += 30;
+        this.prevSecondsElapsed += 30;
     }
 
     // for routine
