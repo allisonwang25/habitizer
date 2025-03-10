@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
@@ -64,23 +65,24 @@ public class EditRoutineFragment extends Fragment {
         }, id -> {
             var dialogFragment = new DeleteTaskDialogFragment().newInstance(id, routineId);
             dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
+        }, id -> {
+            activityModel.moveTaskUp(routineId, id);
+        }, id -> {
+            activityModel.moveTaskDown(routineId, id);
         });
 
-        activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(routineId);
-            List<Task> tasks = routine.getTasks();
-            if (tasks == null) return;
-            adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks));
-            adapter.notifyDataSetChanged();
-        });
 
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
+//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
+            adapter.addAll(tasks
+                    .stream()
+                    .filter(task -> task.getRid() == routineId)
+                    .collect(Collectors.toList()));
             adapter.notifyDataSetChanged();
         });
+
     }
 
     @Nullable
@@ -93,8 +95,11 @@ public class EditRoutineFragment extends Fragment {
         this.view = FragmentEditRoutineBinding.inflate(inflater, container, false);
         view.routine.setAdapter(adapter);
 
-        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
-
+        view.routineTitle.setText(activityModel.getRoutineName(routineId));
+        String goalTime = activityModel.getRoutineGoalTime(routineId);
+        if(!goalTime.equals("-")) {
+            view.routineElapsedTime.setText(String.format("Goal time: " + goalTime + " minutes"));
+        }
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = NewTaskDialogFragment.newInstance(routineId);
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
@@ -118,7 +123,6 @@ public class EditRoutineFragment extends Fragment {
                 mainActivity.setActiveFragment(ROUTINE_LIST, 6969);
             }
         });
-
 
         return view.getRoot();
     }

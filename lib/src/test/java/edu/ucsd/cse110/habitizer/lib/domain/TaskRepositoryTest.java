@@ -22,8 +22,8 @@ public class TaskRepositoryTest {
     public void setUp() {
         inMemoryDataSource = new InMemoryDataSource();
         taskRepository = new TaskRepository(inMemoryDataSource);
-        taskRepository.save(new Task("Task 1", null, 0));
-        taskRepository.save(new Task("Task 2", null, 0));
+        taskRepository.save(new Task("Task 1", null, 0,0));
+        taskRepository.save(new Task("Task 2", null, 0,1));
     }
 
     @Test
@@ -38,21 +38,21 @@ public class TaskRepositoryTest {
 
     @Test
     public void save_addsTaskToDataSource() {
-        Task task = new Task("Task 3", null, 0);
+        Task task = new Task("Task 3", null, 0,0);
         taskRepository.save(task);
         assertThat(inMemoryDataSource.getTasks().size(), is(3));
     }
 
     @Test
     public void save_addsTaskToDataSourceWithCorrectId() {
-        Task task = new Task("Task 3", null, 0);
+        Task task = new Task("Task 3", null, 0,0);
         taskRepository.save(task);
         assertThat(inMemoryDataSource.getTasks().get(2), is(task));
     }
 
     @Test
     public void save_updatesTaskInDataSource() {
-        Task task = new Task("Task 3", null, 0);
+        Task task = new Task("Task 3", null, 0,0);
         taskRepository.save(task);
         assertThat(inMemoryDataSource.getTasks().get(2), is(task));
     }

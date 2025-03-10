@@ -53,4 +53,5 @@ public class ElapsedTimeTester implements Timer {
 
     @Override
     public void startTime(){}
+    public void endTime(){}
 }
