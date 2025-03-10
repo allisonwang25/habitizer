@@ -120,7 +120,7 @@ public class ElapsedTime implements Timer{
             return calcStoppedRoutineTime();
         }
         System.out.printf("prevSecondsElapsed: %d, this iteration: %d\n", this.prevSecondsElapsed, timeSinceLastResume());
-        return (int) Math.ceil((timeSinceLastResume() + this.prevSecondsElapsed)/60.0);
+        return (int) (timeSinceLastResume() + this.prevSecondsElapsed) / 60;
     }
 
     private int timeSinceLastResume(){
