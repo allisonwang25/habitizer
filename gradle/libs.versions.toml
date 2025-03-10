@@ -15,14 +15,20 @@ androidxTestExtJUnit = "1.2.1"
 hamcrest = "3.0"
 junit4 = "4.13.2"
 junit5 = "5.11.3"
+rules = "1.6.1"
+runner = "1.6.2"
 
 [libraries]
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidxActivity" }
 androidx-annotations = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotations" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx-core = { module = "androidx.test:core", version.ref = "rules" }
+androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "androidxTestExtEspressoCore" }
 androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle", version.ref = "androidxLifecycle" }
 androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "androidxLifecycle" }
+androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 androidx-test-ext-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestExtEspressoCore" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJUnit" }
 hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
