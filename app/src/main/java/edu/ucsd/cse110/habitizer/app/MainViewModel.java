@@ -36,7 +36,6 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<String> routineElapsedTimeText = new MutableLiveData<>();
     private final MutableLiveData<String> taskElapsedTimeText = new MutableLiveData<>();
 
-//    private final PlainMutableSubject<List<Integer>> RoutineOrdering;
 
     // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedTasks;
@@ -58,15 +57,10 @@ public class MainViewModel extends ViewModel {
 
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
-//        RoutineOrdering = new PlainMutableSubject<>();
 
         orderedTasks = new PlainMutableSubject<>();
         orderedRoutines = new PlainMutableSubject<>();
 
-//        routineRepository.find(0).observe(routine -> {
-//            if (routine == null) return;
-//            routineGoalTime.setValue(routine.getGoalTime());
-//        });
 
         // When the list of tasks changes (or is first loaded), reset the ordering.
         taskRepository.findAll().observe(tasks -> {
@@ -74,7 +68,6 @@ public class MainViewModel extends ViewModel {
             System.out.println("tasks have changed");
             var newOrdering = tasks.stream()
                             .sorted(Comparator.comparingInt(Task::getSortOrder))
-                            //.map(Task::getTid)
                             .collect(Collectors.toList());
             orderedTasks.setValue(newOrdering);
         });
@@ -93,18 +86,6 @@ public class MainViewModel extends ViewModel {
 
             orderedRoutines.setValue(newOrderedRoutines);
         });
-
-//        RoutineOrdering.observe(ordering -> {
-//            if (ordering == null) return;
-//
-//            var routines = new ArrayList<Routine>();
-//            for (var id : ordering) {
-//                var routine = routineRepository.find(id).getValue();
-//                if (routine == null) return;
-//                routines.add(routine);
-//            }
-//            this.orderedRoutines.setValue(routines);
-//        });
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() { return orderedTasks; }
