@@ -14,7 +14,7 @@ public interface TaskDao {
     Long insert(TaskEntity task);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insert(List<TaskEntity> tasks);
+    List<Long> insert(List<TaskEntity> tasks);
 
     @Query("DELETE FROM Task WHERE tid = :tid")
     void remove(int tid);
@@ -25,8 +25,15 @@ public interface TaskDao {
     @Query("SELECT * FROM Task WHERE tid = :tid")
     LiveData<TaskEntity> findAsLiveData(int tid);
 
+    @Query("SELECT * FROM Task")
+    LiveData<List<TaskEntity>> findAllAsLiveData();
+
+    @Query("SELECT * FROM Task WHERE rid = :rid")
+    LiveData<List<TaskEntity>> findAllWithRIDAsLiveData(int rid);
+
+    @Query("UPDATE Task SET name = :name WHERE tid = :tid")
+    void updateName(String name, int tid);
 
     @Query("SELECT count(*) FROM Task")
     int count();
-
 }

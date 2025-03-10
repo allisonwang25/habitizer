@@ -16,9 +16,9 @@ public class RoutineRepositoryTest {
     @Before
     public void setUp() {
         inMemoryDataSource = new InMemoryDataSource();
-        routineRepository = new RoutineRepository(inMemoryDataSource);
-        routineRepository.save(new Routine("Morning Routine", 0, null));
-        routineRepository.save(new Routine("Evening Routine", 1, null));
+        routineRepository = new SimpleRoutineRepository(inMemoryDataSource);
+        routineRepository.save(new Routine("Morning Routine", null).setID(0));
+        routineRepository.save(new Routine("Evening Routine", null).setID(1));
     }
 
     @Test
@@ -33,36 +33,36 @@ public class RoutineRepositoryTest {
 
     @Test
     public void save_addsRoutineToDataSource() {
-        Routine routine = new Routine("Afternoon Routine", 2, null);
+        Routine routine = new Routine("Afternoon Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().size(), is(3));
     }
 
     @Test
     public void save_addsRoutineToDataSourceWithCorrectId() {
-        Routine routine = new Routine("Afternoon Routine", 2, null);
+        Routine routine = new Routine("Afternoon Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().get(2), is(routine));
     }
 
     @Test
     public void save_updatesRoutineInDataSource() {
-        Routine routine = new Routine("Afternoon Routine", 1, null);
+        Routine routine = new Routine("Afternoon Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().get(2), is(routine));
     }
 
     @Test
     public void save_doesNotAddDuplicateRoutine() {
-        Routine routine = new Routine("Morning Routine", 0, null);
+        Routine routine = new Routine("Morning Routine", null);
         routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().size(), is(3));
     }
 
     @Test
     public void save_doesNotUpdateRoutineWithDifferentId() {
-        Routine routine = new Routine("Afternoon Routine", 2, null);
-        routineRepository.save(routine);
+        Routine routine = new Routine("Afternoon Routine", null);
+            routineRepository.save(routine);
         assertThat(inMemoryDataSource.getRoutines().get(1), not(routine));
     }
 

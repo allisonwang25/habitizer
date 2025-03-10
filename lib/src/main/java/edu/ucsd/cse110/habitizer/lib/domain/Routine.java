@@ -10,7 +10,7 @@ import edu.ucsd.cse110.observables.PlainMutableSubject;
 public class Routine {
     private List<Task> tasks;
     // 0 for morning routine, 1 for evening routine
-    private final int id;
+    private int id;
     private static int idCnt = 0;
     private String name;
     private boolean completed;
@@ -27,7 +27,7 @@ public class Routine {
      *
      * @param name the name of the routine
      */
-    public Routine(String name, int routineType, Timer timer) {
+    public Routine(String name, Timer timer) {
         this.name = name;
         this.id = idCnt++;
         this.tasks = new ArrayList<>();
@@ -75,6 +75,8 @@ public class Routine {
     public String getName() {
         return this.name;
     }
+
+    public Boolean getCompleted() {return this.completed;};
 
     public PlainMutableSubject<List<Task>> getTasksSubject() {
         return tasksSubject;
@@ -128,6 +130,7 @@ public class Routine {
     public int getId() {
         return this.id;
     }
+    public Routine setID(int id) {this.id = id; return this;}
 
     @Override
     public boolean equals(Object o) {
