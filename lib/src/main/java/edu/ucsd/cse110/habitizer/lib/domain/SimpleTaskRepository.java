@@ -49,7 +49,13 @@ public class SimpleTaskRepository implements TaskRepository {
     }
 
     @Override
+    public void checkOffTask(int taskId, int routineId) {
+        dataSource.checkOffTask(taskId, routineId);
+    }
+
+    @Override
     public void save(Task task) {
+        task.setSortOrder(dataSource.getMaxSortOrder(task.getRid()) + 1);
         dataSource.putTask(task);
     }
     public void saveAll(List<Task> tasks) {

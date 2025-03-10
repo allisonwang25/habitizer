@@ -17,9 +17,7 @@ public class Routine {
     // The routine's goal time in minutes (a negative value indicates none is set).
     private String goalTimeMinutes;
     private Timer timer;
-    private int totalTimeElapsed;
-
-    private final PlainMutableSubject<List<Task>> tasksSubject = new PlainMutableSubject<>();
+    private int totalRoutineTimeElapsed;
 
     /**
      * Constructs a new Routine with the given name.
@@ -33,9 +31,8 @@ public class Routine {
         this.tasks = new ArrayList<>();
         this.completed = false;
         this.goalTimeMinutes = "-";
-        this.totalTimeElapsed = 0;
+        this.totalRoutineTimeElapsed = 0;
         this.timer = timer;
-        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -45,7 +42,6 @@ public class Routine {
      */
     public void addTask(Task task) {
         this.tasks.add(task);
-        tasksSubject.setValue(tasks);
     }
 
     /**
@@ -55,7 +51,6 @@ public class Routine {
      */
     public void removeTask(Task task) {
         this.tasks.remove(task);
-        tasksSubject.setValue(tasks);
     }
 
     public void removeTask(int taskId) {
@@ -72,15 +67,17 @@ public class Routine {
         return this.tasks;
     }
 
+    public void swapSortOrder(Task task1, Task task2) {
+        int temp = task1.getSortOrder();
+        task1.setSortOrder(task2.getSortOrder());
+        task2.setSortOrder(temp);
+    }
+
     public String getName() {
         return this.name;
     }
 
     public Boolean getCompleted() {return this.completed;};
-
-    public PlainMutableSubject<List<Task>> getTasksSubject() {
-        return tasksSubject;
-    }
 
     public Timer getTimer() {
         return this.timer;
@@ -105,11 +102,22 @@ public class Routine {
      */
     public void completeRoutine() {
         this.completed = true;
-        this.totalTimeElapsed = this.timer.getTotalTimeElapsed();
+        System.out.println("ending time");
+        this.timer.endTime();
+        this.totalRoutineTimeElapsed = this.timer.getTotalTimeElapsed();
+    }
+
+    public boolean isCompleted() {
+        for (Task task : tasks) {
+            if (!task.isCheckedOff()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public int getTotalTimeElapsed(){
-        return this.totalTimeElapsed;
+        return this.timer.getCurrentlyElapsedTime();
     }
 
     public boolean isEnded() {
@@ -137,8 +145,9 @@ public class Routine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Routine routine = (Routine) o;
-        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalTimeElapsed == routine.totalTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
+        return id == routine.id && completed == routine.completed && goalTimeMinutes == routine.goalTimeMinutes && totalRoutineTimeElapsed == routine.totalRoutineTimeElapsed && Objects.equals(tasks, routine.tasks) && Objects.equals(name, routine.name) && Objects.equals(timer, routine.timer);
     }
+
 
     @Override
     public int hashCode() {

@@ -16,10 +16,10 @@ import java.util.function.Consumer;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.app.databinding.TaskCardBinding;
 public class RoutineAdapter extends ArrayAdapter<Task> {
-    Consumer<Integer>  onEditClick;
-    public RoutineAdapter(Context context, List<Task> tasks, Consumer<Integer> onEditClick) {
+    Consumer<Integer>  onFinishClick;
+    public RoutineAdapter(Context context, List<Task> tasks, Consumer<Integer> onFinishClick) {
         super(context, 0, new ArrayList<>(tasks));
-        this.onEditClick = onEditClick;
+        this.onFinishClick = onFinishClick;
     }
 
     @NonNull
@@ -39,14 +39,15 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
         binding.taskTitle.setText(task.getName());
 
         binding.taskCardLayout.setOnClickListener(v -> {
-            task.checkOff();
+            var id = task.getTid();
+            onFinishClick.accept(id);
 
             // "creating a strikethrough text"
             // https://stackoverflow.com/questions/3881553/is-there-an-easy-way-to-strike-through-text-in-an-app-widget/6739637#6739637
             // 2025 02 12
             // Took the method of setting flags to set strikethrough
 
-            binding.elapsedTime.setText(String.format(String.valueOf(task.getTimeElapsed()) + " Minutes Elapsed"));
+            binding.elapsedTime.setText(String.format(String.valueOf((int)Math.ceil(task.getTimeElapsed() / 60.0)) + " Minutes Elapsed"));
             binding.taskTitle.setPaintFlags(binding.taskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         });
 

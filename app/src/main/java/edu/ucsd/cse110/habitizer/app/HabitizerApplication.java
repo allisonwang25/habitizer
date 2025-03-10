@@ -15,19 +15,12 @@ import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
 
 public class HabitizerApplication extends Application {
-    InMemoryDataSource dataSource;
     private RoutineRepository routineRepository;
     private TaskRepository taskRepository;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //init datasource
-//        this.dataSource = InMemoryDataSource.fromDefault();
-//        this.routineRepository = new RoutineRepository(dataSource);
-//        this.mTaskRepository = new TaskRepository(dataSource);
-//        this.eTaskRepository = new TaskRepository(dataSource);
 
         var database = Room.databaseBuilder(
             getApplicationContext(),

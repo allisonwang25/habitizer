@@ -44,13 +44,15 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         }
 
         binding.routineTitle.setText(routine.getName());
-        binding.routineStartBtn.setText("Start");
-        binding.routineEditBtn.setText("Edit");
+        if(!routine.getGoalTime().equals("-")) {
+            binding.goalTime.setText("Goal: " + routine.getGoalTime() + " Minutes");
+        }
 
         binding.routineStartBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_ACTIVE, i);
+                routine.getTimer().startTime();
             }
         }) ;
 

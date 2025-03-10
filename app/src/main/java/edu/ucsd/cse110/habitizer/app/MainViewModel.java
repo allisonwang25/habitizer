@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.app;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
@@ -17,6 +18,7 @@ import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
 import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
+import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 
 public class MainViewModel extends ViewModel {
@@ -25,8 +27,11 @@ public class MainViewModel extends ViewModel {
     private final TaskRepository taskRepository;
     // UI state
     private final PlainMutableSubject<String> routineGoalTime;
-    private final PlainMutableSubject<List<Integer>> taskOrdering;
-    private final PlainMutableSubject<List<Integer>> routineOrdering;
+
+    // LiveData to hold the elapsed time text
+    private final MutableLiveData<String> routineElapsedTimeText = new MutableLiveData<>();
+    private final MutableLiveData<String> taskElapsedTimeText = new MutableLiveData<>();
+
 
     // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedTasks;
@@ -48,8 +53,6 @@ public class MainViewModel extends ViewModel {
 
         // Create the observable subjects.
         routineGoalTime = new PlainMutableSubject<>();
-        taskOrdering = new PlainMutableSubject<>();
-        routineOrdering = new PlainMutableSubject<>();
 
         orderedTasks = new PlainMutableSubject<>();
         orderedRoutines = new PlainMutableSubject<>();
@@ -63,31 +66,12 @@ public class MainViewModel extends ViewModel {
         taskRepository.findAll().observe(tasks -> {
             if (tasks == null) return; // not ready yet, ignore
 
-            var newOrderedTasks = tasks.stream()
-                    .sorted(Comparator.comparingInt(Task::getTid))
-                    .collect(Collectors.toList());
+            var newOrdering = tasks.stream()
+                .sorted(Comparator.comparingInt(Task::getSortOrder))
+                .collect(Collectors.toList());
 
-            var ordering = new ArrayList<Integer>();
-            for (Task t : newOrderedTasks) {
-                ordering.add(t.getTid());
-            }
-
-            taskOrdering.setValue(ordering);
-            orderedTasks.setValue(newOrderedTasks);
+            orderedTasks.setValue(newOrdering);
         });
-
-//        taskOrdering.observe(ordering -> {
-//            if (ordering == null) return;
-//
-//            var tasks = new ArrayList<Task>();
-//            for (var id : ordering) {
-//                var task = taskRepository.find(id).getValue();
-//                if (task == null) return;
-//                tasks.add(task);
-//
-//            }
-////            this.orderedTasks.setValue(tasks);
-//        });
 
         routineRepository.findAll().observe(routines -> {
             if (routines == null) return;
@@ -101,38 +85,12 @@ public class MainViewModel extends ViewModel {
                 ordering.add(routine.getId());
             }
 
-            routineOrdering.setValue(ordering);
             orderedRoutines.setValue(newOrderedRoutines);
         });
-
-//        routineOrdering.observe(ordering -> {
-//            if (ordering == null) return;
-//
-//            var routines = new ArrayList<Routine>();
-//            for (var id : ordering) {
-//                var routine = routineRepository.find(id).getValue();
-//                if (routine == null) return;
-//                routines.add(routine);
-//            }
-////            this.orderedRoutines.setValue(routines);
-//        });
-
-
-        // Commented out the evening routine as we don't need 2 routines for this US
-//        eTaskRepository.findAll().observe(tasks -> {
-//            if (tasks == null) return; // not ready yet, ignore
-//
-//            var ordering = new ArrayList<Integer>();
-//            for (int i = 0; i < tasks.size(); i++) {
-//                ordering.add(i);
-//            }
-//            eTaskOrdering.setValue(ordering);
-//        });
 
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() {
-//        Log.d("debug", orderedTasks.getValue().toString());
         return orderedTasks;
     }
 
@@ -156,6 +114,7 @@ public class MainViewModel extends ViewModel {
 
     public void addTask(Task task, int routineId){
         orderedRoutines.getValue().get(routineId).addTask(task);
+//        routineRepository.addTask(routineId, task);
         taskRepository.save(task);
     }
 
@@ -185,11 +144,96 @@ public class MainViewModel extends ViewModel {
         routineRepository.save(new Routine(name, new ElapsedTime()));
     }
 
-    public PlainMutableSubject<String> getRoutineGoalTime() {
-        return routineGoalTime;
+    public void checkOffTask(int taskId, int routineId){
+        taskRepository.checkOffTask(taskId, routineId);
     }
 
-    public void setRoutineGoalTime(int minutes) {
-        routineGoalTime.setValue(Integer.toString(minutes));
+    public String getRoutineName(int routineId){
+        return routineRepository.getRoutineName(routineId);
     }
+
+    //    ------------------ TASK ORDERING METHODS ------------------
+
+    public void moveTaskUp(int routineId, int taskId) {
+        routineRepository.moveTaskUp(routineId, taskId);
+    }
+
+    public void moveTaskDown(int routineId, int taskId) {
+        routineRepository.moveTaskDown(routineId, taskId);
+    }
+
+    //    ------------------ TIME RELATED METHODS ------------------
+    public Timer getTimer(int routineId){
+        return routineRepository.getTimer(routineId);
+    }
+
+//    public PlainMutableSubject<String> getRoutineGoalTime() {
+//        return routineGoalTime;
+//    }
+
+    public String getRoutineGoalTime(int routineId) {
+        return routineRepository.getRoutineGoalTime(routineId);
+    }
+
+    public void setRoutineGoalTime(int routineId, int minutes) {
+        routineRepository.setRoutineGoalTime(routineId, minutes);
+    }
+
+//    public void setRoutineGoalTime(int minutes) {
+//        routineGoalTime.setValue(Integer.toString(minutes));
+//    }
+
+    public boolean getRoutineCompleted(int routineId){
+        return routineRepository.getRoutineCompleted(routineId);
+    }
+    public void completeRoutine(int routineId){
+        routineRepository.completeRoutine(routineId);
+    }
+
+    public LiveData<String> getRoutineElapsedTimeText() {
+        return routineElapsedTimeText;
+    }
+
+    public LiveData<String> getTaskElapsedTimeText() {
+        return taskElapsedTimeText;
+    }
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable updateElapsedTimeRunnable;
+
+    // Call this method to start the timer for a specific routine
+    public void startUpdatingElapsedTime(int routineId) {
+        updateElapsedTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                String goalTime = getRoutineGoalTime(routineId);
+                int routineElapsedMinutes = routineRepository.getRoutineTotalTimeElapsed(routineId);
+                String goalTimeText = routineElapsedMinutes + " out of " + goalTime + " minutes elapsed";
+                routineElapsedTimeText.setValue(goalTimeText);
+
+                int currTaskElapsedTime = routineRepository.getCurrTaskTimeElapsed(routineId);
+                if (currTaskElapsedTime < 60){
+                    String currTaskTimeText = currTaskElapsedTime + " seconds elapsed";
+                    taskElapsedTimeText.setValue(currTaskTimeText);
+                }
+                else {
+                    String currTaskTimeText = currTaskElapsedTime / 60 + " minutes elapsed";
+                    taskElapsedTimeText.setValue(currTaskTimeText);
+                }
+                // Schedule the next update after 1 second (1000ms)
+                handler.postDelayed(this, 1000);
+            }
+        };
+        // Start the periodic update
+        handler.post(updateElapsedTimeRunnable);
+    }
+
+    public void stopUpdatingElapsedTime() {
+        if (updateElapsedTimeRunnable != null) {
+            handler.removeCallbacks(updateElapsedTimeRunnable);
+            updateElapsedTimeRunnable = null;
+        }
+    }
+
+
 }
