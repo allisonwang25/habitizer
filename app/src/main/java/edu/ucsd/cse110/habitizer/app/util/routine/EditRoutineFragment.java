@@ -76,12 +76,13 @@ public class EditRoutineFragment extends Fragment {
             if (tasks == null) return;
             adapter.clear();
 //            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
-            adapter.addAll(activityModel.getOrderedTasks().getValue()
+            adapter.addAll(tasks
                     .stream()
                     .filter(task -> task.getRid() == routineId)
                     .collect(Collectors.toList()));
             adapter.notifyDataSetChanged();
         });
+
     }
 
     @Nullable
@@ -94,8 +95,11 @@ public class EditRoutineFragment extends Fragment {
         this.view = FragmentEditRoutineBinding.inflate(inflater, container, false);
         view.routine.setAdapter(adapter);
 
-        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
-
+        view.routineTitle.setText(activityModel.getRoutineName(routineId));
+        String goalTime = activityModel.getRoutineGoalTime(routineId);
+        if(!goalTime.equals("-")) {
+            view.routineElapsedTime.setText(String.format("Goal time: " + goalTime + " minutes"));
+        }
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = NewTaskDialogFragment.newInstance(routineId);
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");

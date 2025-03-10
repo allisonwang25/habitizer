@@ -32,8 +32,9 @@ public class TaskRepository {
         dataSource.renameTask(taskId, taskName);
     }
 
-    public void removeTask(int taskId) {
-        dataSource.removeTask(taskId);
+
+    public void checkOffTask(int taskId, int routineId) {
+        dataSource.checkOffTask(taskId, routineId);
     }
 
     public void save(Task task) {

@@ -99,7 +99,18 @@ public class Routine {
      */
     public void completeRoutine() {
         this.completed = true;
+        System.out.println("ending time");
+        this.timer.endTime();
         this.totalRoutineTimeElapsed = this.timer.getTotalTimeElapsed();
+    }
+
+    public boolean isCompleted() {
+        for(Task task : tasks) {
+            if(!task.isCheckedOff()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public int getTotalTimeElapsed(){

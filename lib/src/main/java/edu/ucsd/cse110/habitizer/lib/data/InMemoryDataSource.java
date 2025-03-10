@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
+import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
@@ -66,13 +67,28 @@ public class InMemoryDataSource {
         tasksBySortOrder.put(routineSO, task);
         if (taskSubjects.containsKey(task.getTid())) {
             taskSubjects.get(task.getTid()).setValue(task);
+        } else {
+            taskSubjects.put(task.getTid(), new PlainMutableSubject<>(task));
         }
         postInsert(task.getRid());
         allTasksSubjects.setValue(getTasks());
     }
     public void putTasks(List<Task> tasks) {
-        tasks.forEach(task -> this.tasks.put(task.getTid(), task));
-        postInsert(tasks.get(0).getRid());
+        tasks.forEach(task -> {
+            this.tasks.put(task.getTid(), task);
+            postInsert(task.getRid());
+        });
+
+
+        tasks.forEach(task -> {
+            if (taskSubjects.containsKey(task.getTid())) {
+                taskSubjects.get(task.getTid()).setValue(task);
+            } else {
+                taskSubjects.put(task.getTid(), new PlainMutableSubject<>(task));
+            }
+        });
+
+        allTasksSubjects.setValue(getTasks());
 
         tasks.forEach(task -> {
             Map<Integer, Integer> routineSO = new HashMap<>();
@@ -80,11 +96,6 @@ public class InMemoryDataSource {
             tasksBySortOrder.put(routineSO, task);
         });
 
-        tasks.forEach(task -> {
-            if (taskSubjects.containsKey(task.getTid())) {
-                taskSubjects.get(task.getTid()).setValue(task);
-            }
-        });
     }
 
     public void renameTask(int taskId, String taskName){
@@ -93,20 +104,33 @@ public class InMemoryDataSource {
         allTasksSubjects.setValue(getTasks());
     }
 
-    public void removeTask(int taskId) {
+    public void removeTask(int routineId, int taskId) {
         if (!tasks.containsKey(taskId) || !taskSubjects.containsKey(taskId)) {
             return;
         }
-
         Map<Integer,Integer> routineSO = new HashMap<>();
-        int routineId = tasks.get(taskId).getRid();
         int sortOrder = tasks.get(taskId).getSortOrder();
         routineSO.put(routineId, sortOrder);
+
+        getRoutine(routineId).removeTask(taskId);
         tasks.remove(taskId);
         taskSubjects.remove(taskId);
         tasksBySortOrder.remove(routineSO);
+
         shiftSortOrders(routineId, sortOrder, maxSortOrders.get(routineId), -1);
 
+        allTasksSubjects.setValue(getTasks());
+    }
+
+    public void checkOffTask(int taskId, int routineId){
+        Task task = tasks.get(taskId);
+        task.checkOff();
+        Routine routine = getRoutine(routineId);
+        System.out.println(routine);
+        if(routine.isCompleted()){
+            System.out.println("all done");
+            routine.completeRoutine();
+        }
         allTasksSubjects.setValue(getTasks());
     }
 
@@ -181,18 +205,35 @@ public class InMemoryDataSource {
                 }
             }
         }
-        for (Task task : DEFAULT_MORNING_TASKS) {
-            data.putTask(task);
-        }
-        for (Task task : DEFAULT_EVENING_TASKS) {
-            data.putTask(task);
-        }
+        data.putTasks(DEFAULT_MORNING_TASKS);
+        data.putTasks(DEFAULT_EVENING_TASKS);
         return data;
+    }
+    public String getRoutineName(int id){
+        return getRoutine(id).getName();
+    }
+    public Timer getTimer(int id){
+        return getRoutine(id).getTimer();
+    }
+    public int getRoutineTotalTimeElapsed(int id){
+        return getRoutine(id).getTotalTimeElapsed();
+    }
+    public int getRoutineCurrTaskTimeElapsed(int id){
+        return getRoutine(id).getTimer().getCurrTaskTimeElapsed();
     }
     public String getRoutineGoalTime(int id){
         return getRoutine(id).getGoalTime();
     }
-
+    public void setRoutineGoalTime(int id, int minutes){
+        getRoutine(id).setGoalTime(minutes);
+    }
+    public boolean getRoutineCompleted(int id){
+        return getRoutine(id).isCompleted();
+    }
+    public void completeRoutine(int id){
+        System.out.println(getRoutine(id));
+        getRoutine(id).completeRoutine();
+    }
     public int getMaxSortOrder(int routineId) {
         return maxSortOrders.get(routineId);
     }

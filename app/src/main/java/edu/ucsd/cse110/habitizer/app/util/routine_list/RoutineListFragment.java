@@ -52,9 +52,9 @@ public class RoutineListFragment extends Fragment {
         activityModel.getOrderedRoutines().observe(routines -> {
             if (routines == null) return;
             adapter.clear();
-            for (Routine routine : routines) {
-                adapter.add(routine);
-            }
+//            for (Routine routine : routines) {
+            adapter.addAll(routines);
+//            }
             adapter.notifyDataSetChanged();
         });
     }

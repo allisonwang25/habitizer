@@ -6,6 +6,7 @@ public interface Timer {
     int getCurrentlyElapsedTime();
     int getCurrTaskTimeElapsed();
     void stopTimer();
+    void endTime();
 
     void advanceTime();
     void startTime();

@@ -44,6 +44,9 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         }
 
         binding.routineTitle.setText(routine.getName());
+        if(!routine.getGoalTime().equals("-")) {
+            binding.goalTime.setText("Goal: " + routine.getGoalTime() + " Minutes");
+        }
 
         binding.routineStartBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {

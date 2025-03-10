@@ -4,12 +4,10 @@
     <string name="_0_minutes_elapsed">Incomplete</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="morning_routine">Morning Routine</string>
     <string name="routine_name">Routine Name</string>
     <string name="start">Start</string>
     <string name="edit">Edit</string>
     <string name="total_time_0_minutes">Total Time: 0 Minutes</string>
     <string name="your_routines">Your Routines:</string>
-    <string name="total_time">Total time: </string>
-    <string name="evening_routine">Evening routine</string>
+    <string name="no_goal_time">No Goal Time Yet</string>
 </resources>
