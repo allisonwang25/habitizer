@@ -47,7 +47,7 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
             // Took the method of setting flags to set strikethrough
 
             int taskTimeElapsed = task.getTimeElapsed();
-            if (taskTimeElapsed < 60) {
+            if (taskTimeElapsed <= 55) {
                 int roundedTime = (taskTimeElapsed / 5) * 5; // Round to nearest 5 seconds
                 binding.elapsedTime.setText(String.format("%d Seconds Elapsed", roundedTime));
             }
