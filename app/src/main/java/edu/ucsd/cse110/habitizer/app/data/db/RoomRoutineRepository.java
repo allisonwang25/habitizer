@@ -13,9 +13,10 @@ import edu.ucsd.cse110.observables.Subject;
 
 public class RoomRoutineRepository implements RoutineRepository {
     private RoutineDao routineDao;
-
-    public RoomRoutineRepository(RoutineDao dao) {
+    private final TimerDao timerDao;
+    public RoomRoutineRepository(RoutineDao dao, TimerDao timerDao) {
         this.routineDao = dao;
+        this.timerDao = timerDao;
     }
 
     @Override

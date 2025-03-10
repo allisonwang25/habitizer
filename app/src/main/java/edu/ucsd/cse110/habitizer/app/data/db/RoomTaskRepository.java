@@ -14,9 +14,11 @@ import edu.ucsd.cse110.observables.Subject;
 
 public class RoomTaskRepository implements TaskRepository {
     private final TaskDao taskDao;
+    private final TimerDao timerDao;
 
-    public RoomTaskRepository(TaskDao dao) {
+    public RoomTaskRepository(TaskDao dao, TimerDao timerDao) {
         this.taskDao = dao;
+        this.timerDao = timerDao;
     }
 
     @Override
@@ -69,6 +71,11 @@ public class RoomTaskRepository implements TaskRepository {
     @Override
     public void removeTask(int taskId) {
         taskDao.remove(taskId);
+    }
+
+    @Override
+    public void checkOffTask(int taskId, int routineId) {
+
     }
 
     @Override
