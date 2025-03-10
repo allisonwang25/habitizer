@@ -65,7 +65,6 @@ public class MainViewModel extends ViewModel {
         // When the list of tasks changes (or is first loaded), reset the ordering.
         taskRepository.findAll().observe(tasks -> {
             if (tasks == null) return; // not ready yet, ignore
-            System.out.println("tasks have changed");
             var newOrdering = tasks.stream()
                             .sorted(Comparator.comparingInt(Task::getSortOrder))
                             .collect(Collectors.toList());
@@ -110,7 +109,6 @@ public class MainViewModel extends ViewModel {
                 String goalTime = getRoutineGoalTime(routineId);
                 int routineElapsedMinutes = routineRepository.getRoutineTotalTimeElapsed(routineId);
                 String goalTimeText = routineElapsedMinutes + " out of " + goalTime + " minutes elapsed";
-                System.out.println(goalTimeText);
                 routineElapsedTimeText.setValue(goalTimeText);
 
                 int currTaskElapsedTime = routineRepository.getCurrTaskTimeElapsed(routineId);
@@ -159,7 +157,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public void removeTask(int taskId, int routineId) {
-        Log.d("System.out", "removeTask called");
         routineRepository.removeTask(routineId, taskId);
     }
 
