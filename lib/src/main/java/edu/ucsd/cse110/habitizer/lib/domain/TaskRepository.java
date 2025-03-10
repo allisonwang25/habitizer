@@ -20,6 +20,8 @@ public interface TaskRepository {
 
     void removeTask(int taskId);
 
+    void checkOffTask(int taskId, int routineId);
+
     void save(Task task);
     void saveAll(List<Task> tasks);
 }

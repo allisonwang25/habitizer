@@ -60,16 +60,20 @@ public class RoutineFragment extends Fragment {
 
         // Initialize the Adapter (with an empty list for now)
         this.adapter = new RoutineAdapter(requireActivity(), List.of(), id -> {
-            var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
-            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+            activityModel.checkOffTask(id, routineId);
         });
 
-        activityModel.getOrderedTasksWithId(routineId).observe(tasks -> {
+        activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
             for (Task task : tasks) {
                 adapter.add(task);
             }
+//            adapter.addAll(tasks
+//                .stream()
+//                .filter(task -> task.getRid() == routineId)
+//                .collect(Collectors.toList()));
+
             adapter.notifyDataSetChanged();
         });
 
@@ -93,23 +97,38 @@ public class RoutineFragment extends Fragment {
     ) {
         this.view = FragmentRoutineBinding.inflate(inflater, container, false);
 
-        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
+        view.routineTitle.setText(activityModel.getRoutineName(routineId));
 
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
+                activityModel.stopUpdatingElapsedTime();
                 mainActivity.setActiveFragment(ROUTINE_LIST, 69420);
             }
         });
 
         view.stopTimerButton.setOnClickListener(v -> {
-            activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().stopTimer();
+            activityModel.getTimer(routineId).stopTimer();
         });
 
         view.advanceTimeButton.setOnClickListener(v -> {
-            activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().advanceTime();
+            activityModel.getTimer(routineId).advanceTime();
         });
 
+        view.endRoutineButton.setOnClickListener(v -> {
+            activityModel.completeRoutine(routineId);
+        });
+
+        view.routine.setAdapter(adapter);
+        activityModel.startUpdatingElapsedTime(routineId);
+
+        activityModel.getRoutineElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.routineElapsedTime.setText(elapsedText);
+        });
+
+        activityModel.getTaskElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {
+            view.currTaskElapsedTime.setText(elapsedText);
+        });
 
         view.routine.setAdapter(adapter);
 

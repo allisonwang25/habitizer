@@ -20,16 +20,6 @@ public class ElapsedTimeTester implements Timer {
     }
 
     @Override
-    public void pauseTime(){
-        return;
-    }
-
-    @Override
-    public void resumeTime(){
-        return;
-    }
-
-    @Override
     public int getTaskTimeElapsed(){
         int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, this.currTime);
         int timeElapsedRounded = (int) Math.ceil(timeElapsed / 60.0);
@@ -49,6 +39,7 @@ public class ElapsedTimeTester implements Timer {
     public void stopTimer(){
         return;
     }
+
 
     @Override
     public int getCurrentlyElapsedTime(){

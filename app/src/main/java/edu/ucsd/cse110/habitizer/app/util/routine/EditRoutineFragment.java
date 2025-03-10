@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
@@ -63,44 +64,22 @@ public class EditRoutineFragment extends Fragment {
         }, id -> {
             var dialogFragment = new DeleteTaskDialogFragment().newInstance(id, routineId);
             dialogFragment.show(getParentFragmentManager(), "DeleteTaskDialogFragment");
+        }, id -> {
+            activityModel.moveTaskUp(routineId, id);
+        }, id -> {
+            activityModel.moveTaskDown(routineId, id);
         });
-
-//        activityModel.getOrderedTasksWithId(routineId).observe(tasks -> {
-//            if (tasks == null) return;
-//            adapter.clear();
-//            for (Task task : tasks) {
-//                adapter.add(task);
-//            }
-//            adapter.notifyDataSetChanged();
-//        });
 
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            for (Task task : tasks) {
-                if (task.getRid() == routineId) {
-                    adapter.add(task);
-                }
-            }
+            adapter.addAll(tasks
+                .stream()
+                .filter(task -> task.getRid() == routineId)
+                .collect(Collectors.toList()));
             adapter.notifyDataSetChanged();
         });
 
-
-
-//        activityModel.getOrderedRoutines().observe(routines -> {
-//            List<Task> tasks = activityModel.getTasks(routineId);
-//            if (tasks == null) return;
-//            adapter.clear();
-//            adapter.addAll(new ArrayList<>(tasks));
-//            adapter.notifyDataSetChanged();
-//        });
-//
-//        activityModel.getOrderedTasks().observe(tasks -> {
-//            if (tasks == null) return;
-//            adapter.clear();
-//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks());
-//            adapter.notifyDataSetChanged();
-//        });
     }
 
     @Nullable
@@ -113,20 +92,15 @@ public class EditRoutineFragment extends Fragment {
         this.view = FragmentEditRoutineBinding.inflate(inflater, container, false);
         view.routine.setAdapter(adapter);
 
-        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
+        view.routineTitle.setText(activityModel.getRoutineName(routineId));
+        String goalTime = activityModel.getRoutineGoalTime(routineId);
+        if(!goalTime.equals("-")) {
+            view.routineElapsedTime.setText(String.format("Goal time: " + goalTime + " minutes"));
+        }
 
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = NewTaskDialogFragment.newInstance(routineId);
             dialogFragment.show(getParentFragmentManager(), "newTaskDialog");
-        });
-
-        activityModel.getRoutineGoalTime().observe(goalTime -> {
-            if (goalTime == null) return;
-            String elapsedText = "0 out of " + goalTime + " minutes elapsed";
-            // Using view binding to update the TextView:
-            this.view.routineElapsedTime.setText(elapsedText);
-            if (goalTime.equals("-")) view.goalTimeEditText.setText("");
-            else view.goalTimeEditText.setText(goalTime);
         });
 
         // Handle when user enters a new goal time
@@ -134,8 +108,9 @@ public class EditRoutineFragment extends Fragment {
             String input = view.goalTimeEditText.getText().toString();
             if (!input.isEmpty()) {
                 int newGoalTime = Integer.parseInt(input);
-                activityModel.setRoutineGoalTime(newGoalTime); // Update ViewModel
+                activityModel.setRoutineGoalTime(routineId, newGoalTime);  // Update ViewModel
                 view.goalTimeEditText.setText(""); // Clear the text field
+                view.routineElapsedTime.setText("Goal time: " + newGoalTime + " minutes");
             }
             return false;
         });

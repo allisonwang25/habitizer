@@ -19,11 +19,17 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
 
     Consumer<Integer> onEditClick;
     Consumer<Integer> onDeleteClick;
+    Consumer<Integer> onUpClick;
+    Consumer<Integer> onDownClick;
 
-    public EditRoutineAdapter(Context context, List<Task> routine, Consumer<Integer> onEditClick, Consumer<Integer> onDeleteClick) {
+
+    public EditRoutineAdapter(Context context, List<Task> routine, Consumer<Integer> onEditClick, Consumer<Integer> onDeleteClick,
+                              Consumer<Integer> onUpClick, Consumer<Integer> onDownClick) {
         super(context, 0, new ArrayList<>(routine));
         this.onEditClick = onEditClick;
         this.onDeleteClick = onDeleteClick;
+        this.onUpClick = onUpClick;
+        this.onDownClick = onDownClick;
     }
 
     @NonNull
@@ -50,6 +56,16 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         binding.taskDeleteButton.setOnClickListener(v -> {
             var id = task.getTid();
             onDeleteClick.accept(id);
+        });
+
+        binding.upButton.setOnClickListener(v -> {
+            var id = task.getTid();
+            onUpClick.accept(id);
+        });
+
+        binding.downButton.setOnClickListener(v -> {
+            var id = task.getTid();
+            onDownClick.accept(id);
         });
 
         return binding.getRoot();
