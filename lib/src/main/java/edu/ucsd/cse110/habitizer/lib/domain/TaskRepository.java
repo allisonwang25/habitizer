@@ -16,9 +16,9 @@ public class TaskRepository {
         return dataSource.getTasks().size();
     }
 
-    public void append(Task task) {
-        dataSource.putTask(task);
-    }
+//    public void append(Task task) {
+//        dataSource.putTask(task);
+//    }
 
     public PlainMutableSubject<Task> find(int id) {
         return (PlainMutableSubject<Task>) dataSource.getTaskSubject(id);
@@ -32,11 +32,13 @@ public class TaskRepository {
         dataSource.renameTask(taskId, taskName);
     }
 
-    public void removeTask(int taskId) {
-        dataSource.removeTask(taskId);
+
+    public void checkOffTask(int taskId, int routineId) {
+        dataSource.checkOffTask(taskId, routineId);
     }
 
     public void save(Task task) {
+        task.setSortOrder(dataSource.getMaxSortOrder(task.getRid()) + 1);
         dataSource.putTask(task);
     }
 }

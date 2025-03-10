@@ -11,6 +11,7 @@ public class ElapsedTime implements Timer{
     int prevSecondsElapsed; // used for ROUTINE paused time
     boolean stopped;
     boolean paused;
+    boolean ended;
     public ElapsedTime(){
         this.startTime = LocalDateTime.now();
         this.prevTaskFinishTime = LocalDateTime.now();
@@ -71,6 +72,14 @@ public class ElapsedTime implements Timer{
         this.endTime = LocalDateTime.now();
     }
 
+    public void endTime(){
+        System.out.println("made it to endtime in elapsed time");
+        this.ended = true;
+        if(!stopped)
+            this.endTime = LocalDateTime.now();
+        stopped = true;
+    }
+
     // calculates the time that the last task took
     public int calcStoppedTaskTime(){
         if (stopped){
@@ -86,14 +95,17 @@ public class ElapsedTime implements Timer{
     public int calcStoppedRoutineTime(){
         if (stopped){
             int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, endTime) + this.prevSecondsElapsed;
-            return (int) Math.ceil(timeElapsed / 60.0);
+            System.out.println("aloha " + timeElapsed);
+            if(ended)
+                return (int) Math.ceil(timeElapsed / 60.0);
+            return (int) Math.floor(timeElapsed / 60.0);
         }
         return -1;
     }
 
     @Override
     public void advanceTime(){
-        if (!stopped) return;
+        if (!stopped || ended) return;
 
         this.endTime = this.endTime.plusSeconds(30);
     }
@@ -102,15 +114,26 @@ public class ElapsedTime implements Timer{
     @Override
     public int getCurrentlyElapsedTime(){
         if (stopped){
+            System.out.println("stopped");;
             return calcStoppedRoutineTime();
         }
+        System.out.println("not stopped");
         return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
     }
 
     private boolean started = false;
     @Override
     public void startTime() {
-        if (started) return;
+        if(started && ended) {
+            this.startTime = LocalDateTime.now();
+            this.prevTaskFinishTime = startTime;
+            this.stopped = false;
+            this.paused = false;
+            this.ended = false;
+            this.prevSecondsElapsed = 0;
+            this.taskSecondsElapsed = 0;
+        }
+        else if(started) return;
         this.startTime = LocalDateTime.now();
         this.prevTaskFinishTime = startTime;
         started = true;

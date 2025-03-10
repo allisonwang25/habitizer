@@ -9,12 +9,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
@@ -59,16 +61,17 @@ public class RoutineFragment extends Fragment {
 
     // Initialize the Adapter (with an empty list for now)
         this.adapter = new RoutineAdapter(requireActivity(), List.of(), id -> {
-            var dialogFragment = new RenameTaskDialogFragment().newInstance(id);
-            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+           activityModel.checkOffTask(id, routineId);
         });
 
-        activityModel.getOrderedRoutines().observe(routines -> {
-            Routine routine = routines.get(routineId);
-            List<Task> tasks = routine.getTasks();
+        activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks));
+//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
+            adapter.addAll(tasks
+                    .stream()
+                    .filter(task -> task.getRid() == routineId)
+                    .collect(Collectors.toList()));
             adapter.notifyDataSetChanged();
         });
     }
@@ -82,7 +85,7 @@ public class RoutineFragment extends Fragment {
     ) {
         this.view = FragmentRoutineBinding.inflate(inflater, container, false);
 
-        view.routineTitle.setText(activityModel.getOrderedRoutines().getValue().get(routineId).getName());
+        view.routineTitle.setText(activityModel.getRoutineName(routineId));
 
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
@@ -93,11 +96,15 @@ public class RoutineFragment extends Fragment {
         });
 
         view.stopTimerButton.setOnClickListener(v -> {
-            activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().stopTimer();
+            activityModel.getTimer(routineId).stopTimer();
         });
 
         view.advanceTimeButton.setOnClickListener(v -> {
-            activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().advanceTime();
+            activityModel.getTimer(routineId).advanceTime();
+        });
+
+        view.endRoutineButton.setOnClickListener(v -> {
+            activityModel.completeRoutine(routineId);
         });
 
         activityModel.startUpdatingElapsedTime(routineId);
@@ -111,7 +118,6 @@ public class RoutineFragment extends Fragment {
         });
 
         view.routine.setAdapter(adapter);
-
         return view.getRoot();
     }
 }

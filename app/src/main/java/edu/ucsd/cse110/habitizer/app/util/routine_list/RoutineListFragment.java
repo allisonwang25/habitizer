@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +52,9 @@ public class RoutineListFragment extends Fragment {
         activityModel.getOrderedRoutines().observe(routines -> {
             if (routines == null) return;
             adapter.clear();
-            for (Routine routine : routines) {
-                adapter.add(routine);
-            }
+//            for (Routine routine : routines) {
+            adapter.addAll(routines);
+//            }
             adapter.notifyDataSetChanged();
         });
     }
