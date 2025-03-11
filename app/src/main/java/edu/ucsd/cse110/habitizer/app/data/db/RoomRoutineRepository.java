@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import edu.ucsd.cse110.habitizer.app.util.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
-import edu.ucsd.cse110.observables.PlainMutableSubject;
+import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import edu.ucsd.cse110.observables.Subject;
 
 public class RoomRoutineRepository implements RoutineRepository {
@@ -54,5 +54,37 @@ public class RoomRoutineRepository implements RoutineRepository {
         routineDao.insert(routines.stream()
             .map(RoutineEntity::fromRoutine)
             .collect(Collectors.toList()));
+    }
+
+    @Override
+    public String getRoutineName(int rid) {
+        return routineDao.getRoutineName(rid);
+    }
+
+    @Override
+    public Timer getTimer(int rid) {
+//        var entityLiveData = timerDao.findAsLiveData(-1, rid);
+//        var timerLiveData = Transformations.map(entityLiveData, TimerEntity::toTimer);
+        return timerDao.find(-1, rid).toTimer();
+    }
+
+    @Override
+    public String getRoutineGoalTime(int rid) {
+        return routineDao.getRoutineGoalTime(rid);
+    }
+
+    @Override
+    public void setRoutineGoalTime(int rid, String goalTime) {
+        routineDao.setRoutineGoalTime(rid, goalTime);
+    }
+
+    @Override
+    public Boolean getRoutineCompleted(int rid) {
+        return routineDao.getRoutineCompleted(rid);
+    }
+
+    @Override
+    public int getRoutineTotalTimeElapsed(int routineId) {
+        return routineDao.getRoutineTotalTimeElapsed(routineId);
     }
 }

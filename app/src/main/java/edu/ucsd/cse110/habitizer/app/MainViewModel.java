@@ -1,11 +1,14 @@
 package edu.ucsd.cse110.habitizer.app;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -155,14 +158,15 @@ public class MainViewModel extends ViewModel {
     //    ------------------ TASK ORDERING METHODS ------------------
 
     public void moveTaskUp(int routineId, int taskId) {
-        routineRepository.moveTaskUp(routineId, taskId);
+        taskRepository.moveTaskUp(routineId, taskId);
     }
 
     public void moveTaskDown(int routineId, int taskId) {
-        routineRepository.moveTaskDown(routineId, taskId);
+        taskRepository.moveTaskDown(routineId, taskId);
     }
 
     //    ------------------ TIME RELATED METHODS ------------------
+    // TODO: I don't think this works
     public Timer getTimer(int routineId){
         return routineRepository.getTimer(routineId);
     }
@@ -170,6 +174,7 @@ public class MainViewModel extends ViewModel {
 //    public PlainMutableSubject<String> getRoutineGoalTime() {
 //        return routineGoalTime;
 //    }
+
 
     public String getRoutineGoalTime(int routineId) {
         return routineRepository.getRoutineGoalTime(routineId);

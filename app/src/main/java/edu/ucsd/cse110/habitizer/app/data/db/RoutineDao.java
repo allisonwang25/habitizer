@@ -32,4 +32,21 @@ public interface RoutineDao {
     @Query("SELECT count(*) FROM Routine")
     int count();
 
+    @Query("SELECT name FROM Routine WHERE rid = :rid")
+    String getRoutineName(int rid);
+
+    @Query("SELECT goalTime FROM Routine WHERE rid = :rid")
+    String getRoutineGoalTime(int rid);
+
+    @Query("UPDATE Routine SET goalTime = :goalTime WHERE rid = :rid")
+    void setRoutineGoalTime(int rid, String goalTime);
+
+    @Query("SELECT completed FROM Routine WHERE rid = :rid")
+    Boolean getRoutineCompleted(int rid);
+
+    @Query("SELECT totalRoutineTimeElapsed FROM Routine WHERE rid = :rid")
+    Integer getRoutineTotalTimeElapsed(int rid);
+
+    @Query("UPDATE Routine SET totalRoutineTimeElapsed = :totalRoutineTimeElapsed WHERE rid = :rid")
+    void setRoutineTotalTimeElapsed(int rid, Integer totalRoutineTimeElapsed);
 }
