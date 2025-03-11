@@ -19,6 +19,9 @@ public interface TimerDao {
     @Query("SELECT * FROM Timer WHERE tid = :tid AND rid = :rid")
     TimerEntity find(int tid, int rid);
 
+    @Query("SELECT * FROM Timer WHERE rid = :rid AND tid = -1")
+    List<TimerEntity> findAllRoutineTimers(int rid);
+
     @Query("SELECT * FROM Timer WHERE tid = :tid AND rid = :rid")
     LiveData<TimerEntity> findAsLiveData(int tid, int rid);
 

@@ -30,6 +30,9 @@ public class RoomRoutineRepository implements RoutineRepository {
         var entityLiveData = routineDao.findAsLiveData(id);
         var routineLiveData = Transformations.map(entityLiveData, RoutineEntity::toRoutine);
 
+        // I'm not sure if this is the correct way to get the timer
+        routineLiveData.getValue().setTimer(getTimer(id));
+
         return new LiveDataSubjectAdapter<>(routineLiveData);
     }
 
@@ -42,17 +45,23 @@ public class RoomRoutineRepository implements RoutineRepository {
                 .collect(Collectors.toList());
         });
 
+        var list = routineLiveData.getValue();
+        for (Routine r : list) {
+            r.setTimer(getTimer(r.getId()));
+        }
+
         return new LiveDataSubjectAdapter<>(routineLiveData);
     }
 
     @Override
-    public Subject<List<ElapsedTime>> findAllRoutineTimers() {
-        return null;
+    public Subject<List<ElapsedTime>> findAllRoutineTimers(int rid) {
+        return Subject<List<ElapsedTime>>(timerDao.findAllRoutineTimers(-1));
     }
 
     @Override
     public void save(Routine routine) {
         routineDao.insert(RoutineEntity.fromRoutine(routine));
+        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) routine.getTimer(), routine.getId(), -1));
     }
 
     @Override
@@ -60,6 +69,11 @@ public class RoomRoutineRepository implements RoutineRepository {
         routineDao.insert(routines.stream()
             .map(RoutineEntity::fromRoutine)
             .collect(Collectors.toList()));
+
+        timerDao.insert(routines.stream()
+            .map(r -> TimerEntity.fromTimer((ElapsedTime) r.getTimer(), r.getId(), -1))
+            .collect(Collectors.toList()));
+
     }
 
     @Override
