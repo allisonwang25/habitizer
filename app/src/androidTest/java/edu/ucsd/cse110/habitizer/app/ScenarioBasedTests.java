@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 
@@ -165,6 +166,33 @@ public class ScenarioBasedTests {
 
         //check persistence
 
+
+
+    }
+
+    //temporarily needed before we have persistence
+    //TODO: remove once persistence exists
+    public void setupRoutine(){
+        //Clicks the add button
+        onView(withId(R.id.add_routine_button)).perform(click());
+        onView(withId(R.id.new_routine_dialog)).check(matches(isDisplayed()));
+
+        //Enters “Friday Evening” and presses enter
+        onView(withId(R.id.editRoutineNameInput)).perform(typeText("Friday Evening"), closeSoftKeyboard());
+        onView(withId(R.id.editRoutineNameInput)).check(matches(withText("Friday Evening"));
+
+        //Clicks the "Create" button
+        onView(withText("Create")).perform(click());
+    }
+    // needs persistence
+    public void testBelindaPauses(){
+        //Click start on "Friday Evening"
+        onData(anything())
+                .inAdapterView(withId(R.id.routine_list))
+                .atPosition(2)
+                .onChildView(withId(R.id.routine_start_btn))
+                .perform(click());
+        onView(withId(R.id.fragment_active_routine)).check(matches(isDisplayed()));
 
 
     }
