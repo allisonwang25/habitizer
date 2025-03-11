@@ -96,7 +96,7 @@ public class RoutineFragment extends Fragment {
         });
 
         view.stopTimerButton.setOnClickListener(v -> {
-            if (view.stopTimerButton.getText().equals("Stop Timer")) {
+            if (view.stopTimerButton.getText().equals("Stop Time")) {
                 activityModel.getTimer(routineId).stopTimer();
                 view.stopTimerButton.setText("Advance Time");
             }
