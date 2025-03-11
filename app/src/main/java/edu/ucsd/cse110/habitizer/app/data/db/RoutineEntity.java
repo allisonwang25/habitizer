@@ -26,11 +26,11 @@ public class RoutineEntity {
     @ColumnInfo(name = "totalRoutineTimeElapsed")
     public Integer totalRoutineTimeElapsed;
 
-    RoutineEntity(@NonNull Integer rid, @NonNull String name, @NonNull Boolean completed, @NonNull String goatTime, @NonNull Integer totalRoutineTimeElapsed) {
+    public RoutineEntity(@NonNull Integer rid, @NonNull String name, @NonNull Boolean completed, @NonNull String goalTime, @NonNull Integer totalRoutineTimeElapsed) {
         this.rid = rid;
         this.name = name;
         this.completed = completed;
-        this.goalTime = goatTime;
+        this.goalTime = goalTime;
         this.totalRoutineTimeElapsed = totalRoutineTimeElapsed;
     }
 

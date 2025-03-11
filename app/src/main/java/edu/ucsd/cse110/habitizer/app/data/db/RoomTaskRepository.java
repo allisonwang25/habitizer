@@ -29,7 +29,7 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public void append(Task task) {
-        taskDao.insert(TaskEntity.fromTask(task));
+        save(task);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class RoomTaskRepository implements TaskRepository {
     @Override
     public void save(Task task) {
         taskDao.insert(TaskEntity.fromTask(task));
-        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()));
+//        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()));
     }
 
     @Override
@@ -96,9 +96,9 @@ public class RoomTaskRepository implements TaskRepository {
             .map(TaskEntity::fromTask)
             .collect(Collectors.toList()));
 
-        timerDao.insert(tasks.stream()
-            .map(task -> TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()))
-            .collect(Collectors.toList()));
+//        timerDao.insert(tasks.stream()
+//            .map(task -> TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()))
+//            .collect(Collectors.toList()));
     }
 
     @Override
@@ -108,8 +108,8 @@ public class RoomTaskRepository implements TaskRepository {
             return;
         }
 
-        var entityA = taskDao.findTaskWithOrderAsLiveData(routineId, sortOrder);
-        var entityB = taskDao.findTaskWithOrderAsLiveData(routineId, sortOrder - 1);
+        // IDK if this works
+        taskDao.moveTaskUp(routineId, taskId);
     }
 
     @Override

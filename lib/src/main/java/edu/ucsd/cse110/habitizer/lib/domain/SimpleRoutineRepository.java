@@ -90,7 +90,7 @@ public class SimpleRoutineRepository implements RoutineRepository {
         dataSource.setRoutineGoalTime(routineId, minutes);
     }
 
-    public boolean getRoutineCompleted(int routineId){
+    public Boolean getRoutineCompleted(int routineId){
         return dataSource.getRoutineCompleted(routineId);
     }
 

@@ -7,6 +7,7 @@ public class ElapsedTime implements Timer{
     LocalDateTime startTime; // the time when we start the routine
     LocalDateTime prevTaskFinishTime; // the time the most recent task was completed
     LocalDateTime endTime;
+    int rid;
     int taskSecondsElapsed; // used for TASK paused time
     int prevSecondsElapsed; // used for ROUTINE paused time
     private boolean started = false;
@@ -14,6 +15,7 @@ public class ElapsedTime implements Timer{
     boolean paused;
     boolean ended;
     public ElapsedTime(){
+        this.rid = -1;
         this.startTime = LocalDateTime.now();
         this.prevTaskFinishTime = LocalDateTime.now();
         this.stopped = false;
@@ -43,6 +45,15 @@ public class ElapsedTime implements Timer{
         this.paused = false;
         this.startTime = LocalDateTime.now();
         this.prevTaskFinishTime = LocalDateTime.now();
+    }
+
+    public ElapsedTime setRID(int rid){
+        this.rid = rid;
+        return this;
+    }
+
+    public int getRid(){
+        return this.rid;
     }
 
     // called when a task is completed returns IN SECONDS
