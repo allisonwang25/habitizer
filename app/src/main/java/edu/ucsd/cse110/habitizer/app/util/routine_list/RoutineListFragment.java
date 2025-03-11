@@ -13,16 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.R;
 
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutineListBinding;
 import edu.ucsd.cse110.habitizer.app.util.routine.NewRoutineDialogFragment;
-import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutineListFragment extends Fragment {
     private MainViewModel activityModel;
@@ -73,7 +69,7 @@ public class RoutineListFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "newRoutineDialog");
         });
 
-        view.routine.setAdapter(adapter);
+        view.routineList.setAdapter(adapter);
         return view.getRoot();
     }
 }
