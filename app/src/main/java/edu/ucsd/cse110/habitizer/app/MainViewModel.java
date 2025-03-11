@@ -41,6 +41,9 @@ public class MainViewModel extends ViewModel {
 
     private final PlainMutableSubject<List<Routine>> orderedRoutines;
 
+    private final PlainMutableSubject<List<ElapsedTime>> unorderedRoutineTimers;
+    private final PlainMutableSubject<List<ElapsedTime>> unorderedTaskTimers;
+
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -59,6 +62,9 @@ public class MainViewModel extends ViewModel {
 
         orderedTasks = new PlainMutableSubject<>();
         orderedRoutines = new PlainMutableSubject<>();
+        unorderedRoutineTimers = new PlainMutableSubject<>();
+        unorderedTaskTimers = new PlainMutableSubject<>();
+
 
         routineRepository.find(0).observe(routine -> {
             if (routine == null) return;
@@ -91,6 +97,21 @@ public class MainViewModel extends ViewModel {
             orderedRoutines.setValue(newOrderedRoutines);
         });
 
+        routineRepository.findAllRoutineTimers().observe(timers -> {
+            if (timers == null) return;
+
+            var newUnorderedTimers = timers.stream().collect(Collectors.toList());
+
+            unorderedRoutineTimers.setValue(newUnorderedTimers);
+        });
+
+        taskRepository.findAllTaskTimers().observe(timers -> {
+            if (timers == null) return;
+
+            var newUnorderedTimers = timers.stream().collect(Collectors.toList());
+
+            unorderedTaskTimers.setValue(newUnorderedTimers);
+        });
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() {
@@ -239,6 +260,4 @@ public class MainViewModel extends ViewModel {
             updateElapsedTimeRunnable = null;
         }
     }
-
-
 }

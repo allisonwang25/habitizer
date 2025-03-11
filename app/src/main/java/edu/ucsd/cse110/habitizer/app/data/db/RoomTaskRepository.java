@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import edu.ucsd.cse110.habitizer.app.util.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
@@ -61,6 +62,11 @@ public class RoomTaskRepository implements TaskRepository {
         });
 
         return new LiveDataSubjectAdapter<>(tasksLiveData);
+    }
+
+    @Override
+    public Subject<List<ElapsedTime>> findAllTaskTimers() {
+        return null;
     }
 
     @Override

@@ -9,6 +9,7 @@ public class ElapsedTime implements Timer{
     LocalDateTime endTime;
     int taskSecondsElapsed; // used for TASK paused time
     int prevSecondsElapsed; // used for ROUTINE paused time
+    private boolean started = false;
     boolean stopped;
     boolean paused;
     boolean ended;
@@ -21,7 +22,9 @@ public class ElapsedTime implements Timer{
         this.taskSecondsElapsed = 0;
     }
 
-    public ElaspedTime(LocalDateTime startTime, LocalDateTime prevTaskFinishTime, int taskSecondsElapsed, int prevSecondsElapsed, boolean stopped, boolean paused){
+    // Constructor for TimerEntity
+    public ElapsedTime(int taskSecondsElapsed, int prevSecondsElapsed, boolean stopped, boolean paused){
+        // TODO: What should these be initialized to?
         this.startTime = startTime;
         this.prevTaskFinishTime = prevTaskFinishTime;
         this.taskSecondsElapsed = taskSecondsElapsed;
@@ -54,6 +57,10 @@ public class ElapsedTime implements Timer{
         this.prevTaskFinishTime = LocalDateTime.now(); // update time the most recent task was completed
         this.taskSecondsElapsed = 0; // reset task time
         return timeElapsed;
+    }
+
+    public int getPrevSecondsElapsed(){
+        return this.prevSecondsElapsed;
     }
 
     @Override
@@ -130,7 +137,7 @@ public class ElapsedTime implements Timer{
         return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
     }
 
-    private boolean started = false;
+
     @Override
     public void startTime() {
         if(started && ended) {
@@ -146,5 +153,17 @@ public class ElapsedTime implements Timer{
         this.startTime = LocalDateTime.now();
         this.prevTaskFinishTime = startTime;
         started = true;
+    }
+
+    public boolean isStopped(){
+        return stopped;
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 }

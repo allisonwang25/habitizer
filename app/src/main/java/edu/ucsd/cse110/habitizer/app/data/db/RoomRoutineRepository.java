@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import edu.ucsd.cse110.habitizer.app.util.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import edu.ucsd.cse110.observables.Subject;
 
@@ -42,6 +43,11 @@ public class RoomRoutineRepository implements RoutineRepository {
         });
 
         return new LiveDataSubjectAdapter<>(routineLiveData);
+    }
+
+    @Override
+    public Subject<List<ElapsedTime>> findAllRoutineTimers() {
+        return null;
     }
 
     @Override
@@ -86,5 +92,11 @@ public class RoomRoutineRepository implements RoutineRepository {
     @Override
     public int getRoutineTotalTimeElapsed(int routineId) {
         return routineDao.getRoutineTotalTimeElapsed(routineId);
+    }
+
+    @Override
+    public int getCurrTaskTimeElapsed(int routineId) {
+
+        return 0;
     }
 }
