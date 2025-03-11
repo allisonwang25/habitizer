@@ -17,65 +17,47 @@ import android.view.View;
 import android.widget.ListView;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
 public class DeleteTaskTest {
+    private int getListViewSize(int listViewId) {
+        final int[] size = new int[1];
+        onView(withId(listViewId)).check((view, noViewFoundException) -> {
+            if (view instanceof ListView listView) {
+                size[0] = listView.getAdapter().getCount();
+            }
+        });
+        return size[0];
+    }
 
     @Before
     public void setUp() {
         ActivityScenario.launch(MainActivity.class);
     }
 
-    @Test
-    public void testDeleteTaskDisplaysDialog() {
-        onData(anything())
-                .inAdapterView(withId(R.id.routine_list))
-                .atPosition(0)
-                .onChildView(withId(R.id.routine_edit_btn))
-                .perform(click());
-        for(int i = 0; i < 7; i++) {
-            onData(anything())
-                    .inAdapterView(withId(R.id.routine))
-                    .atPosition(i)
-                    .onChildView(withId(R.id.task_delete_button))
-                    .perform(click());
-            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
-            onView(withText("Cancel")).perform(click());
-        }
-        onView(withId(R.id.back_button)).perform(click());
-
-        onData(anything())
-                .inAdapterView(withId(R.id.routine_list))
-                .atPosition(1)
-                .onChildView(withId(R.id.routine_edit_btn))
-                .perform(click());
-        for(int i = 0; i < 6; ++i){
-            onData(anything())
-                    .inAdapterView(withId(R.id.routine))
-                    .atPosition(i)
-                    .onChildView(withId(R.id.task_delete_button))
-                    .perform(click());
-            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
-            onView(withText("Cancel")).perform(click());
-        }
+    @After
+    public void tearDown() {
+        ActivityScenario.launch(MainActivity.class).close();
     }
-
-
     private static class ListViewSizeMatcher {
         public static Matcher<View> withListSize(final int size) {
             return new TypeSafeMatcher<View>() {
@@ -94,12 +76,12 @@ public class DeleteTaskTest {
 
     @Test
     public void testDeleteTasks() {
-        //onView(withId(R.id.add_task_button)).perform(click());
         List<String> DEFAULT_MORNING_TASKS = List.of(
                 "Dress", "Shower", "Brush Teeth", "Make Coffee", "Make Lunch", "Dinner Prep", "Pack Bag"
         );
         int mSize = DEFAULT_MORNING_TASKS.size();
-        for(int i = 0; i < mSize; ++i){
+        System.out.println(mSize);
+        for(int i = 0; i < DEFAULT_MORNING_TASKS.size(); ++i){
             onData(Matchers.anything())
                     .inAdapterView(withId(R.id.routine_list))
                     .atPosition(0)                  // Morning Routine List?
@@ -133,7 +115,7 @@ public class DeleteTaskTest {
                 "Charge Devices", "Prepare Dinner", "Eat Dinner", "Wash Dishes", "Pack Bag for Morning", "Homework"
         );
         int eSize = DEFAULT_EVENING_TASKS.size();
-        for(int i = 0; i < eSize; ++i){
+        for(int i = 0; i < DEFAULT_EVENING_TASKS.size(); ++i){
             onData(Matchers.anything())
                     .inAdapterView(withId(R.id.routine_list))
                     .atPosition(1)                  // Morning Routine List?
@@ -198,5 +180,39 @@ public class DeleteTaskTest {
         onView(withText("Test Task")).check(doesNotExist());
         onView(withId(R.id.back_button)).perform(click());
 
+    }
+
+    @Test
+    public void testDeleteTaskDisplaysDialog() {
+        onData(anything())
+                .inAdapterView(withId(R.id.routine_list))
+                .atPosition(0)
+                .onChildView(withId(R.id.routine_edit_btn))
+                .perform(click());
+        for(int i = 0; i < getListViewSize(R.id.routine); i++) {
+            onData(anything())
+                    .inAdapterView(withId(R.id.routine))
+                    .atPosition(i)
+                    .onChildView(withId(R.id.task_delete_button))
+                    .perform(click());
+            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
+            onView(withText("Cancel")).perform(click());
+        }
+        onView(withId(R.id.back_button)).perform(click());
+
+        onData(anything())
+                .inAdapterView(withId(R.id.routine_list))
+                .atPosition(1)
+                .onChildView(withId(R.id.routine_edit_btn))
+                .perform(click());
+        for(int i = 0; i < getListViewSize(R.id.routine); ++i){
+            onData(anything())
+                    .inAdapterView(withId(R.id.routine))
+                    .atPosition(i)
+                    .onChildView(withId(R.id.task_delete_button))
+                    .perform(click());
+            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
+            onView(withText("Cancel")).perform(click());
+        }
     }
 }
