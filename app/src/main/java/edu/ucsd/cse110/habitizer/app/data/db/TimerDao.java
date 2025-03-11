@@ -10,20 +10,23 @@ import java.util.List;
 
 @Dao
 public interface TimerDao {
+
+    @Query("SELECT COUNT(*) FROM Timer")
+    int count();
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Long insert(TimerEntity timer);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insert(List<TimerEntity> timer);
 
-    @Query("SELECT * FROM Timer WHERE tid = :tid AND rid = :rid")
-    TimerEntity find(int tid, int rid);
+    @Query("SELECT * FROM Timer WHERE rid = :rid")
+    TimerEntity find(int rid);
 
-    @Query("SELECT * FROM Timer WHERE rid = :rid AND tid = -1")
-    List<TimerEntity> findAllRoutineTimers(int rid);
+    @Query("SELECT * FROM Timer WHERE rid = :rid")
+    LiveData<List<TimerEntity>> findAllRoutineTimers(int rid);
 
-    @Query("SELECT * FROM Timer WHERE tid = :tid AND rid = :rid")
-    LiveData<TimerEntity> findAsLiveData(int tid, int rid);
+    @Query("SELECT * FROM Timer WHERE rid = :rid")
+    LiveData<TimerEntity> findAsLiveData(int rid);
 
     //TODO : Add more queries
 }

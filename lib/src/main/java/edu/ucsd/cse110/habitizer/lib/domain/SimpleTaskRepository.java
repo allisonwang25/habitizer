@@ -36,7 +36,7 @@ public class SimpleTaskRepository implements TaskRepository {
 
     @Override
     public Subject<List<Task>> findAllWithRID(int rid) {
-        return dataSource.getAllTasksWithRIDSubject();
+        return null;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SimpleTaskRepository implements TaskRepository {
 
     @Override
     public void removeTask(int taskId) {
-        dataSource.removeTask(taskId);
+//        dataSource.removeTask(taskId);
     }
 
     @Override

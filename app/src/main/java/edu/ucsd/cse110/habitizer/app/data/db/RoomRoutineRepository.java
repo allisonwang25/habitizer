@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.data.db;
 
+import android.util.Log;
+
 import androidx.lifecycle.Transformations;
 
 import java.util.List;
@@ -46,22 +48,38 @@ public class RoomRoutineRepository implements RoutineRepository {
         });
 
         var list = routineLiveData.getValue();
-        for (Routine r : list) {
-            r.setTimer(getTimer(r.getId()));
-        }
+
+//        if (list == null) {
+//          throw new RuntimeException("Routine list is null");
+//        }
+//
+//        for (Routine r : list) {
+//            r.setTimer(getTimer(r.getId()));
+//        }
 
         return new LiveDataSubjectAdapter<>(routineLiveData);
     }
 
     @Override
-    public Subject<List<ElapsedTime>> findAllRoutineTimers(int rid) {
-        return Subject<List<ElapsedTime>>(timerDao.findAllRoutineTimers(-1));
+    public Subject<List<ElapsedTime>> findAllRoutineTimers() {
+        var entityLiveData = timerDao.findAllRoutineTimers(-1);
+        var timerLiveData = Transformations.map(entityLiveData, entities -> {
+            return entities.stream()
+                .map(TimerEntity::toTimer)
+                .collect(Collectors.toList());
+        });
+
+//        if (timerLiveData.getValue() == null) {
+//            throw new RuntimeException("Timer list is null");
+//        }
+
+        return new LiveDataSubjectAdapter<>(timerLiveData);
     }
 
     @Override
     public void save(Routine routine) {
         routineDao.insert(RoutineEntity.fromRoutine(routine));
-        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) routine.getTimer(), routine.getId(), -1));
+        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) routine.getTimer(), routine.getId()));
     }
 
     @Override
@@ -70,9 +88,19 @@ public class RoomRoutineRepository implements RoutineRepository {
             .map(RoutineEntity::fromRoutine)
             .collect(Collectors.toList()));
 
-        timerDao.insert(routines.stream()
-            .map(r -> TimerEntity.fromTimer((ElapsedTime) r.getTimer(), r.getId(), -1))
-            .collect(Collectors.toList()));
+        for (Routine r : routines) {
+            Log.d("DEBUG", "Adding Timer ID: " + r.getId());
+            timerDao.insert(TimerEntity.fromTimer((ElapsedTime) r.getTimer(), r.getId()));
+        }
+
+        Log.d("DEBUG", "Timer 1 count: " + timerDao.count());
+
+//        timerDao.insert(routines.stream()
+//            .map(r -> TimerEntity.fromTimer((ElapsedTime) r.getTimer(), r.getId(), -1))
+//            .collect(Collectors.toList()));
+//
+//        Log.d("DEBUG", "Timer 2 count: " + timerDao.count());
+
 
     }
 
@@ -85,7 +113,7 @@ public class RoomRoutineRepository implements RoutineRepository {
     public Timer getTimer(int rid) {
 //        var entityLiveData = timerDao.findAsLiveData(-1, rid);
 //        var timerLiveData = Transformations.map(entityLiveData, TimerEntity::toTimer);
-        return timerDao.find(-1, rid).toTimer();
+        return timerDao.find(rid).toTimer();
     }
 
     @Override

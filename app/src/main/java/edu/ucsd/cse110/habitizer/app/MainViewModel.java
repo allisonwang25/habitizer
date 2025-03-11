@@ -38,12 +38,9 @@ public class MainViewModel extends ViewModel {
 
     // LIST OF ORDERED TASKS
     private final PlainMutableSubject<List<Task>> orderedTasks;
-
     private final PlainMutableSubject<List<Routine>> orderedRoutines;
 
     private final PlainMutableSubject<List<ElapsedTime>> unorderedRoutineTimers;
-    private final PlainMutableSubject<List<ElapsedTime>> unorderedTaskTimers;
-
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -63,13 +60,21 @@ public class MainViewModel extends ViewModel {
         orderedTasks = new PlainMutableSubject<>();
         orderedRoutines = new PlainMutableSubject<>();
         unorderedRoutineTimers = new PlainMutableSubject<>();
-        unorderedTaskTimers = new PlainMutableSubject<>();
 
 
-        routineRepository.find(0).observe(routine -> {
-            if (routine == null) return;
-            routineGoalTime.setValue(routine.getGoalTime());
+//        routineRepository.find(0).observe(routine -> {
+//            if (routine == null) return;
+//            routineGoalTime.setValue(routine.getGoalTime());
+//        });
+
+        routineRepository.findAllRoutineTimers().observe(timers -> {
+            if (timers == null) return;
+
+            var newUnorderedTimers = timers.stream().collect(Collectors.toList());
+            unorderedRoutineTimers.setValue(newUnorderedTimers);
         });
+
+        Log.d("DEBUG", "timer are initalized ");
 
         // When the list of tasks changes (or is first loaded), reset the ordering.
         taskRepository.findAll().observe(tasks -> {
@@ -81,6 +86,8 @@ public class MainViewModel extends ViewModel {
 
             orderedTasks.setValue(newOrdering);
         });
+
+        Log.d("DEBUG", "tasks are initalized");
 
         routineRepository.findAll().observe(routines -> {
             if (routines == null) return;
@@ -97,39 +104,11 @@ public class MainViewModel extends ViewModel {
             orderedRoutines.setValue(newOrderedRoutines);
         });
 
-        routineRepository.findAllRoutineTimers().observe(timers -> {
-            if (timers == null) return;
-
-            var newUnorderedTimers = timers.stream().collect(Collectors.toList());
-
-            unorderedRoutineTimers.setValue(newUnorderedTimers);
-        });
-
-        taskRepository.findAllTaskTimers().observe(timers -> {
-            if (timers == null) return;
-
-            var newUnorderedTimers = timers.stream().collect(Collectors.toList());
-
-            unorderedTaskTimers.setValue(newUnorderedTimers);
-        });
+        Log.d("DEBUG", "routine are initalized");
     }
 
     public PlainMutableSubject<List<Task>> getOrderedTasks() {
         return orderedTasks;
-    }
-
-    public PlainMutableSubject<List<Task>> getOrderedTasksWithId(int rid) {
-        List<Task> tempList = orderedTasks.getValue();
-        List<Task> outputList = new ArrayList<>();
-
-        for (Task t : tempList) {
-            if (t.getRid() == rid) {
-                outputList.add(t);
-            }
-        }
-
-        PlainMutableSubject<List<Task>> output = new PlainMutableSubject<>(outputList);
-        return output;
     }
 
     public PlainMutableSubject<List<Routine>> getOrderedRoutines() {
@@ -142,18 +121,29 @@ public class MainViewModel extends ViewModel {
         taskRepository.save(task);
     }
 
+    public void updateTimers() {
+        for (ElapsedTime timer : unorderedRoutineTimers.getValue()) {
+            for (Routine routine : orderedRoutines.getValue()) {
+                if (routine.getId() == timer.getRid()) {
+                    routine.setTimer(timer);
+                }
+            }
+//            routineRepository.updateTimer(timer);
+        }
+    }
+
     public Task getTask(int taskId) {
         return taskRepository.find(taskId).getValue();
     }
 
-    public List<Task> getTasks(int routineId) {
-        List<Task> tasks = taskRepository.findAllWithRID(routineId).getValue();
-        if (tasks == null) {
-            Log.d("Exception", "Tasks is null");
-        }
-        return taskRepository.findAllWithRID(routineId).getValue();
-//        return taskRepository.findAll().getValue();
-    }
+//    public List<Task> getTasks(int routineId) {
+//        List<Task> tasks = taskRepository.findAllWithRID(routineId).getValue();
+//        if (tasks == null) {
+//            Log.d("Exception", "Tasks is null");
+//        }
+//        return taskRepository.findAllWithRID(routineId).getValue();
+////        return taskRepository.findAll().getValue();
+//    }
 
     public void renameTask(int taskId, String taskName) {
         taskRepository.renameTask(taskId, taskName);
@@ -202,7 +192,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setRoutineGoalTime(int routineId, int minutes) {
-        routineRepository.setRoutineGoalTime(routineId, minutes);
+        routineRepository.setRoutineGoalTime(routineId, String.valueOf(minutes));
     }
 
 //    public void setRoutineGoalTime(int minutes) {
@@ -213,7 +203,7 @@ public class MainViewModel extends ViewModel {
         return routineRepository.getRoutineCompleted(routineId);
     }
     public void completeRoutine(int routineId){
-        routineRepository.completeRoutine(routineId);
+//        routineRepository.completeRoutine(routineId);
     }
 
     public LiveData<String> getRoutineElapsedTimeText() {
