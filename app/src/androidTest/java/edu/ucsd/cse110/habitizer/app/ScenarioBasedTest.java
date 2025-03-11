@@ -1,15 +1,10 @@
 package edu.ucsd.cse110.habitizer.app;
 
-import static android.view.KeyEvent.KEYCODE_ENTER;
-
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.IdlingPolicies;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Before;
-import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +12,6 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressKey;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -29,11 +21,7 @@ import androidx.test.espresso.IdlingRegistry;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.CoreMatchers.containsString;
 
-import android.widget.ListView;
-
 import java.util.concurrent.TimeUnit;
-
-import edu.ucsd.cse110.habitizer.app.util.routine.NewTaskDialogFragment;
 
 @RunWith(AndroidJUnit4.class)
 public class ScenarioBasedTest {
@@ -96,20 +84,21 @@ public class ScenarioBasedTest {
         onView(withId(R.id.stop_timer_button)).perform(click());
 
         // Then the Stop button turns into an Advance button (and internally the routine timer has been stopped)
-        onView(withId(R.id.advance_time_button)).check(matches(ViewMatchers.isDisplayed()));
+        onView(withId(R.id.stop_timer_button)).check(matches(ViewMatchers.isDisplayed()));
+        onView(withId(R.id.stop_timer_button)).check(matches(withText("Advance Time")));
 
         // When I tap the Advance button 2 times (i.e., advance time 30 seconds)
-        onView(withId(R.id.advance_time_button)).perform(click());
-        onView(withId(R.id.advance_time_button)).perform(click());
+        onView(withId(R.id.stop_timer_button)).perform(click());
+        onView(withId(R.id.stop_timer_button)).perform(click());
 
         // Then the routine's elapsed time (still) displays "0m"
         onView(withId(R.id.routine_elapsed_time)).check(matches(withText(containsString("0 out of"))));
 
         // When I tap the Advance button 2 more times (i.e., 60 seconds total)
-        onView(withId(R.id.advance_time_button)).perform(click());
-        onView(withId(R.id.advance_time_button)).perform(click());
+        onView(withId(R.id.stop_timer_button)).perform(click());
+        onView(withId(R.id.stop_timer_button)).perform(click());
 
         // Then the routine's elapsed time displays "1m"
-        onView(withId(R.id.routine_elapsed_time)).check(matches(withText(containsString("1m"))));
+        onView(withId(R.id.routine_elapsed_time)).check(matches(withText(containsString("1 out of"))));
     }
 }

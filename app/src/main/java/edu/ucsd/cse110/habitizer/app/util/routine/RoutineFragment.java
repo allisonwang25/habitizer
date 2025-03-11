@@ -96,12 +96,15 @@ public class RoutineFragment extends Fragment {
         });
 
         view.stopTimerButton.setOnClickListener(v -> {
-            activityModel.getTimer(routineId).stopTimer();
+            if (view.stopTimerButton.getText().equals("Stop Timer")) {
+                activityModel.getTimer(routineId).stopTimer();
+                view.stopTimerButton.setText("Advance Time");
+            }
+            else {
+                activityModel.getTimer(routineId).advanceTime();
+            }
         });
 
-        view.advanceTimeButton.setOnClickListener(v -> {
-            activityModel.getTimer(routineId).advanceTime();
-        });
 
         view.endRoutineButton.setOnClickListener(v -> {
             activityModel.completeRoutine(routineId);
