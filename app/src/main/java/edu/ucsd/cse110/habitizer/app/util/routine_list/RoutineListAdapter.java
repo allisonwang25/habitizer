@@ -25,8 +25,10 @@ import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutineListAdapter extends ArrayAdapter<Routine> {
 
-    public RoutineListAdapter(Context context, List<Routine> routineList){
+    Consumer<Integer>  updateClick;
+    public RoutineListAdapter(Context context, List<Routine> routineList, Consumer<Integer> onUpdate){
         super(context, 0, new ArrayList<>(routineList));
+        this.updateClick = onUpdate;
     }
 
     @NonNull
@@ -52,6 +54,8 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_ACTIVE, i);
+
+                updateClick.accept(1);
                 routine.getTimer().startTime();
             }
         }) ;

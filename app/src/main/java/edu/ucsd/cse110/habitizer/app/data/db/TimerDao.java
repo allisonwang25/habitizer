@@ -22,8 +22,11 @@ public interface TimerDao {
     @Query("SELECT * FROM Timer WHERE rid = :rid")
     TimerEntity find(int rid);
 
+    @Query("SELECT * FROM Timer ")
+    LiveData<List<TimerEntity>> findAll();
+
     @Query("SELECT * FROM Timer WHERE rid = :rid")
-    LiveData<List<TimerEntity>> findAllRoutineTimers(int rid);
+    LiveData<List<TimerEntity>> findAllRoutineTimersWithId(int rid);
 
     @Query("SELECT * FROM Timer WHERE rid = :rid")
     LiveData<TimerEntity> findAsLiveData(int rid);
