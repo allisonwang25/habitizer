@@ -24,4 +24,7 @@ public interface TaskRepository {
 
     void save(Task task);
     void saveAll(List<Task> tasks);
+
+     void moveTaskUp(int routineId, int taskId) ;
+     void moveTaskDown(int routineId, int taskId) ;
 }

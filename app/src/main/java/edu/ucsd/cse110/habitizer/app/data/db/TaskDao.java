@@ -22,6 +22,9 @@ public interface TaskDao {
     @Query("SELECT * FROM Task WHERE tid = :tid")
     TaskEntity find(int tid);
 
+    @Query("SELECT * FROM Task WHERE rid = :rid AND sort_order = :order")
+    LiveData<TaskEntity> findTaskWithOrderAsLiveData(int rid, int order);
+
     @Query("SELECT * FROM Task WHERE tid = :tid")
     LiveData<TaskEntity> findAsLiveData(int tid);
 
@@ -36,4 +39,9 @@ public interface TaskDao {
 
     @Query("SELECT count(*) FROM Task")
     int count();
+
+    @Query("SELECT sort_order FROM Task WHERE tid = :tid")
+    int getTaskSortOrder(int tid);
+
+
 }

@@ -41,8 +41,8 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public Subject<List<Task>> findAll() {
-        var entitiesLivaDaa = taskDao.findAllAsLiveData();
-        var tasksLiveData = Transformations.map(entitiesLivaDaa, entities -> {
+        var entitiesLivaData = taskDao.findAllAsLiveData();
+        var tasksLiveData = Transformations.map(entitiesLivaData, entities -> {
             return entities.stream()
                 .map(TaskEntity::toTask)
                 .collect(Collectors.toList());
@@ -88,5 +88,21 @@ public class RoomTaskRepository implements TaskRepository {
         taskDao.insert(tasks.stream()
             .map(TaskEntity::fromTask)
             .collect(Collectors.toList()));
+    }
+
+    @Override
+    public void moveTaskUp(int routineId, int taskId) {
+        int sortOrder = taskDao.getTaskSortOrder(taskId);
+        if (sortOrder == 0) { // already at the top
+            return;
+        }
+
+        var entityA = taskDao.findTaskWithOrderAsLiveData(routineId, sortOrder);
+        var entityB = taskDao.findTaskWithOrderAsLiveData(routineId, sortOrder - 1);
+    }
+
+    @Override
+    public void moveTaskDown(int routineId, int taskId) {
+
     }
 }
