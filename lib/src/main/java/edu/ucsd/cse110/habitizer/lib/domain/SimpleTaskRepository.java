@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
@@ -39,6 +40,11 @@ public class SimpleTaskRepository implements TaskRepository {
     }
 
     @Override
+    public Subject<List<ElapsedTime>> findAllTaskTimers() {
+        return null;
+    }
+
+    @Override
     public void renameTask(int taskId, String taskName) {
         dataSource.renameTask(taskId, taskName);
     }
@@ -62,5 +68,15 @@ public class SimpleTaskRepository implements TaskRepository {
         for (Task task : tasks) {
             dataSource.putTask(task);
         }
+    }
+
+    @Override
+    public void moveTaskUp(int routineId, int taskId) {
+
+    }
+
+    @Override
+    public void moveTaskDown(int routineId, int taskId) {
+
     }
 }

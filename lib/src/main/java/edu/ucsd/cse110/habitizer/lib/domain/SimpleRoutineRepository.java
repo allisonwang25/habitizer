@@ -3,8 +3,10 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
+import edu.ucsd.cse110.observables.Subject;
 
 public class SimpleRoutineRepository implements RoutineRepository {
     private final InMemoryDataSource dataSource;
@@ -26,6 +28,11 @@ public class SimpleRoutineRepository implements RoutineRepository {
     @Override
     public PlainMutableSubject<List<Routine>> findAll() {
         return (PlainMutableSubject<List<Routine>>) dataSource.getAllRoutinesSubject();
+    }
+
+    @Override
+    public Subject<List<ElapsedTime>> findAllRoutineTimers() {
+        return null;
     }
 
     @Override
@@ -65,12 +72,18 @@ public class SimpleRoutineRepository implements RoutineRepository {
         return dataSource.getRoutineTotalTimeElapsed(routineId);
     }
 
+    @Override
     public int getCurrTaskTimeElapsed(int routineId) {
         return dataSource.getRoutineCurrTaskTimeElapsed(routineId);
     }
 
     public String getRoutineGoalTime(int routineId) {
         return dataSource.getRoutineGoalTime(routineId);
+    }
+
+    @Override
+    public void setRoutineGoalTime(int rid, String goalTime) {
+
     }
 
     public void setRoutineGoalTime(int routineId, int minutes) {
