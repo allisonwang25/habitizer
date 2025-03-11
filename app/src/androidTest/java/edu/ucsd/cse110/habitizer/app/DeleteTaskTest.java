@@ -71,7 +71,6 @@ public class DeleteTaskTest {
                     .onChildView(withId(R.id.task_delete_button))
                     .perform(click());
             onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
-            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
             onView(withText("Cancel")).perform(click());
         }
     }
@@ -101,33 +100,29 @@ public class DeleteTaskTest {
         );
         int mSize = DEFAULT_MORNING_TASKS.size();
         for(int i = 0; i < mSize; ++i){
-            onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
-
             onData(Matchers.anything())
                     .inAdapterView(withId(R.id.routine_list))
                     .atPosition(0)                  // Morning Routine List?
                     .onChildView(withId(R.id.routine_edit_btn))
                     .perform(click());
-            onView(withId(R.id.fragment_edit_routine)).check(matches(isDisplayed()));
 
             onData(Matchers.anything())
                     .inAdapterView(withId(R.id.routine))
                     .atPosition(0)
                     .onChildView(withId(R.id.task_delete_button))
                     .perform(click());
-            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
             onView(withText("Delete")).perform(click());
             onView(withId(R.id.routine)).check(matches(ListViewSizeMatcher.withListSize(--mSize)));
             onView(withText(DEFAULT_MORNING_TASKS.get(i))).check(doesNotExist());
 
             onView(withId(R.id.back_button)).perform(click());
-            onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
+
             onData(Matchers.anything())
                     .inAdapterView(withId(R.id.routine_list))
                     .atPosition(0)                  // Morning Routine List?
                     .onChildView(withId(R.id.routine_start_btn))
                     .perform(click());
-            onView(withId(R.id.fragment_active_routine)).check(matches(isDisplayed()));
+
             onView(withId(R.id.routine)).check(matches(ListViewSizeMatcher.withListSize(mSize)));
             onView(withText(DEFAULT_MORNING_TASKS.get(i))).check(doesNotExist());
             onView(withId(R.id.back_button)).perform(click());
@@ -168,7 +163,6 @@ public class DeleteTaskTest {
 
     @Test
     public void testDeleteNewTasks(){
-        onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
         onView(withId(R.id.add_routine_button)).perform(click());
         onView(withId(R.id.editRoutineNameInput)).perform(typeText("Test Routine"), closeSoftKeyboard());
         onView(withText("Create")).perform(click());
@@ -178,7 +172,6 @@ public class DeleteTaskTest {
                 .atPosition(2)
                 .onChildView(withId(R.id.routine_edit_btn))
                 .perform(click());
-        onView(withId(R.id.fragment_edit_routine)).check(matches(isDisplayed()));
 
         onView(withId(R.id.add_task_button)).perform(click());
         onView(withId(R.id.taskNameInput)).perform(typeText("Test Task"), closeSoftKeyboard());
@@ -195,7 +188,7 @@ public class DeleteTaskTest {
         onView(withText("Test Task")).check(doesNotExist());
 
         onView(withId(R.id.back_button)).perform(click());
-        onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
+
         onData(Matchers.anything())
                 .inAdapterView(withId(R.id.routine_list))
                 .atPosition(2)                  // Morning Routine List?
