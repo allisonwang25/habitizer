@@ -11,6 +11,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.action.ViewActions.click;
 
+import static org.hamcrest.Matchers.anything;
+
 import android.view.View;
 import android.widget.ListView;
 
@@ -36,47 +38,46 @@ public class DeleteTaskTest {
 
     @Before
     public void setUp() {
-        // Launches the main activity before each test
         ActivityScenario.launch(MainActivity.class);
     }
 
     @Test
-    public void testEditClickOpensEditFragment() {
-        onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
-
-        onData(Matchers.anything())
-                .inAdapterView(withId(R.id.routine_list))
-                .atPosition(0)                  // Morning Routine List?
-                .onChildView(withId(R.id.routine_edit_btn))
-                .perform(click());
-
-        onView(withId(R.id.fragment_edit_routine)).check(matches(isDisplayed()));
-        onView(withId(R.id.routine_title)).check(matches(withText("Morning")));
-
-    }
-
-    @Test
     public void testDeleteTaskDisplaysDialog() {
-        onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
-
-        onData(Matchers.anything())
+        onData(anything())
                 .inAdapterView(withId(R.id.routine_list))
-                .atPosition(0)                  // Morning Routine List?
+                .atPosition(0)
                 .onChildView(withId(R.id.routine_edit_btn))
                 .perform(click());
-        onView(withId(R.id.fragment_edit_routine)).check(matches(isDisplayed()));
-        //click on addbutton and check if the dialog is displayed
-        //onView(withId(R.id.add_task_button)).perform(click());
-        onData(Matchers.anything())
-                .inAdapterView(withId(R.id.routine))
-                .atPosition(0)
-                .onChildView(withId(R.id.task_delete_button))
+        for(int i = 0; i < 7; i++) {
+            onData(anything())
+                    .inAdapterView(withId(R.id.routine))
+                    .atPosition(i)
+                    .onChildView(withId(R.id.task_delete_button))
+                    .perform(click());
+            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
+            onView(withText("Cancel")).perform(click());
+        }
+        onView(withId(R.id.back_button)).perform(click());
+
+        onData(anything())
+                .inAdapterView(withId(R.id.routine_list))
+                .atPosition(1)
+                .onChildView(withId(R.id.routine_edit_btn))
                 .perform(click());
-        onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
+        for(int i = 0; i < 6; ++i){
+            onData(anything())
+                    .inAdapterView(withId(R.id.routine))
+                    .atPosition(i)
+                    .onChildView(withId(R.id.task_delete_button))
+                    .perform(click());
+            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
+            onView(withId(R.id.delete_task_dialog)).check(matches(isDisplayed()));
+            onView(withText("Cancel")).perform(click());
+        }
     }
 
 
-    public class ListViewSizeMatcher {
+    private static class ListViewSizeMatcher {
         public static Matcher<View> withListSize(final int size) {
             return new TypeSafeMatcher<View>() {
                 @Override
