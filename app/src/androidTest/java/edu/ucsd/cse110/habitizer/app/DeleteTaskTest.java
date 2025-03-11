@@ -129,7 +129,6 @@ public class DeleteTaskTest {
         }
 
         List<String> DEFAULT_EVENING_TASKS = List.of(
-               //copy tasks from default evening routine inmemorydatasource
                 "Charge Devices", "Prepare Dinner", "Eat Dinner", "Wash Dishes", "Pack Bag for Morning", "Homework"
         );
         int eSize = DEFAULT_EVENING_TASKS.size();
