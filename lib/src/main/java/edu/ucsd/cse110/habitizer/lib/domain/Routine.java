@@ -153,4 +153,8 @@ public class Routine {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
 }

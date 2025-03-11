@@ -10,7 +10,7 @@ public class Task implements Comparable<Task>{
     private final int tid;
     private final int rid;
     private static int idCounter = 0;  // Static counter to assign unique IDs
-    private final Timer timer;
+    private Timer timer;
     private int sortOrder;
 
     /**
@@ -92,6 +92,15 @@ public class Task implements Comparable<Task>{
     }
 
     public void setSortOrder(int sortOrder){ this.sortOrder = sortOrder; }
+
+    public void setTimer(Timer timer){
+        this.timer = timer;
+    }
+
+    public Timer getTimer(){
+        return timer;
+    }
+
     public int getSortOrder(){
         return sortOrder;
     }

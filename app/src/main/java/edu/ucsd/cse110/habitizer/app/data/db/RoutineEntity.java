@@ -40,6 +40,6 @@ public class RoutineEntity {
     }
 
     public @NonNull Routine toRoutine() {
-        return new Routine(name, new ElapsedTime()).setID(rid);
+        return new Routine(name, null).setID(rid);
     }
 }

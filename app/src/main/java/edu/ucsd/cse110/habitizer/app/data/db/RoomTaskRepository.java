@@ -87,12 +87,17 @@ public class RoomTaskRepository implements TaskRepository {
     @Override
     public void save(Task task) {
         taskDao.insert(TaskEntity.fromTask(task));
+        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()));
     }
 
     @Override
     public void saveAll(List<Task> tasks) {
         taskDao.insert(tasks.stream()
             .map(TaskEntity::fromTask)
+            .collect(Collectors.toList()));
+
+        timerDao.insert(tasks.stream()
+            .map(task -> TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()))
             .collect(Collectors.toList()));
     }
 
