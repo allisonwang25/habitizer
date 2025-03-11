@@ -108,8 +108,8 @@ public class ElapsedTime implements Timer{
     public void advanceTime(){
         if (!stopped && !paused) return;
 
-        this.taskSecondsElapsed += 30;
-        this.prevSecondsElapsed += 30;
+        this.taskSecondsElapsed += 15;
+        this.prevSecondsElapsed += 15;
     }
 
     // for routine
