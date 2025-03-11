@@ -41,11 +41,6 @@ public class DeleteTaskTest {
     }
 
     @Test
-    public void testLandingPage() {
-
-    }
-
-    @Test
     public void testEditClickOpensEditFragment() {
         onView(withId(R.id.routine_list_view)).check(matches(isDisplayed()));
 
