@@ -62,7 +62,7 @@ public class RoomRoutineRepository implements RoutineRepository {
 
     @Override
     public Subject<List<ElapsedTime>> findAllRoutineTimers() {
-        var entityLiveData = timerDao.findAllRoutineTimers(-1);
+        var entityLiveData = timerDao.findAll();
         var timerLiveData = Transformations.map(entityLiveData, entities -> {
             return entities.stream()
                 .map(TimerEntity::toTimer)

@@ -48,7 +48,9 @@ public class RoutineListFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        this.adapter = new RoutineListAdapter(requireActivity(), List.of());
+        this.adapter = new RoutineListAdapter(requireActivity(), List.of(), id -> {
+            activityModel.updateTimers();
+        });
 
         activityModel.getOrderedRoutines().observe(routines -> {
             if (routines == null) return;
@@ -70,6 +72,8 @@ public class RoutineListFragment extends Fragment {
         this.view = FragmentRoutineListBinding.inflate(inflater, container, false);
 
         view.addRoutineButton.setOnClickListener(v -> {
+            activityModel.updateTimers();
+
             var dialogFragment = NewRoutineDialogFragment.newInstance();
             dialogFragment.show(getParentFragmentManager(), "newRoutineDialog");
         });

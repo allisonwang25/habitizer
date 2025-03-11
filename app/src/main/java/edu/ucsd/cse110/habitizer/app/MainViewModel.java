@@ -71,7 +71,7 @@ public class MainViewModel extends ViewModel {
             if (timers == null) return;
 
             var newUnorderedTimers = timers.stream().collect(Collectors.toList());
-            unorderedRoutineTimers.setValue(newUnorderedTimers);
+            unorderedRoutineTimers.setValue(timers);
         });
 
         Log.d("DEBUG", "timer are initalized ");
@@ -122,9 +122,14 @@ public class MainViewModel extends ViewModel {
     }
 
     public void updateTimers() {
+        Log.d("DEBUG", "Updating timers");
+        Log.d("DEBUG", "Unordered timers: " + unorderedRoutineTimers.getValue().size());
+
         for (ElapsedTime timer : unorderedRoutineTimers.getValue()) {
             for (Routine routine : orderedRoutines.getValue()) {
+
                 if (routine.getId() == timer.getRid()) {
+                    Log.d("DEBUG", "Updating timer for routine " + routine.getId());
                     routine.setTimer(timer);
                 }
             }
@@ -179,7 +184,16 @@ public class MainViewModel extends ViewModel {
     //    ------------------ TIME RELATED METHODS ------------------
     // TODO: I don't think this works
     public Timer getTimer(int routineId){
-        return routineRepository.getTimer(routineId);
+        Log.d("DEBUG", "Getting timer for routine " + routineId);
+        var timers = unorderedRoutineTimers.getValue();
+        for (ElapsedTime timer : timers) {
+            if (timer.getRid() == routineId) {
+                Log.d(("DEBUG"), "Found timer for routine " + routineId);
+                return timer;
+            }
+        }
+
+        throw new IllegalStateException("Timer not found");
     }
 
 //    public PlainMutableSubject<String> getRoutineGoalTime() {
