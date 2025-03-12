@@ -49,4 +49,5 @@ dependencies {
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib) // Add this line
 }
