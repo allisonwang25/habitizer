@@ -26,6 +26,9 @@ public class RoutineEntity {
     @ColumnInfo(name = "totalRoutineTimeElapsed")
     public Integer totalRoutineTimeElapsed;
 
+    @ColumnInfo(name = "started")
+    public Boolean started;
+
     public RoutineEntity(@NonNull Integer rid, @NonNull String name, @NonNull Boolean completed, @NonNull String goalTime, @NonNull Integer totalRoutineTimeElapsed) {
         this.rid = rid;
         this.name = name;

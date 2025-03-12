@@ -25,14 +25,12 @@ public class ElapsedTime implements Timer{
     }
 
     // Constructor for TimerEntity
-    public ElapsedTime(int taskSecondsElapsed, int prevSecondsElapsed, boolean stopped, boolean paused){
-        // TODO: What should these be initialized to?
-        this.startTime = startTime;
-        this.prevTaskFinishTime = prevTaskFinishTime;
+    public ElapsedTime(int taskSecondsElapsed, int prevSecondsElapsed, boolean started, boolean stopped, boolean ended){
         this.taskSecondsElapsed = taskSecondsElapsed;
         this.prevSecondsElapsed = prevSecondsElapsed;
         this.stopped = stopped;
-        this.paused = paused;
+        this.started = started;
+        this.ended = ended;
     }
 
     public void pauseTime() {

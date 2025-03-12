@@ -25,8 +25,8 @@ public class TimerEntity {
     @ColumnInfo(name = "stopped")
     public boolean stopped;
 
-    @ColumnInfo(name = "paused")
-    public boolean paused;
+    @ColumnInfo(name = "started")
+    public boolean started;
 
     @ColumnInfo(name = "ended")
     public boolean ended;
@@ -34,12 +34,12 @@ public class TimerEntity {
     // TODO: Add more timer attributes
 
 
-    TimerEntity(@NonNull Integer rid, @NonNull Integer taskSecondsElapsed, @NonNull Integer prevSecondsElapsed, @NonNull boolean stopped, @NonNull boolean paused, @NonNull boolean ended) {
+    TimerEntity(@NonNull Integer rid, @NonNull Integer taskSecondsElapsed, @NonNull Integer prevSecondsElapsed, @NonNull boolean stopped, @NonNull boolean started, @NonNull boolean ended) {
         this.rid = rid;
         this.taskSecondsElapsed = taskSecondsElapsed;
         this.prevSecondsElapsed = prevSecondsElapsed;
         this.stopped = stopped;
-        this.paused = paused;
+        this.started = started;
         this.ended = ended;
 
         //TODO: Update constructor to include more timer attributes
@@ -52,7 +52,6 @@ public class TimerEntity {
     }
 
     public @NonNull ElapsedTime toTimer() {
-        return new ElapsedTime(this.taskSecondsElapsed, this.prevSecondsElapsed, this.stopped, this.paused).setRID(this.rid);
-        // TODO: should return a timer based off of the timer attributes
+        return new ElapsedTime(this.taskSecondsElapsed, this.prevSecondsElapsed, this.started, this.stopped, this.ended).setRID(this.rid);
     }
 }
