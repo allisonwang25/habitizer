@@ -27,7 +27,7 @@ public class TaskEntity {
     @ColumnInfo(name = "sort_order")
     public Integer sort_order = null;
 
-    TaskEntity(@NonNull Integer tid, @NonNull Integer rid, @NonNull String name, @NonNull Boolean isCheckedOff, @NonNull Integer sort_order) {
+    TaskEntity(Integer tid, @NonNull Integer rid, @NonNull String name, @NonNull Boolean isCheckedOff, @NonNull Integer sort_order) {
         this.tid = tid;
         this.rid = rid;
         this.name = name;
@@ -43,7 +43,7 @@ public class TaskEntity {
 
     // TODO: Same deal, incompatible constructors
     public @NonNull Task toTask() {
-        return new Task(name, (new ElapsedTime()), rid, sort_order);
+        return new Task(name, tid, (new ElapsedTime()), rid, sort_order);
     }
 
 }

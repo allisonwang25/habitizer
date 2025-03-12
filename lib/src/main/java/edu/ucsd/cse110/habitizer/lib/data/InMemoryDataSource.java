@@ -168,22 +168,23 @@ public class InMemoryDataSource {
         new Routine("Morning", mTimer),
         new Routine("Evening", eTimer)
     );
+    static int id = 0;
     public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
-        new Task("Shower", mTimer, 0, 1),
-        new Task("Brush Teeth", mTimer, 0, 2),
-        new Task("Dress", mTimer, 0, 0),
-        new Task("Make Coffee", mTimer, 0, 3),
-        new Task("Make Lunch", mTimer, 0, 4),
-        new Task("Dinner Prep", mTimer, 0, 5),
-        new Task("Pack Bag", mTimer, 0, 6)
+        new Task("Shower", id++, mTimer, 0, 1),
+        new Task("Brush Teeth", id++, mTimer, 0, 2),
+        new Task("Dress", id++, mTimer, 0, 0),
+        new Task("Make Coffee", id++, mTimer, 0, 3),
+        new Task("Make Lunch", id++, mTimer, 0, 4),
+        new Task("Dinner Prep", id++, mTimer, 0, 5),
+        new Task("Pack Bag", id++,mTimer, 0, 6)
     );
     public final static List<Task> DEFAULT_EVENING_TASKS = List.of(
-        new Task("Charge Devices", eTimer, 1, 0),
-        new Task("Prepare Dinner", eTimer, 1, 1),
-        new Task("Eat Dinner", eTimer, 1, 2),
-        new Task("Wash Dishes", eTimer, 1, 3),
-        new Task("Pack Bag for Morning", eTimer, 1, 4),
-        new Task("Homework", eTimer, 1, 5)
+        new Task("Charge Devices", id++,eTimer, 1, 0),
+        new Task("Prepare Dinner", id++,eTimer, 1, 1),
+        new Task("Eat Dinner", id++,eTimer, 1, 2),
+        new Task("Wash Dishes", id++,eTimer, 1, 3),
+        new Task("Pack Bag for Morning", id++,eTimer, 1, 4),
+        new Task("Homework", id++,eTimer, 1, 5)
     );
 
 
