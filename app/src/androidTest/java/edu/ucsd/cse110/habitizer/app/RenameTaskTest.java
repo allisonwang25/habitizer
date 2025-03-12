@@ -95,7 +95,7 @@ public class RenameTaskTest {
 
         List<String> DEFAULT_EVENING_TASKS = List.of(
                 //copy tasks from default evening routine inmemorydatasource
-                "Charge Devices", "Prepare Dinner", "Eat Dinner", "Wash Dishes", "Homework"
+                "Charge Devices", "Prepare Dinner", "Eat Dinner", "Wash Dishes", "Pack Bag for Morning", "Homework"
         );
         onData(anything())
                 .inAdapterView(withId(R.id.routine_list))
@@ -103,6 +103,7 @@ public class RenameTaskTest {
                 .onChildView(withId(R.id.routine_edit_btn))
                 .perform(click());
         for(int i = 0; i < DEFAULT_EVENING_TASKS.size(); ++i){
+            if(i == 4) continue;
             onData(anything())
                     .inAdapterView(withId(R.id.routine))
                     .atPosition(i)
