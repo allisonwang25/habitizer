@@ -20,22 +20,26 @@ public class RoutineEntity {
     @ColumnInfo(name = "completed")
     public Boolean completed;
 
-    @ColumnInfo(name = "goatTime")
-    public String goatTime;
+    @ColumnInfo(name = "goalTime")
+    public String goalTime;
 
-    RoutineEntity(@NonNull Integer rid, @NonNull String name, @NonNull Boolean completed, @NonNull String goatTime) {
+    @ColumnInfo(name = "totalRoutineTimeElapsed")
+    public Integer totalRoutineTimeElapsed;
+
+    public RoutineEntity(@NonNull Integer rid, @NonNull String name, @NonNull Boolean completed, @NonNull String goalTime, @NonNull Integer totalRoutineTimeElapsed) {
         this.rid = rid;
         this.name = name;
         this.completed = completed;
-        this.goatTime = goatTime;
+        this.goalTime = goalTime;
+        this.totalRoutineTimeElapsed = totalRoutineTimeElapsed;
     }
 
     public static RoutineEntity fromRoutine(Routine rtn) {
-        var routine = new RoutineEntity(rtn.getId(), rtn.getName(), rtn.getCompleted(), rtn.getGoalTime());
+        var routine = new RoutineEntity(rtn.getId(), rtn.getName(), rtn.getCompleted(), rtn.getGoalTime(), rtn.getTotalTimeElapsed());
         return routine;
     }
 
     public @NonNull Routine toRoutine() {
-        return new Routine(name, new ElapsedTime()).setID(rid);
+        return new Routine(name, null).setID(rid);
     }
 }

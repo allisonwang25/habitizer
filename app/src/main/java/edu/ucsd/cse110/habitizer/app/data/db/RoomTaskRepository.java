@@ -9,14 +9,17 @@ import java.util.stream.Collectors;
 import edu.ucsd.cse110.habitizer.app.util.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.habitizer.lib.domain.TaskRepository;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
 public class RoomTaskRepository implements TaskRepository {
     private final TaskDao taskDao;
+    private final TimerDao timerDao;
 
-    public RoomTaskRepository(TaskDao dao) {
+    public RoomTaskRepository(TaskDao dao, TimerDao timerDao) {
         this.taskDao = dao;
+        this.timerDao = timerDao;
     }
 
     @Override
@@ -26,7 +29,7 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public void append(Task task) {
-        taskDao.insert(TaskEntity.fromTask(task));
+        save(task);
     }
 
     @Override
@@ -39,8 +42,8 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public Subject<List<Task>> findAll() {
-        var entitiesLivaDaa = taskDao.findAllAsLiveData();
-        var tasksLiveData = Transformations.map(entitiesLivaDaa, entities -> {
+        var entitiesLivaData = taskDao.findAllAsLiveData();
+        var tasksLiveData = Transformations.map(entitiesLivaData, entities -> {
             return entities.stream()
                 .map(TaskEntity::toTask)
                 .collect(Collectors.toList());
@@ -62,6 +65,11 @@ public class RoomTaskRepository implements TaskRepository {
     }
 
     @Override
+    public Subject<List<ElapsedTime>> findAllTaskTimers() {
+        return null;
+    }
+
+    @Override
     public void renameTask(int taskId, String taskName) {
         taskDao.updateName(taskName, taskId);
     }
@@ -72,8 +80,14 @@ public class RoomTaskRepository implements TaskRepository {
     }
 
     @Override
+    public void checkOffTask(int taskId, int routineId) {
+
+    }
+
+    @Override
     public void save(Task task) {
         taskDao.insert(TaskEntity.fromTask(task));
+//        timerDao.insert(TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()));
     }
 
     @Override
@@ -81,5 +95,25 @@ public class RoomTaskRepository implements TaskRepository {
         taskDao.insert(tasks.stream()
             .map(TaskEntity::fromTask)
             .collect(Collectors.toList()));
+
+//        timerDao.insert(tasks.stream()
+//            .map(task -> TimerEntity.fromTimer((ElapsedTime) task.getTimer(), task.getRid(), task.getTid()))
+//            .collect(Collectors.toList()));
+    }
+
+    @Override
+    public void moveTaskUp(int routineId, int taskId) {
+        int sortOrder = taskDao.getTaskSortOrder(taskId);
+        if (sortOrder == 0) { // already at the top
+            return;
+        }
+
+        // IDK if this works
+        taskDao.moveTaskUp(routineId, taskId);
+    }
+
+    @Override
+    public void moveTaskDown(int routineId, int taskId) {
+
     }
 }

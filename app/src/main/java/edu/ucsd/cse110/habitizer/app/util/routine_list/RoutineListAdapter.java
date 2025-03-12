@@ -25,8 +25,10 @@ import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutineListAdapter extends ArrayAdapter<Routine> {
 
-    public RoutineListAdapter(Context context, List<Routine> routineList){
+    Consumer<Integer>  updateClick;
+    public RoutineListAdapter(Context context, List<Routine> routineList, Consumer<Integer> onUpdate){
         super(context, 0, new ArrayList<>(routineList));
+        this.updateClick = onUpdate;
     }
 
     @NonNull
@@ -44,13 +46,17 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         }
 
         binding.routineTitle.setText(routine.getName());
-        binding.routineStartBtn.setText("Start");
-        binding.routineEditBtn.setText("Edit");
+        if(!routine.getGoalTime().equals("-")) {
+            binding.goalTime.setText("Goal: " + routine.getGoalTime() + " Minutes");
+        }
 
         binding.routineStartBtn.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
                 mainActivity.setActiveFragment(ROUTINE_ACTIVE, i);
+
+                updateClick.accept(1);
+                routine.getTimer().startTime();
             }
         }) ;
 

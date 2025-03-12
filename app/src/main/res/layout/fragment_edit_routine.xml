@@ -19,7 +19,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
-        android:text="@string/morning_routine"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +40,7 @@
             android:id="@+id/routine_elapsed_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0 out of 0 minutes elapsed"
+            android:text="No goal time set"
             android:textAlignment="center" />
 
         <EditText

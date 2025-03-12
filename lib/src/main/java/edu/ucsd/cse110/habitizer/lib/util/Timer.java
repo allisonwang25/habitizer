@@ -4,7 +4,13 @@ public interface Timer {
     int getTaskTimeElapsed();
     int getTotalTimeElapsed();
 
+    int getCurrentlyElapsedTime();
+    int getCurrTaskTimeElapsed();
+
     void stopTimer();
+    void startTime();
+
+    void endTime();
 
     void advanceTime();
 }

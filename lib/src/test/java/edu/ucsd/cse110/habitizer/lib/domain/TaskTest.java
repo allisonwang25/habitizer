@@ -16,7 +16,7 @@ public class TaskTest {
     @Before
     public void setUp() {
         mockTimer = new ElapsedTimeTester();
-        task = new Task("New Test Task", mockTimer, 0);
+        task = new Task("New Test Task", mockTimer, 0, 0);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TaskTest {
 
     @Test
     public void testUniqueIds() {
-        Task anotherTask = new Task("Another Task", mockTimer, 0);
+        Task anotherTask = new Task("Another Task", mockTimer, 0, 0);
         assertThat("Tasks should have unique IDs", task.getTid(), is(not(anotherTask.getTid())));
     }
 }
