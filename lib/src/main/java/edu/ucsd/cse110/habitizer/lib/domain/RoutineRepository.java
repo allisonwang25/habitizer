@@ -33,4 +33,7 @@ public interface RoutineRepository {
 
     int getCurrTaskTimeElapsed(int routineId) ;
 
+    void updateTaskSecondsElapsed(int taskSecondsElapsed, int rid);
+
+    void updateTotalMinutesElapsed(int taskMinutesElapsed, int rid);
 }

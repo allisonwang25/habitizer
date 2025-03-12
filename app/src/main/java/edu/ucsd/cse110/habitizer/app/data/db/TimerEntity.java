@@ -7,6 +7,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDateTime;
+
 import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 import edu.ucsd.cse110.habitizer.lib.util.Timer;
 
@@ -16,10 +18,12 @@ public class TimerEntity {
     @ColumnInfo(name = "rid")
     public Integer rid;
 
+    public LocalDateTime startTime;
+
     @ColumnInfo(name = "taskSecondsElapsed")
     public Integer taskSecondsElapsed;
 
-    @ColumnInfo(name = "totalSecondsElapsed")
+    @ColumnInfo(name = "prevSecondsElapsed")
     public Integer prevSecondsElapsed;
 
     @ColumnInfo(name = "stopped")
@@ -33,8 +37,8 @@ public class TimerEntity {
 
     // TODO: Add more timer attributes
 
-
-    TimerEntity(@NonNull Integer rid, @NonNull Integer taskSecondsElapsed, @NonNull Integer prevSecondsElapsed, @NonNull boolean stopped, @NonNull boolean paused, @NonNull boolean ended) {
+    TimerEntity(@NonNull Integer rid, @NonNull LocalDateTime startTime, @NonNull Integer taskSecondsElapsed, @NonNull Integer prevSecondsElapsed, @NonNull boolean stopped, @NonNull boolean paused, @NonNull boolean ended) {
+        this.startTime = startTime;
         this.rid = rid;
         this.taskSecondsElapsed = taskSecondsElapsed;
         this.prevSecondsElapsed = prevSecondsElapsed;
@@ -46,13 +50,13 @@ public class TimerEntity {
     }
 
     public static TimerEntity fromTimer(@NonNull ElapsedTime t, @NonNull Integer rid) {
-        var timer = new TimerEntity(rid, t.getTaskTimeElapsed(), t.getPrevSecondsElapsed(), t.isStopped(), t.isPaused(), t.isEnded());
+        var timer = new TimerEntity(rid, t.getStartTime(), t.getTaskTimeElapsed(), t.getPrevSecondsElapsed(), t.isStopped(), t.isPaused(), t.isEnded());
         Log.d("DEBUG", "fromTimer: " + rid);
         return timer;
     }
 
     public @NonNull ElapsedTime toTimer() {
-        return new ElapsedTime(this.taskSecondsElapsed, this.prevSecondsElapsed, this.stopped, this.paused).setRID(this.rid);
+        return new ElapsedTime(this.startTime, this.taskSecondsElapsed, this.prevSecondsElapsed, this.stopped, this.paused).setRID(this.rid);
         // TODO: should return a timer based off of the timer attributes
     }
 }

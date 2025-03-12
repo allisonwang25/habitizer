@@ -102,7 +102,7 @@ public class RoutineFragment extends Fragment {
         view.backButton.setOnClickListener(v -> {
             if (getContext() instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) getContext();
-                activityModel.stopUpdatingElapsedTime();
+                activityModel.stopUpdatingElapsedTime(routineId);
                 mainActivity.setActiveFragment(ROUTINE_LIST, 69420);
             }
         });

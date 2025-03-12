@@ -25,27 +25,44 @@ public class ElapsedTime implements Timer{
     }
 
     // Constructor for TimerEntity
-    public ElapsedTime(int taskSecondsElapsed, int prevSecondsElapsed, boolean stopped, boolean paused){
+    public ElapsedTime(LocalDateTime startTime, int taskSecondsElapsed, int prevSecondsElapsed, boolean stopped, boolean paused){
         // TODO: What should these be initialized to?
         this.startTime = startTime;
-        this.prevTaskFinishTime = prevTaskFinishTime;
+        this.prevTaskFinishTime = startTime;
         this.taskSecondsElapsed = taskSecondsElapsed;
         this.prevSecondsElapsed = prevSecondsElapsed;
         this.stopped = stopped;
         this.paused = paused;
     }
 
+    public LocalDateTime getStartTime(){
+        return this.startTime;
+    }
+
+    private LocalDateTime pauseStartTime; // Stores the time when pause starts
+
     public void pauseTime() {
-        this.paused = true;
-        this.prevSecondsElapsed += (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now());
-        this.taskSecondsElapsed += (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
+        if (!paused) {
+            this.paused = true;
+            this.pauseStartTime = LocalDateTime.now(); // Capture when we paused
+        }
     }
 
     public void resumeTime() {
-        this.paused = false;
-        this.startTime = LocalDateTime.now();
-        this.prevTaskFinishTime = LocalDateTime.now();
+        if (paused) {
+            LocalDateTime resumeTime = LocalDateTime.now();
+            int pauseDuration = (int) ChronoUnit.SECONDS.between(this.pauseStartTime, resumeTime);
+
+            // Adjust times to compensate for the pause
+            this.startTime = this.startTime.plusSeconds(pauseDuration);
+            this.prevTaskFinishTime = this.prevTaskFinishTime.plusSeconds(pauseDuration);
+
+            this.paused = false;
+            this.pauseStartTime = null; // Reset pause tracking
+        }
     }
+
+
 
     public ElapsedTime setRID(int rid){
         this.rid = rid;
@@ -74,9 +91,8 @@ public class ElapsedTime implements Timer{
         return this.prevSecondsElapsed;
     }
 
-    @Override
-    public int getCurrTaskTimeElapsed(){
-        if (stopped){
+    public int getCurrTaskTimeElapsed() {
+        if (stopped) {
             return calcStoppedTaskTime();
         }
 
@@ -144,8 +160,8 @@ public class ElapsedTime implements Timer{
             System.out.println("stopped");;
             return calcStoppedRoutineTime();
         }
-        System.out.println("not stopped");
-        return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
+        System.out.println("YURRR" + this.prevSecondsElapsed);
+        return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now());
     }
 
 
@@ -176,5 +192,9 @@ public class ElapsedTime implements Timer{
 
     public boolean isPaused() {
         return paused;
+    }
+
+    public boolean getPaused() {
+        return this.paused;
     }
 }

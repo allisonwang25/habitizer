@@ -77,6 +77,16 @@ public class SimpleRoutineRepository implements RoutineRepository {
         return dataSource.getRoutineCurrTaskTimeElapsed(routineId);
     }
 
+    @Override
+    public void updateTaskSecondsElapsed(int taskSecondsElapsed, int rid) {
+
+    }
+
+    @Override
+    public void updateTotalMinutesElapsed(int taskMinutesElapsed, int rid) {
+
+    }
+
     public String getRoutineGoalTime(int routineId) {
         return dataSource.getRoutineGoalTime(routineId);
     }

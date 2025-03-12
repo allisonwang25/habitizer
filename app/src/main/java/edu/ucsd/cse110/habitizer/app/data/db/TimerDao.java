@@ -32,4 +32,10 @@ public interface TimerDao {
     LiveData<TimerEntity> findAsLiveData(int rid);
 
     //TODO : Add more queries
+
+    @Query("UPDATE Timer SET taskSecondsElapsed = :taskSecondsElapsed WHERE rid = :rid")
+    void updateTaskSecondsElapsed(int taskSecondsElapsed, int rid);
+
+    @Query("UPDATE Timer SET prevSecondsElapsed = :prevSecondsElapsed WHERE rid = :rid")
+    void updateTotalMinutesElapsed(int prevSecondsElapsed, int rid);
 }

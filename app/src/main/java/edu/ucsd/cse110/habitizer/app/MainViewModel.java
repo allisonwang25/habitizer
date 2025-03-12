@@ -236,12 +236,18 @@ public class MainViewModel extends ViewModel {
         updateElapsedTimeRunnable = new Runnable() {
             @Override
             public void run() {
+                if (unorderedRoutineTimers.getValue().get(routineId).getPaused()) unorderedRoutineTimers.getValue().get(routineId).resumeTime();
                 String goalTime = getRoutineGoalTime(routineId);
-                int routineElapsedMinutes = routineRepository.getRoutineTotalTimeElapsed(routineId);
+                int routineElapsedMinutes = unorderedRoutineTimers.getValue().get(routineId).getCurrentlyElapsedTime();
+
                 String goalTimeText = routineElapsedMinutes + " out of " + goalTime + " minutes elapsed";
                 routineElapsedTimeText.setValue(goalTimeText);
 
-                int currTaskElapsedTime = routineRepository.getCurrTaskTimeElapsed(routineId);
+                int currTaskElapsedTime = unorderedRoutineTimers.getValue().get(routineId).getCurrTaskTimeElapsed();
+
+                routineRepository.updateTaskSecondsElapsed(currTaskElapsedTime, routineId);
+                routineRepository.updateTotalMinutesElapsed(routineElapsedMinutes, routineId);
+
                 if (currTaskElapsedTime < 60){
                     String currTaskTimeText = currTaskElapsedTime + " seconds elapsed";
                     taskElapsedTimeText.setValue(currTaskTimeText);
@@ -250,18 +256,19 @@ public class MainViewModel extends ViewModel {
                     String currTaskTimeText = currTaskElapsedTime / 60 + " minutes elapsed";
                     taskElapsedTimeText.setValue(currTaskTimeText);
                 }
-                // Schedule the next update after 1 second (1000ms)
-                handler.postDelayed(this, 1000);
+                // Schedule the next update after 1 second (100ms)
+                handler.postDelayed(this, 100);
             }
         };
         // Start the periodic update
         handler.post(updateElapsedTimeRunnable);
     }
 
-    public void stopUpdatingElapsedTime() {
+    public void stopUpdatingElapsedTime(int routineId) {
         if (updateElapsedTimeRunnable != null) {
             handler.removeCallbacks(updateElapsedTimeRunnable);
             updateElapsedTimeRunnable = null;
+//            unorderedRoutineTimers.getValue().get(routineId).pauseTime();
         }
     }
 }

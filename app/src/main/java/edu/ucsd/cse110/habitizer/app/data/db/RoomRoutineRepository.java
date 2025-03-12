@@ -139,7 +139,16 @@ public class RoomRoutineRepository implements RoutineRepository {
 
     @Override
     public int getCurrTaskTimeElapsed(int routineId) {
+        TimerEntity t = timerDao.find(routineId);
+        return t.taskSecondsElapsed;
+    }
 
-        return 0;
+    public void updateTaskSecondsElapsed(int taskSecondsElapsed, int rid){
+        Log.d("DEBUG", "Updating taskSecondsElapsed for Routine ID: " + rid + " to " + taskSecondsElapsed);
+        timerDao.updateTaskSecondsElapsed(taskSecondsElapsed, rid);
+    }
+
+    public void updateTotalMinutesElapsed(int totalSecondsElapsed, int rid){
+        timerDao.updateTotalMinutesElapsed(totalSecondsElapsed, rid);
     }
 }
