@@ -250,8 +250,8 @@ public class MainViewModel extends ViewModel {
                     String currTaskTimeText = currTaskElapsedTime / 60 + " minutes elapsed";
                     taskElapsedTimeText.setValue(currTaskTimeText);
                 }
-                // Schedule the next update after 1 second (1000ms)
-                handler.postDelayed(this, 1000);
+                // Schedule the next update after .1 second (100ms)
+                handler.postDelayed(this, 100);
             }
         };
         // Start the periodic update

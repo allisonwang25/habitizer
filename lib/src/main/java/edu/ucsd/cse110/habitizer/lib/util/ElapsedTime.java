@@ -33,12 +33,14 @@ public class ElapsedTime implements Timer{
         this.ended = ended;
     }
 
+    @Override
     public void pauseTime() {
         this.paused = true;
         this.prevSecondsElapsed += (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now());
         this.taskSecondsElapsed += (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
     }
 
+    @Override
     public void resumeTime() {
         this.paused = false;
         this.startTime = LocalDateTime.now();
@@ -61,7 +63,7 @@ public class ElapsedTime implements Timer{
             return calcStoppedTaskTime();
         }
 
-        int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()) + this.taskSecondsElapsed;
+        int timeElapsed = (int) timeSinceLastTaskResume() + this.taskSecondsElapsed;
 
         this.prevTaskFinishTime = LocalDateTime.now(); // update time the most recent task was completed
         this.taskSecondsElapsed = 0; // reset task time
@@ -78,7 +80,7 @@ public class ElapsedTime implements Timer{
             return calcStoppedTaskTime();
         }
 
-        return (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
+        return (int) timeSinceLastTaskResume() + this.taskSecondsElapsed;
     }
 
     // called frequently to get routine time
@@ -87,7 +89,7 @@ public class ElapsedTime implements Timer{
         if (stopped){
             return calcStoppedRoutineTime() * 60;
         }
-        int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
+        int timeElapsed = (int) timeSinceLastResume() + this.prevSecondsElapsed;
         return (int) Math.ceil(timeElapsed / 60.0);
     }
 
@@ -111,7 +113,7 @@ public class ElapsedTime implements Timer{
             int timeElapsed = (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, endTime) + this.taskSecondsElapsed;
             this.prevTaskFinishTime = endTime;
 
-            return (int) Math.ceil(timeElapsed / 60.0);
+            return timeElapsed;
         }
         return -1;
     }
@@ -130,9 +132,10 @@ public class ElapsedTime implements Timer{
 
     @Override
     public void advanceTime(){
-        if (!stopped || ended) return;
+        if (!stopped && !paused) return;
 
-        this.endTime = this.endTime.plusSeconds(30);
+        this.taskSecondsElapsed += 15;
+        this.prevSecondsElapsed += 15;
     }
 
     // for routine
@@ -142,8 +145,16 @@ public class ElapsedTime implements Timer{
             System.out.println("stopped");;
             return calcStoppedRoutineTime();
         }
-        System.out.println("not stopped");
-        return (int) ChronoUnit.MINUTES.between(this.startTime, LocalDateTime.now()) + this.prevSecondsElapsed;
+        System.out.printf("prevSecondsElapsed: %d, this iteration: %d\n", this.prevSecondsElapsed, timeSinceLastResume());
+        return (int) (timeSinceLastResume() + this.prevSecondsElapsed) / 60;
+    }
+
+    private int timeSinceLastResume(){
+        return paused ? 0 : (int) ChronoUnit.SECONDS.between(this.startTime, LocalDateTime.now());
+    }
+
+    private int timeSinceLastTaskResume(){
+        return paused ? 0 : (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
     }
 
 
@@ -175,4 +186,6 @@ public class ElapsedTime implements Timer{
     public boolean isPaused() {
         return paused;
     }
+
+
 }

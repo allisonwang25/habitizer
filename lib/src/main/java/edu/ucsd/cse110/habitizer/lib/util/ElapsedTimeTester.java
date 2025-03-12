@@ -49,6 +49,16 @@ public class ElapsedTimeTester implements Timer {
     }
 
     @Override
+    public void pauseTime(){
+        return;
+    }
+
+    @Override
+    public void resumeTime(){
+        return;
+    }
+
+    @Override
     public int getCurrTaskTimeElapsed() {
         return -1;
     }

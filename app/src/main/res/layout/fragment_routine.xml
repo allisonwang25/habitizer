@@ -112,6 +112,13 @@
             android:text="Stop timer" />
 
         <Button
+            android:id="@+id/pause_routine_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pause Time" />
+
+        <Button
             android:id="@+id/advance_time_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
