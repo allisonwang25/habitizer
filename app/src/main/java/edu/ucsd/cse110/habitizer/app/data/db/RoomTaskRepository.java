@@ -114,6 +114,6 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public void moveTaskDown(int routineId, int taskId) {
-
+        taskDao.moveTaskDown(routineId, taskId);
     }
 }

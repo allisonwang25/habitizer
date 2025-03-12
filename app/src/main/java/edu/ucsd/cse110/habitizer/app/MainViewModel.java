@@ -138,7 +138,16 @@ public class MainViewModel extends ViewModel {
     }
 
     public Task getTask(int taskId) {
-        return taskRepository.find(taskId).getValue();
+        List<Task> tasks = orderedTasks.getValue();
+
+        for (Task task : tasks) {
+            if (task.getTid() == taskId) {
+                return task;
+            }
+        }
+
+        throw new IllegalStateException("ASDA");
+//        return taskRepository.find(taskId).getValue();
     }
 
 //    public List<Task> getTasks(int routineId) {
