@@ -7,7 +7,7 @@ public class Task implements Comparable<Task>{
     private boolean checkedOff;
     private String name;
     private int timeElapsed;
-    private final int tid;
+    private final Integer tid;
     private final int rid;
     private static int idCounter = 0;  // Static counter to assign unique IDs
     private Timer timer;
@@ -20,11 +20,12 @@ public class Task implements Comparable<Task>{
      * @param name         the name of the task
      * @param timer the TimeProvider to use for time-based operations
      */
-    public Task(String name, Timer timer, int rid, int sortOrder) {
+    public Task(String name, Integer tid, Timer timer, int rid, int sortOrder) {
         this.checkedOff = false;
         this.timeElapsed = 0;
         this.name = name;
-        this.tid = idCounter++;
+//        this.tid = idCounter++;
+        this.tid = tid;
         this.rid = rid;
         this.timer = timer;
         this.sortOrder = sortOrder;
@@ -62,7 +63,7 @@ public class Task implements Comparable<Task>{
         this.name = name;
     }
 
-    public int getTid() {
+    public Integer getTid() {
         return this.tid;
     }
 
@@ -110,5 +111,9 @@ public class Task implements Comparable<Task>{
 
     public int compareTo(Task task){
         return this.sortOrder - task.getSortOrder();
+    }
+
+    public static void setIdCounter(int tid){
+        idCounter = tid;
     }
 }
