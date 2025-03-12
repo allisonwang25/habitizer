@@ -68,8 +68,8 @@ public class MainViewModel extends ViewModel {
 //        });
 
         routineRepository.findAllRoutineTimers().observe(timers -> {
+            Log.d("DEBUG", "Received Timers: " + timers);
             if (timers == null) return;
-
             var newUnorderedTimers = timers.stream().collect(Collectors.toList());
             unorderedRoutineTimers.setValue(timers);
         });
@@ -159,8 +159,8 @@ public class MainViewModel extends ViewModel {
         taskRepository.removeTask(taskId);
     }
 
-    public void addRoutine(String name){
-        routineRepository.save(new Routine(name, new ElapsedTime()));
+    public void addRoutine(Routine routine){
+        routineRepository.save(routine);
     }
 
     public void checkOffTask(int taskId, int routineId){

@@ -62,6 +62,7 @@ public class RoomRoutineRepository implements RoutineRepository {
 
     @Override
     public Subject<List<ElapsedTime>> findAllRoutineTimers() {
+        Log.d("DEBUG", "Fetching all routine timers...");
         var entityLiveData = timerDao.findAll();
         var timerLiveData = Transformations.map(entityLiveData, entities -> {
             return entities.stream()
@@ -101,7 +102,6 @@ public class RoomRoutineRepository implements RoutineRepository {
 //
 //        Log.d("DEBUG", "Timer 2 count: " + timerDao.count());
 
-
     }
 
     @Override
@@ -133,6 +133,7 @@ public class RoomRoutineRepository implements RoutineRepository {
 
     @Override
     public int getRoutineTotalTimeElapsed(int routineId) {
+        Log.d("DEBUG", "Getting total time elapsed for routine id " + routineId);
         return routineDao.getRoutineTotalTimeElapsed(routineId);
     }
 

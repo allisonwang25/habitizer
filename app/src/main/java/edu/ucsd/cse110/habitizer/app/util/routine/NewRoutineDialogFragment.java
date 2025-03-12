@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogNewRoutineBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.util.ElapsedTime;
 
 public class NewRoutineDialogFragment extends DialogFragment {
     private FragmentDialogNewRoutineBinding view;
@@ -52,7 +54,9 @@ public class NewRoutineDialogFragment extends DialogFragment {
             return; // TODO: BUG: dialog should not be dismissed if task name is empty
         }
 
-        activityModel.addRoutine(routineName);
+        Routine routine = new Routine(routineName, new ElapsedTime(), null);
+        
+        activityModel.addRoutine(routine);
         dialog.dismiss();
     }
 

@@ -12,9 +12,9 @@ import edu.ucsd.cse110.habitizer.lib.util.Timer;
 
 @Entity(tableName = "Timer")
 public class TimerEntity {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey (autoGenerate = true)
     @ColumnInfo(name = "rid")
-    public Integer rid = null;
+    public Integer rid;
 
     @ColumnInfo(name = "taskSecondsElapsed")
     public Integer taskSecondsElapsed;

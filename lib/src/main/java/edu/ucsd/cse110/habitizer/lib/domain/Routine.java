@@ -10,8 +10,7 @@ import edu.ucsd.cse110.observables.PlainMutableSubject;
 public class Routine {
     private List<Task> tasks;
     // 0 for morning routine, 1 for evening routine
-    private int id;
-    private static int idCnt = 0;
+    private Integer id;
     private String name;
     private boolean completed;
     // The routine's goal time in minutes (a negative value indicates none is set).
@@ -25,9 +24,9 @@ public class Routine {
      *
      * @param name the name of the routine
      */
-    public Routine(String name, Timer timer) {
+    public Routine(String name, Timer timer, Integer id) {
         this.name = name;
-        this.id = idCnt++;
+        this.id = id;
         this.tasks = new ArrayList<>();
         this.completed = false;
         this.goalTimeMinutes = "-";
@@ -135,7 +134,7 @@ public class Routine {
         }
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     public Routine setID(int id) {this.id = id; return this;}
