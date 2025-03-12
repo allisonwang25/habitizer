@@ -10,4 +10,7 @@ public interface Timer {
 
     void advanceTime();
     void startTime();
+
+    void pauseTime();
+    void resumeTime();
 }
