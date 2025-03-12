@@ -16,7 +16,7 @@ public class TaskTest {
     @Before
     public void setUp() {
         mockTimer = new ElapsedTimeTester();
-        task = new Task("New Test Task", mockTimer, 0, 0);
+        task = new Task("New Test Task", 0, mockTimer, 0, 0);
     }
 
     @Test
@@ -59,11 +59,5 @@ public class TaskTest {
     public void testEditTask() {
         task.editTask("Updated Task");
         assertThat("Task name should be updated", task.getName(), is("Updated Task"));
-    }
-
-    @Test
-    public void testUniqueIds() {
-        Task anotherTask = new Task("Another Task", mockTimer, 0, 0);
-        assertThat("Tasks should have unique IDs", task.getTid(), is(not(anotherTask.getTid())));
     }
 }
