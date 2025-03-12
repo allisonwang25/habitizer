@@ -7,6 +7,9 @@ public interface Timer {
     int getCurrentlyElapsedTime();
     int getCurrTaskTimeElapsed();
 
+    void pauseTime();
+    void resumeTime();
+
     void stopTimer();
     void startTime();
 

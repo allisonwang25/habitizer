@@ -108,6 +108,17 @@ public class RoutineFragment extends Fragment {
         });
 
         view.routine.setAdapter(adapter);
+
+        view.pauseRoutineButton.setOnClickListener(v -> {
+            if (view.pauseRoutineButton.getText().equals("Pause Time")) {
+                view.pauseRoutineButton.setText("Resume Time");
+                activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().pauseTime();
+            } else {
+                view.pauseRoutineButton.setText("Pause Time");
+                activityModel.getOrderedRoutines().getValue().get(routineId).getTimer().resumeTime();
+            }
+        });
+
         activityModel.startUpdatingElapsedTime(routineId);
 
         activityModel.getRoutineElapsedTimeText().observe(getViewLifecycleOwner(), elapsedText -> {

@@ -61,6 +61,7 @@ public interface TaskDao {
         "WHERE rid = :rid AND (tid = :tid OR sort_order = (SELECT sort_order FROM Task WHERE tid = :tid) - 1)")
     void moveTaskUp(int rid, int tid);
     @Query("UPDATE Task " +
+
             "SET sort_order = CASE " +
             "    WHEN sort_order = ((SELECT sort_order FROM Task WHERE tid = :tid) + 1) THEN sort_order - 1 " +
             "   WHEN tid = :tid THEN sort_order + 1 " +

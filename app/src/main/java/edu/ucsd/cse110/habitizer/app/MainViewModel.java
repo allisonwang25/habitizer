@@ -133,7 +133,16 @@ public class MainViewModel extends ViewModel {
     }
 
     public Task getTask(int taskId) {
-        return taskRepository.find(taskId).getValue();
+        List<Task> tasks = orderedTasks.getValue();
+
+        for (Task task : tasks) {
+            if (task.getTid() == taskId) {
+                return task;
+            }
+        }
+
+        throw new IllegalStateException("ASDA");
+//        return taskRepository.find(taskId).getValue();
     }
 
 //    public List<Task> getTasks(int routineId) {
@@ -245,8 +254,8 @@ public class MainViewModel extends ViewModel {
                     String currTaskTimeText = currTaskElapsedTime / 60 + " minutes elapsed";
                     taskElapsedTimeText.setValue(currTaskTimeText);
                 }
-                // Schedule the next update after 1 second (1000ms)
-                handler.postDelayed(this, 1000);
+                // Schedule the next update after .1 second (100ms)
+                handler.postDelayed(this, 100);
             }
         };
         // Start the periodic update
