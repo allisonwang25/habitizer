@@ -124,11 +124,9 @@ public class InMemoryDataSource {
 
     public void checkOffTask(int taskId, int routineId){
         Task task = tasks.get(taskId);
-        task.checkOff();
         Routine routine = getRoutine(routineId);
-        System.out.println(routine);
+        routine.checkOffTask(task);
         if(routine.isCompleted()){
-            System.out.println("all done");
             routine.completeRoutine();
         }
         allTasksSubjects.setValue(getTasks());

@@ -15,6 +15,9 @@ public class ElapsedTime implements Timer{
     public ElapsedTime(){
         this.startTime = LocalDateTime.now();
         this.prevTaskFinishTime = LocalDateTime.now();
+        System.out.println("DEBUG: Current Time: " + LocalDateTime.now());
+        System.out.println("DEBUG: Prev Task Finish Time: " + this.prevTaskFinishTime);
+        System.out.println("DEBUG: Calculated Time Passed: " + ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()));
         this.stopped = false;
         this.paused = false;
         this.prevSecondsElapsed = 0;
@@ -32,7 +35,13 @@ public class ElapsedTime implements Timer{
     public void resumeTime() {
         this.paused = false;
         this.startTime = LocalDateTime.now();
+        System.out.println("DEBUG: Current Time: " + LocalDateTime.now());
+        System.out.println("DEBUG: Prev Task Finish Time: " + this.prevTaskFinishTime);
+        System.out.println("DEBUG: Calculated Time Passed: " + ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()));
         this.prevTaskFinishTime = LocalDateTime.now();
+        System.out.println("DEBUG: Current Time: " + LocalDateTime.now());
+        System.out.println("DEBUG: Prev Task Finish Time: " + this.prevTaskFinishTime);
+        System.out.println("DEBUG: Calculated Time Passed: " + ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()));
     }
 
     // called when a task is completed returns IN SECONDS
@@ -42,9 +51,16 @@ public class ElapsedTime implements Timer{
             return calcStoppedTaskTime();
         }
 
+        System.out.println("timeSinceLastTaskResume: " + timeSinceLastTaskResume());
+        System.out.println("taskSecondsElapsed: " + this.taskSecondsElapsed);
         int timeElapsed = (int) timeSinceLastTaskResume() + this.taskSecondsElapsed;
-
+        System.out.println("DEBUG: Current Time: " + LocalDateTime.now());
+        System.out.println("DEBUG: Prev Task Finish Time: " + this.prevTaskFinishTime);
+        System.out.println("DEBUG: Calculated Time Passed: " + ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()));
         this.prevTaskFinishTime = LocalDateTime.now(); // update time the most recent task was completed
+        System.out.println("DEBUG: Current Time: " + LocalDateTime.now());
+        System.out.println("DEBUG: Prev Task Finish Time: " + this.prevTaskFinishTime);
+        System.out.println("DEBUG: Calculated Time Passed: " + ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()));
         this.taskSecondsElapsed = 0; // reset task time
         return timeElapsed;
     }
@@ -75,7 +91,6 @@ public class ElapsedTime implements Timer{
     }
 
     public void endTime(){
-        System.out.println("made it to endtime in elapsed time");
         this.ended = true;
         if(!stopped)
             this.endTime = LocalDateTime.now();
@@ -96,7 +111,6 @@ public class ElapsedTime implements Timer{
     public int calcStoppedRoutineTime(){
         if (stopped){
             int timeElapsed = (int) ChronoUnit.SECONDS.between(this.startTime, endTime) + this.prevSecondsElapsed;
-            System.out.println("aloha " + timeElapsed);
             if(ended)
                 return (int) Math.ceil(timeElapsed / 60.0);
             return (int) Math.floor(timeElapsed / 60.0);
@@ -107,7 +121,6 @@ public class ElapsedTime implements Timer{
     @Override
     public void advanceTime(){
         if (!stopped && !paused) return;
-
         this.taskSecondsElapsed += 15;
         this.prevSecondsElapsed += 15;
     }
@@ -128,6 +141,8 @@ public class ElapsedTime implements Timer{
     }
 
     private int timeSinceLastTaskResume(){
+        System.out.println("prevTaskFinishTime: " + this.prevTaskFinishTime);
+        System.out.println("time passed " + ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now()));
         return paused ? 0 : (int) ChronoUnit.SECONDS.between(this.prevTaskFinishTime, LocalDateTime.now());
     }
 

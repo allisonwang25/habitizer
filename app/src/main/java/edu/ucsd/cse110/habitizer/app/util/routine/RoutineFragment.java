@@ -67,7 +67,6 @@ public class RoutineFragment extends Fragment {
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-//            adapter.addAll(activityModel.getOrderedRoutines().getValue().get(routineId).getTasks(
             adapter.addAll(tasks
                     .stream()
                     .filter(task -> task.getRid() == routineId)

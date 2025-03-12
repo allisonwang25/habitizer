@@ -49,6 +49,7 @@ public class RoutineAdapter extends ArrayAdapter<Task> {
 
             int taskTimeElapsed = task.getTimeElapsed();
             if (taskTimeElapsed <= 55) {
+                System.out.println("taskTimeElapsed: " + taskTimeElapsed);
                 int roundedTime = (taskTimeElapsed + 4 ) / 5 * 5; // Round to nearest 5 seconds
                 binding.elapsedTime.setText(String.format("%d Seconds Elapsed", roundedTime));
             }
