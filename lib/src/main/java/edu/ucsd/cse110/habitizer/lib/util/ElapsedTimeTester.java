@@ -27,7 +27,8 @@ public class ElapsedTimeTester implements Timer {
         // update time the most recent task was completed
         this.prevTaskFinishTime = this.currTime;
         return timeElapsedRounded;
-    };
+    }
+    ;
 
     @Override
     public int getTotalTimeElapsed(){
