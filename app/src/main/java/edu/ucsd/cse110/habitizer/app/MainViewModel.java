@@ -96,11 +96,6 @@ public class MainViewModel extends ViewModel {
                     .sorted(Comparator.comparingInt(Routine::getId))
                     .collect(Collectors.toList());
 
-            var ordering = new ArrayList<Integer>();
-            for (Routine routine : newOrderedRoutines) {
-                ordering.add(routine.getId());
-            }
-
             orderedRoutines.setValue(newOrderedRoutines);
         });
 

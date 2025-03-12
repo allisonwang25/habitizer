@@ -76,7 +76,7 @@ public class RoomTaskRepository implements TaskRepository {
 
     @Override
     public void removeTask(int taskId) {
-        taskDao.remove(taskId);
+        taskDao.remove(taskDao.find(taskId));
     }
 
     @Override
@@ -108,12 +108,18 @@ public class RoomTaskRepository implements TaskRepository {
             return;
         }
 
-        // IDK if this works
+
         taskDao.moveTaskUp(routineId, taskId);
     }
 
     @Override
     public void moveTaskDown(int routineId, int taskId) {
+
+        int sortOrder = taskDao.getTaskSortOrder(taskId);
+        if (sortOrder == taskDao.getMaxSortOrder(routineId)) { // already at the bottom
+            return;
+        }
+
         taskDao.moveTaskDown(routineId, taskId);
     }
 }

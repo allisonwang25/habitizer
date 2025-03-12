@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.habitizer.app.MainActivity;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
@@ -66,26 +67,13 @@ public class RoutineFragment extends Fragment {
         activityModel.getOrderedTasks().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            for (Task task : tasks) {
-                adapter.add(task);
-            }
-//            adapter.addAll(tasks
-//                .stream()
-//                .filter(task -> task.getRid() == routineId)
-//                .collect(Collectors.toList()));
+            adapter.addAll(tasks
+                .stream()
+                .filter(task -> task.getRid() == routineId)
+                .collect(Collectors.toList()));
 
             adapter.notifyDataSetChanged();
         });
-
-//        activityModel.getOrderedRoutines().observe(routines -> {
-////            Routine routine = routines.get(routineId);
-//            List<Task> tasks = activityModel.getTasks(routineId);
-////            Log.d("RoutineFragment", "Tasks: " + tasks.toString());
-//            if (tasks == null) return;
-//            adapter.clear();
-//            adapter.addAll(new ArrayList<>(tasks));
-//            adapter.notifyDataSetChanged();
-//        });
     }
 
     @Nullable
